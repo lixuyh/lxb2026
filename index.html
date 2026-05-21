@@ -6,62 +6,63 @@
   <title>资源导航站</title>
   <style>
     :root{
-      --bg:#0f172a;
+      --bg:#0b1220;
       --bg2:#111827;
-      --card:#111827cc;
-      --line:#23314f;
+      --card:rgba(17,24,39,.78);
+      --line:rgba(148,163,184,.16);
       --text:#e5e7eb;
       --muted:#94a3b8;
       --accent:#60a5fa;
       --accent2:#34d399;
-      --warn:#f59e0b;
-      --shadow: 0 10px 30px rgba(0,0,0,.25);
+      --danger:#f59e0b;
+      --shadow:0 12px 28px rgba(0,0,0,.28);
       --radius:18px;
     }
 
     *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
     body{
-      margin:0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-      background:
-        radial-gradient(circle at top left, #1e293b 0%, transparent 35%),
-        radial-gradient(circle at top right, #0f766e 0%, transparent 25%),
-        linear-gradient(180deg, #0f172a 0%, #111827 100%);
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
       color:var(--text);
       min-height:100vh;
+      background:
+        radial-gradient(circle at top left, rgba(59,130,246,.18), transparent 30%),
+        radial-gradient(circle at top right, rgba(16,185,129,.12), transparent 28%),
+        linear-gradient(180deg,var(--bg) 0%, #111827 100%);
     }
 
+    a{text-decoration:none;color:inherit}
     .container{
-      width:min(1280px, calc(100% - 32px));
+      width:min(1280px, calc(100% - 24px));
       margin:0 auto;
-      padding:24px 0 48px;
+      padding:22px 0 42px;
     }
 
     .hero{
-      background: linear-gradient(135deg, rgba(96,165,250,.12), rgba(52,211,153,.08));
-      border:1px solid rgba(148,163,184,.18);
+      background:linear-gradient(135deg, rgba(96,165,250,.12), rgba(52,211,153,.07));
+      border:1px solid var(--line);
       border-radius:24px;
-      padding:28px;
+      padding:26px;
       box-shadow:var(--shadow);
       backdrop-filter: blur(10px);
     }
 
-    .topbar{
+    .top{
       display:flex;
-      gap:16px;
       justify-content:space-between;
-      align-items:center;
+      gap:16px;
       flex-wrap:wrap;
+      align-items:center;
     }
 
     .brand h1{
       margin:0;
-      font-size:28px;
+      font-size:30px;
       line-height:1.2;
     }
 
     .brand p{
-      margin:8px 0 0;
+      margin:10px 0 0;
       color:var(--muted);
       font-size:14px;
     }
@@ -74,15 +75,15 @@
 
     .stat{
       min-width:140px;
-      background: rgba(17,24,39,.72);
-      border:1px solid rgba(148,163,184,.16);
+      background:rgba(15,23,42,.82);
+      border:1px solid var(--line);
       border-radius:16px;
       padding:14px 16px;
     }
 
     .stat .num{
       font-size:22px;
-      font-weight:700;
+      font-weight:800;
       color:#fff;
     }
 
@@ -92,27 +93,26 @@
       font-size:13px;
     }
 
-    .search-wrap{
-      margin-top:22px;
+    .searchbar{
+      margin-top:20px;
       display:flex;
-      gap:12px;
+      gap:10px;
       flex-wrap:wrap;
-      align-items:center;
     }
 
-    .search-box{
+    .search{
       flex:1;
       min-width:280px;
       display:flex;
       align-items:center;
       gap:10px;
-      background: rgba(15,23,42,.85);
-      border:1px solid rgba(148,163,184,.18);
+      background:rgba(15,23,42,.9);
+      border:1px solid var(--line);
       border-radius:16px;
       padding:14px 16px;
     }
 
-    .search-box input{
+    .search input{
       width:100%;
       border:none;
       outline:none;
@@ -121,23 +121,22 @@
       font-size:15px;
     }
 
-    .search-box input::placeholder{color:#7c8aa5}
+    .search input::placeholder{color:#7f8ea9}
 
     .btn{
       border:none;
       cursor:pointer;
       padding:14px 18px;
       border-radius:16px;
-      background: linear-gradient(135deg, var(--accent), #8b5cf6);
+      font-weight:700;
       color:white;
-      font-weight:600;
+      background:linear-gradient(135deg, var(--accent), #8b5cf6);
       box-shadow:var(--shadow);
     }
 
     .btn.secondary{
-      background: rgba(15,23,42,.9);
-      border:1px solid rgba(148,163,184,.18);
-      color:var(--text);
+      background:rgba(15,23,42,.92);
+      border:1px solid var(--line);
       box-shadow:none;
     }
 
@@ -148,20 +147,21 @@
     .section-head{
       display:flex;
       justify-content:space-between;
-      align-items:end;
+      gap:10px;
       flex-wrap:wrap;
-      gap:12px;
+      align-items:end;
       margin-bottom:14px;
     }
 
-    .section-title{
+    .section-head h2{
       margin:0;
       font-size:20px;
     }
 
-    .section-desc{
+    .section-head .desc{
       color:var(--muted);
       font-size:13px;
+      margin-top:6px;
     }
 
     .hot-grid{
@@ -170,37 +170,30 @@
       gap:14px;
     }
 
-    .hot-card, .cat-card{
-      background: rgba(17,24,39,.78);
-      border:1px solid rgba(148,163,184,.16);
+    .hot-card{
+      background:var(--card);
+      border:1px solid var(--line);
       border-radius:var(--radius);
-      overflow:hidden;
+      padding:18px;
       box-shadow:var(--shadow);
     }
 
-    .hot-card{
-      padding:18px;
-      position:relative;
-    }
-
-    .hot-badge{
+    .badge{
       display:inline-flex;
       align-items:center;
       gap:6px;
       font-size:12px;
       color:#dbeafe;
-      background: rgba(59,130,246,.15);
+      background:rgba(59,130,246,.15);
       border:1px solid rgba(96,165,250,.25);
       padding:6px 10px;
       border-radius:999px;
       margin-bottom:12px;
     }
 
-    .hot-card a{
-      color:#fff;
-      text-decoration:none;
+    .hot-card h3{
+      margin:0;
       font-size:16px;
-      font-weight:600;
     }
 
     .hot-card p{
@@ -212,19 +205,28 @@
 
     .cats{
       display:grid;
-      grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));
       gap:16px;
+    }
+
+    .cat{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      overflow:hidden;
+      box-shadow:var(--shadow);
     }
 
     .cat-head{
       display:flex;
       justify-content:space-between;
+      gap:10px;
       align-items:center;
       padding:16px 16px 10px;
       border-bottom:1px solid rgba(148,163,184,.12);
     }
 
-    .cat-title{
+    .cat-head h3{
       margin:0;
       font-size:16px;
     }
@@ -234,7 +236,7 @@
       font-size:12px;
     }
 
-    .card-list{
+    .list{
       display:grid;
       grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));
       gap:10px;
@@ -244,63 +246,62 @@
     .site{
       display:flex;
       flex-direction:column;
-      gap:8px;
-      padding:14px;
-      background: rgba(15,23,42,.72);
-      border:1px solid rgba(148,163,184,.12);
-      border-radius:16px;
-      text-decoration:none;
-      color:var(--text);
-      transition:.2s ease;
+      gap:6px;
       min-height:92px;
+      padding:14px;
+      border-radius:16px;
+      background:rgba(15,23,42,.72);
+      border:1px solid rgba(148,163,184,.12);
+      transition:.2s ease;
     }
 
     .site:hover{
-      transform: translateY(-2px);
-      border-color: rgba(96,165,250,.45);
-      background: rgba(30,41,59,.9);
+      transform:translateY(-2px);
+      border-color:rgba(96,165,250,.4);
+      background:rgba(30,41,59,.92);
     }
 
-    .site-name{
-      font-weight:600;
+    .name{
+      font-weight:700;
       font-size:14px;
+      line-height:1.35;
     }
 
-    .site-url{
-      font-size:12px;
+    .url{
       color:var(--muted);
+      font-size:12px;
       word-break:break-all;
     }
 
-    .site small{
+    .meta{
+      margin-top:auto;
       color:var(--accent2);
       font-size:12px;
-      margin-top:auto;
     }
 
     .hidden{display:none !important;}
 
     footer{
-      margin-top:28px;
+      text-align:center;
       color:var(--muted);
       font-size:13px;
-      text-align:center;
-      padding:18px 0 8px;
+      margin-top:28px;
+      padding:14px 0 4px;
     }
 
-    @media (max-width: 640px){
+    @media (max-width:640px){
       .hero{padding:18px}
-      .brand h1{font-size:22px}
-      .stat{min-width:unset; flex:1}
+      .brand h1{font-size:24px}
+      .stat{flex:1;min-width:unset}
       .btn{width:100%}
-      .search-box{min-width:100%}
+      .search{min-width:100%}
     }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="hero">
-      <div class="topbar">
+      <div class="top">
         <div class="brand">
           <h1>资源导航站</h1>
           <p>卡片式资源导航 · 搜索查找 · 点击统计 · 热门推荐</p>
@@ -317,20 +318,20 @@
         </div>
       </div>
 
-      <div class="search-wrap">
-        <div class="search-box">
+      <div class="searchbar">
+        <div class="search">
           <span>🔎</span>
-          <input id="searchInput" type="text" placeholder="搜索资源：如 AI、电影、工具、字幕、游戏..." />
+          <input id="searchInput" type="text" placeholder="搜索资源：AI、电影、游戏、工具、字幕、PDF..." />
         </div>
-        <button class="btn secondary" id="resetBtn">重置搜索</button>
+        <button class="btn secondary" id="resetBtn">重置</button>
       </div>
     </div>
 
     <div class="section">
       <div class="section-head">
         <div>
-          <h2 class="section-title">热门推荐</h2>
-          <div class="section-desc">根据点击次数自动排序，优先显示常用资源</div>
+          <h2>热门推荐</h2>
+          <div class="desc">按本地点击次数排序，常用资源会排在前面</div>
         </div>
       </div>
       <div class="hot-grid" id="hotGrid"></div>
@@ -339,16 +340,14 @@
     <div class="section">
       <div class="section-head">
         <div>
-          <h2 class="section-title">全部分类</h2>
-          <div class="section-desc">搜索后会自动筛选对应资源</div>
+          <h2>全部分类</h2>
+          <div class="desc">输入关键词即可筛选相关资源</div>
         </div>
       </div>
       <div class="cats" id="cats"></div>
     </div>
 
-    <footer>
-      这是一个本地可用的导航站首页模板，可自行替换资源、图标、主题色与分类。
-    </footer>
+    <footer>本地静态导航页模板 · 可自行替换链接、分类、图标与主题</footer>
   </div>
 
   <script>
@@ -356,10 +355,19 @@
       {
         category: "AI 网站",
         items: [
-          { name: "SharedChat", url: "https://sharedchat.fun/", desc: "AI 对话" },
-          { name: "ChatOpenS VIP", url: "https://vip.chatopens.vip/", desc: "AI 工具" },
-          { name: "AI Apps", url: "https://ai-apps.com.cn", desc: "AI 应用集合" },
-          { name: "AI 网站", url: "https://add.lra.cn", desc: "AI 工具入口" }
+          { name: "AI 网站", url: "https://add.lra.cn", desc: "AI 工具入口" },
+          { name: "ChatOpenS VIP", url: "https://vip.chatopens.vip/", desc: "AI 对话" }
+        ]
+      },
+      {
+        category: "技术 / 黑客 / 检测",
+        items: [
+          { name: "黑客渗透", url: "https://ycc77.cn/", desc: "技术站" },
+          { name: "IP检测", url: "https://ippure.com/", desc: "IP 查询" },
+          { name: "翻墙工具", url: "https://nav.eooce.com/", desc: "网络工具" },
+          { name: "美国身份", url: "https://haoweichi.com/", desc: "资料站" },
+          { name: "在线黑客", url: "https://i.zkaq.cn/", desc: "技术站" },
+          { name: "黑客装逼", url: "https://www.crucix.live/", desc: "技术站" }
         ]
       },
       {
@@ -374,10 +382,10 @@
         items: [
           { name: "视频下载", url: "https://www.anytocopy.com/", desc: "视频下载" },
           { name: "推特下载", url: "https://savetwitter.net/zh-cn3", desc: "X/Twitter 下载" },
-          { name: "免费电影", url: "https://youkutv.us", desc: "影视资源站" },
+          { name: "免费电影", url: "https://youkutv.us", desc: "影视站" },
           { name: "电视剧", url: "https://kkys01.com", desc: "追剧站" },
           { name: "影视都有", url: "https://gaze.run/", desc: "影视站" },
-          { name: "NetflixGC", url: "https://www.netflixgc.com/", desc: "影视资源" }
+          { name: "奈飞工厂", url: "https://www.netflixgc.com/", desc: "奈飞资源站" }
         ]
       },
       {
@@ -405,14 +413,13 @@
           { name: "破解 PDF", url: "https://www.ilovepdf.com/", desc: "PDF 工具" },
           { name: "黑科技", url: "https://iiihnsjn717.feishu.cn/wiki/L8n1wzMTJiuzS1k2W8dcfv7Dnlf", desc: "技巧合集" },
           { name: "找资源", url: "https://www.qnnav.com/#term-7259", desc: "资源搜索" },
-          { name: "网盘不限速", url: "https://pd.fly288.top/user/parse", desc: "网盘解析" },
-          { name: "电脑工具", url: "https://dnkh.mwks77.cn", desc: "电脑工具" },
           { name: "文件分享", url: "https://wormhole.app/", desc: "传文件" },
-          { name: "适用工具", url: "https://ppmc.club/navhub", desc: "导航工具" },
-          { name: "适用工具2", url: "https://huamao.vip/", desc: "工具集合" },
-          { name: "适用工具3", url: "https://www.plnav.com/", desc: "导航站" },
-          { name: "适用工具4", url: "https://www.dmjfup.com/", desc: "资源站" },
-          { name: "适用工具5", url: "https://jiafangbb.com/", desc: "工具导航" }
+          { name: "电脑工具", url: "https://dnkh.mwks77.cn", desc: "电脑工具" },
+          { name: "南窗资源社", url: "https://www.nan2025.com/", desc: "资源导航" },
+          { name: "花猫导航", url: "https://huamao.vip/", desc: "导航站" },
+          { name: "迷鹿导航", url: "https://www.plnav.com/", desc: "导航站" },
+          { name: "代码飓风", url: "https://www.dmjfup.com/", desc: "开发导航" },
+          { name: "甲方导航", url: "https://jiafangbb.com/", desc: "工具导航" }
         ]
       },
       {
@@ -420,44 +427,29 @@
         items: [
           { name: "付费游戏", url: "https://yzhouk.com/", desc: "游戏资源" },
           { name: "我的世界模组", url: "https://bbsmc.net/modpacks", desc: "MOD/整合包" },
-          { name: "单机游戏", url: "https://gdgame.org/", desc: "单机资源" },
-          { name: "单机游戏2", url: "https://www.xianyudanji.to/", desc: "单机资源" },
+          { name: "免费游戏", url: "https://gdgame.org/", desc: "单机资源" },
           { name: "SteamZG", url: "https://steamzg.com/", desc: "游戏站" },
           { name: "RV Game", url: "https://www.rvgame.icu/pc", desc: "PC 游戏" }
         ]
       },
       {
-        category: "字幕 / 其他",
+        category: "字幕 / 维修 / 硬件",
         items: [
           { name: "字幕", url: "https://zm.i8k.tv/", desc: "字幕站" },
           { name: "修复维修工具", url: "https://zh.ifixit.com/", desc: "维修教程" },
           { name: "测试 CPU 显卡", url: "https://pc-builds.com/zh", desc: "硬件测试" }
         ]
-      },
-      {
-        category: "技术类（可自行调整）",
-        items: [
-          { name: "黑客渗透", url: "https://ycc77.cn/", desc: "技术站" },
-          { name: "在线", url: "https://i.zkaq.cn/", desc: "技术站" },
-          { name: "黑客装逼", url: "https://www.crucix.live/", desc: "技术站" }
-        ]
       }
     ];
 
-    const clickData = JSON.parse(localStorage.getItem("nav_clicks") || "{}");
+    const clickData = JSON.parse(localStorage.getItem("nav_clicks_v2") || "{}");
+    const allSites = data.flatMap(cat => cat.items.map(item => ({ ...item, category: cat.category })));
 
-    const allSites = data.flatMap(cat => cat.items.map(item => ({
-      ...item,
-      category: cat.category
-    })));
+    function getClicks(url){ return clickData[url] || 0; }
 
-    function getClicks(url){
-      return clickData[url] || 0;
-    }
-
-    function setClicks(url){
+    function recordClick(url){
       clickData[url] = (clickData[url] || 0) + 1;
-      localStorage.setItem("nav_clicks", JSON.stringify(clickData));
+      localStorage.setItem("nav_clicks_v2", JSON.stringify(clickData));
       renderStats();
       renderHot();
     }
@@ -468,8 +460,8 @@
 
     function renderStats(){
       document.getElementById("siteCount").textContent = allSites.length;
-      const totalClicks = Object.values(clickData).reduce((a,b)=>a+b,0);
-      document.getElementById("clickCount").textContent = totalClicks;
+      document.getElementById("clickCount").textContent =
+        Object.values(clickData).reduce((a,b)=>a+b,0);
     }
 
     function renderHot(){
@@ -477,53 +469,50 @@
         .sort((a,b) => getClicks(b.url) - getClicks(a.url))
         .slice(0, 6);
 
-      const hotGrid = document.getElementById("hotGrid");
-      hotGrid.innerHTML = hot.map(item => `
+      document.getElementById("hotGrid").innerHTML = hot.map(item => `
         <div class="hot-card">
-          <div class="hot-badge">🔥 热门 · ${getClicks(item.url)} 次点击</div>
-          <a href="${item.url}" target="_blank" rel="noopener" onclick="recordClick('${item.url.replace(/'/g,"\\'")}')">${item.name}</a>
+          <div class="badge">🔥 热门 · ${getClicks(item.url)} 次点击</div>
+          <h3>${item.name}</h3>
           <p>${item.desc || item.category}</p>
+          <p style="margin-top:12px;color:#cbd5e1;font-size:12px;word-break:break-all;">${item.url}</p>
         </div>
       `).join("");
     }
 
-    function renderCats(filter = ""){
-      const catsEl = document.getElementById("cats");
+    function renderCats(filter=""){
       const keyword = normalize(filter);
+      const catsEl = document.getElementById("cats");
 
-      const filteredCats = data.map(cat => {
-        const items = cat.items.filter(item => {
-          const text = normalize(item.name + " " + item.url + " " + item.desc + " " + cat.category);
-          return text.includes(keyword);
-        });
-        return { ...cat, items };
-      }).filter(cat => cat.items.length > 0);
+      const filtered = data.map(cat => ({
+        ...cat,
+        items: cat.items.filter(item => {
+          const t = normalize(item.name + " " + item.url + " " + item.desc + " " + cat.category);
+          return t.includes(keyword);
+        })
+      })).filter(cat => cat.items.length);
 
-      catsEl.innerHTML = filteredCats.map(cat => `
-        <div class="cat-card">
+      catsEl.innerHTML = filtered.map(cat => `
+        <div class="cat">
           <div class="cat-head">
-            <h3 class="cat-title">${cat.category}</h3>
+            <h3>${cat.category}</h3>
             <div class="count">${cat.items.length} 个资源</div>
           </div>
-          <div class="card-list">
+          <div class="list">
             ${cat.items.map(item => `
-              <a class="site" href="${item.url}" target="_blank" rel="noopener" onclick="recordClick('${item.url.replace(/'/g,"\\'")}')">
-                <div class="site-name">${item.name}</div>
-                <div class="site-url">${item.url}</div>
-                <small>点击访问 · ${getClicks(item.url)} 次</small>
+              <a class="site" href="${item.url}" target="_blank" rel="noopener"
+                 onclick="recordClick('${item.url.replace(/'/g, "\\'")}')">
+                <div class="name">${item.name}</div>
+                <div class="url">${item.url}</div>
+                <div class="meta">点击访问 · ${getClicks(item.url)} 次</div>
               </a>
             `).join("")}
           </div>
         </div>
       `).join("");
 
-      if (!filteredCats.length){
-        catsEl.innerHTML = `<div class="cat-card" style="padding:24px;text-align:center;color:#94a3b8;">未找到相关资源</div>`;
+      if(!filtered.length){
+        catsEl.innerHTML = `<div class="cat" style="padding:24px;text-align:center;color:#94a3b8;">未找到相关资源</div>`;
       }
-    }
-
-    function recordClick(url){
-      setClicks(url);
     }
 
     document.getElementById("searchInput").addEventListener("input", e => {
