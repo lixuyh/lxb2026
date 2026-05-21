@@ -1,56 +1,184 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>简单网页</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>资源导航</title>
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-    .box {
-      background: white;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      text-align: center;
-    }
-
-    h1 {
+      background: #f5f7fb;
       color: #333;
     }
 
-    p {
-      color: #666;
-    }
-
-    button {
-      margin-top: 15px;
-      padding: 10px 18px;
-      border: none;
-      border-radius: 8px;
+    .navbar {
       background: #007bff;
-      color: white;
-      cursor: pointer;
+      color: #fff;
+      padding: 18px 30px;
+      font-size: 24px;
+      font-weight: bold;
     }
 
-    button:hover {
-      background: #0056b3;
+    .container {
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 0 20px 40px;
+    }
+
+    .category {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    .category h2 {
+      margin: 0;
+      padding: 15px 20px;
+      background: #f0f4ff;
+      border-bottom: 1px solid #e6eaf5;
+      font-size: 20px;
+    }
+
+    .links {
+      list-style: none;
+      margin: 0;
+      padding: 15px 20px;
+    }
+
+    .links li {
+      padding: 8px 0;
+      border-bottom: 1px dashed #eee;
+    }
+
+    .links li:last-child {
+      border-bottom: none;
+    }
+
+    .links a {
+      color: #007bff;
+      text-decoration: none;
+      word-break: break-all;
+    }
+
+    .links a:hover {
+      text-decoration: underline;
+    }
+
+    .name {
+      display: inline-block;
+      min-width: 120px;
+      font-weight: bold;
+      color: #444;
+    }
+
+    .tip {
+      margin: 15px 0 30px;
+      color: #666;
+      font-size: 14px;
     }
   </style>
 </head>
 <body>
-  <div class="box">
-    <h1>欢迎来到我的网页</h1>
-    <p>这是一个简单的网页示例。</p>
-    <button onclick="alert('你好！')">点击我</button>
+  <div class="navbar">资源分类导航</div>
+
+  <div class="container">
+    <div class="tip">以下为你提供的链接内容分类整理结果。</div>
+
+    <div class="category">
+      <h2>AI / 人工智能</h2>
+      <ul class="links">
+        <li><span class="name">Ai网站</span> <a href="https://sharedchat.fun/" target="_blank">https://sharedchat.fun/</a></li>
+        <li><span class="name">Ai网站</span> <a href="https://vip.chatopens.vip/" target="_blank">https://vip.chatopens.vip/</a></li>
+        <li><span class="name">ai</span> <a href="https://add.lra.cn" target="_blank">https://add.lra.cn</a></li>
+        <li><span class="name">AI网站</span> <a href="https://ai-apps.com.cn" target="_blank">https://ai-apps.com.cn</a></li>
+      </ul>
+    </div>
+
+    <div class="category">
+      <h2>黑客 / 安全 / 技术</h2>
+      <ul class="links">
+        <li><span class="name">黑客渗透在线</span> <a href="https://ycc77.cn/" target="_blank">https://ycc77.cn/</a></li>
+        <li><span class="name">黑客装逼</span> <a href="https://www.crucix.live/" target="_blank">https://www.crucix.live/</a></li>
+      </ul>
+    </div>
+
+    <div class="category">
+      <h2>办公 / 工具 / 系统</h2>
+      <ul class="links">
+        <li><span class="name">办公平台</span> <a href="https://duobaoyu.work/platform#" target="_blank">https://duobaoyu.work/platform#</a></li>
+        <li><span class="name">工具大全</span> <a href="https://www.zxmls.lol" target="_blank">www.zxmls.lol</a></li>
+        <li><span class="name">系统工具</span> <a href="https://www.kdocs.cn/l/cjkZcTNs2vcU" target="_blank">https://www.kdocs.cn/l/cjkZcTNs2vcU</a></li>
+        <li><span class="name">电脑工具</span> <a href="https://dnkh.mwks77.cn" target="_blank">dnkh.mwks77.cn</a></li>
+        <li><span class="name">MOD</span> <a href="https://www.kdocs.cn/l/cbOwP5Nc0fGQ" target="_blank">https://www.kdocs.cn/l/cbOwP5Nc0fGQ</a></li>
+        <li><span class="name">破解PDF</span> <a href="https://www.ilovepdf.com/" target="_blank">https://www.ilovepdf.com/</a></li>
+        <li><span class="name">修复维修工具</span> <a href="https://zh.ifixit.com/" target="_blank">https://zh.ifixit.com/</a></li>
+        <li><span class="name">测试cpu显卡</span> <a href="https://pc-builds.com/zh" target="_blank">https://pc-builds.com/zh</a></li>
+      </ul>
+    </div>
+
+    <div class="category">
+      <h2>游戏 / 单机 / MOD</h2>
+      <ul class="links">
+        <li><span class="name">付费游戏</span> <a href="https://yzhouk.com/" target="_blank">https://yzhouk.com/</a></li>
+        <li><span class="name">我的世界模组</span> <a href="https://bbsmc.net/modpacks" target="_blank">https://bbsmc.net/modpacks</a></li>
+        <li><span class="name">单机游戏</span> <a href="https://gdgame.org/" target="_blank">https://gdgame.org/</a></li>
+        <li><span class="name">单机游戏</span> <a href="https://www.xianyudanji.to/" target="_blank">https://www.xianyudanji.to/</a></li>
+        <li><span class="name">单机游戏</span> <a href="https://steamzg.com/" target="_blank">https://steamzg.com/</a></li>
+        <li><span class="name">单机游戏</span> <a href="https://www.rvgame.icu/pc" target="_blank">https://www.rvgame.icu/pc</a></li>
+      </ul>
+    </div>
+
+    <div class="category">
+      <h2>视频 / 影视 / 动漫</h2>
+      <ul class="links">
+        <li><span class="name">视频下载</span> <a href="https://www.anytocopy.com/" target="_blank">https://www.anytocopy.com/</a></li>
+        <li><span class="name">推特</span> <a href="https://savetwitter.net/zh-cn3" target="_blank">https://savetwitter.net/zh-cn3</a></li>
+        <li><span class="name">TikTok</span> <a href="https://www.anytocopy.com/" target="_blank">https://www.anytocopy.com/</a></li>
+        <li><span class="name">免费电影</span> <a href="http://youkutv.us" target="_blank">youkutv.us</a></li>
+        <li><span class="name">电视剧</span> <a href="http://kkys01.com" target="_blank">kkys01.com</a></li>
+        <li><span class="name">影视都有</span> <a href="https://gaze.run/" target="_blank">https://gaze.run/</a></li>
+        <li><span class="name">影视都有</span> <a href="https://www.netflixgc.com/" target="_blank">https://www.netflixgc.com/</a></li>
+        <li><span class="name">动漫</span> <a href="https://www.agedm.io/" target="_blank">https://www.agedm.io/</a></li>
+        <li><span class="name">动漫</span> <a href="https://ios.mifun.org/" target="_blank">https://ios.mifun.org/</a></li>
+        <li><span class="name">次元</span> <a href="https://dimtown.com/" target="_blank">https://dimtown.com/</a></li>
+        <li><span class="name">苏诺</span> <a href="https://app.suno.ai/create/" target="_blank">https://app.suno.ai/create/</a></li>
+      </ul>
+    </div>
+
+    <div class="category">
+      <h2>图片 / 设计 / 海报 / 去除</h2>
+      <ul class="links">
+        <li><span class="name">海报模板</span> <a href="https://huaban.com/" target="_blank">https://huaban.com/</a></li>
+        <li><span class="name">海报模板</span> <a href="https://www.chuangkit.com/designtools/designindex" target="_blank">https://www.chuangkit.com/designtools/designindex</a></li>
+        <li><span class="name">Ai消除</span> <a href="https://www.miankoutupian.com/tools" target="_blank">https://www.miankoutupian.com/tools</a></li>
+        <li><span class="name">Ai消除</span> <a href="https://magiceraser.pro/zh/app" target="_blank">https://magiceraser.pro/zh/app</a></li>
+        <li><span class="name">无损放大</span> <a href="https://bigjpg.com" target="_blank">https://bigjpg.com</a></li>
+      </ul>
+    </div>
+
+    <div class="category">
+      <h2>资源 / 网盘 / 文件分享</h2>
+      <ul class="links">
+        <li><span class="name">找资源</span> <a href="https://www.qnnav.com/#term-7259" target="_blank">https://www.qnnav.com/#term-7259</a></li>
+        <li><span class="name">网盘不限速</span> <a href="https://pd.fly288.top/user/parse" target="_blank">https://pd.fly288.top/user/parse</a></li>
+        <li><span class="name">文件分享</span> <a href="https://wormhole.app/" target="_blank">https://wormhole.app/</a></li>
+        <li><span class="name">适用工具</span> <a href="https://ppmc.club/navhub" target="_blank">https://ppmc.club/navhub</a></li>
+        <li><span class="name">适用工具</span> <a href="https://huamao.vip/" target="_blank">https://huamao.vip/</a></li>
+        <li><span class="name">适用工具</span> <a href="https://www.plnav.com/" target="_blank">https://www.plnav.com/</a></li>
+        <li><span class="name">适用工具</span> <a href="https://www.dmjfup.com/" target="_blank">https://www.dmjfup.com/</a></li>
+        <li><span class="name">适用工具</span> <a href="https://jiafangbb.com/" target="_blank">https://jiafangbb.com/</a></li>
+      </ul>
+    </div>
+
+    <div class="category">
+      <h2>其他</h2>
+      <ul class="links">
+        <li><span class="name">黑科技</span> <a href="https://iiihnsjn717.feishu.cn/wiki/L8n1wzMTJiuzS1k2W8dcfv7Dnlf" target="_blank">https://iiihnsjn717.feishu.cn/wiki/L8n1wzMTJiuzS1k2W8dcfv7Dnlf</a></li>
+      </ul>
+    </div>
   </div>
 </body>
 </html>
