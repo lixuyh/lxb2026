@@ -3,182 +3,541 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>资源导航</title>
+  <title>资源导航站</title>
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f5f7fb;
-      color: #333;
+    :root{
+      --bg:#0f172a;
+      --bg2:#111827;
+      --card:#111827cc;
+      --line:#23314f;
+      --text:#e5e7eb;
+      --muted:#94a3b8;
+      --accent:#60a5fa;
+      --accent2:#34d399;
+      --warn:#f59e0b;
+      --shadow: 0 10px 30px rgba(0,0,0,.25);
+      --radius:18px;
     }
 
-    .navbar {
-      background: #007bff;
-      color: #fff;
-      padding: 18px 30px;
-      font-size: 24px;
-      font-weight: bold;
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      background:
+        radial-gradient(circle at top left, #1e293b 0%, transparent 35%),
+        radial-gradient(circle at top right, #0f766e 0%, transparent 25%),
+        linear-gradient(180deg, #0f172a 0%, #111827 100%);
+      color:var(--text);
+      min-height:100vh;
     }
 
-    .container {
-      max-width: 1100px;
-      margin: 30px auto;
-      padding: 0 20px 40px;
+    .container{
+      width:min(1280px, calc(100% - 32px));
+      margin:0 auto;
+      padding:24px 0 48px;
     }
 
-    .category {
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      margin-bottom: 20px;
-      overflow: hidden;
+    .hero{
+      background: linear-gradient(135deg, rgba(96,165,250,.12), rgba(52,211,153,.08));
+      border:1px solid rgba(148,163,184,.18);
+      border-radius:24px;
+      padding:28px;
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(10px);
     }
 
-    .category h2 {
-      margin: 0;
-      padding: 15px 20px;
-      background: #f0f4ff;
-      border-bottom: 1px solid #e6eaf5;
-      font-size: 20px;
+    .topbar{
+      display:flex;
+      gap:16px;
+      justify-content:space-between;
+      align-items:center;
+      flex-wrap:wrap;
     }
 
-    .links {
-      list-style: none;
-      margin: 0;
-      padding: 15px 20px;
+    .brand h1{
+      margin:0;
+      font-size:28px;
+      line-height:1.2;
     }
 
-    .links li {
-      padding: 8px 0;
-      border-bottom: 1px dashed #eee;
+    .brand p{
+      margin:8px 0 0;
+      color:var(--muted);
+      font-size:14px;
     }
 
-    .links li:last-child {
-      border-bottom: none;
+    .stats{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
     }
 
-    .links a {
-      color: #007bff;
-      text-decoration: none;
-      word-break: break-all;
+    .stat{
+      min-width:140px;
+      background: rgba(17,24,39,.72);
+      border:1px solid rgba(148,163,184,.16);
+      border-radius:16px;
+      padding:14px 16px;
     }
 
-    .links a:hover {
-      text-decoration: underline;
+    .stat .num{
+      font-size:22px;
+      font-weight:700;
+      color:#fff;
     }
 
-    .name {
-      display: inline-block;
-      min-width: 120px;
-      font-weight: bold;
-      color: #444;
+    .stat .label{
+      margin-top:4px;
+      color:var(--muted);
+      font-size:13px;
     }
 
-    .tip {
-      margin: 15px 0 30px;
-      color: #666;
-      font-size: 14px;
+    .search-wrap{
+      margin-top:22px;
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+
+    .search-box{
+      flex:1;
+      min-width:280px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      background: rgba(15,23,42,.85);
+      border:1px solid rgba(148,163,184,.18);
+      border-radius:16px;
+      padding:14px 16px;
+    }
+
+    .search-box input{
+      width:100%;
+      border:none;
+      outline:none;
+      background:transparent;
+      color:var(--text);
+      font-size:15px;
+    }
+
+    .search-box input::placeholder{color:#7c8aa5}
+
+    .btn{
+      border:none;
+      cursor:pointer;
+      padding:14px 18px;
+      border-radius:16px;
+      background: linear-gradient(135deg, var(--accent), #8b5cf6);
+      color:white;
+      font-weight:600;
+      box-shadow:var(--shadow);
+    }
+
+    .btn.secondary{
+      background: rgba(15,23,42,.9);
+      border:1px solid rgba(148,163,184,.18);
+      color:var(--text);
+      box-shadow:none;
+    }
+
+    .section{
+      margin-top:28px;
+    }
+
+    .section-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:end;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-bottom:14px;
+    }
+
+    .section-title{
+      margin:0;
+      font-size:20px;
+    }
+
+    .section-desc{
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .hot-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+      gap:14px;
+    }
+
+    .hot-card, .cat-card{
+      background: rgba(17,24,39,.78);
+      border:1px solid rgba(148,163,184,.16);
+      border-radius:var(--radius);
+      overflow:hidden;
+      box-shadow:var(--shadow);
+    }
+
+    .hot-card{
+      padding:18px;
+      position:relative;
+    }
+
+    .hot-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      font-size:12px;
+      color:#dbeafe;
+      background: rgba(59,130,246,.15);
+      border:1px solid rgba(96,165,250,.25);
+      padding:6px 10px;
+      border-radius:999px;
+      margin-bottom:12px;
+    }
+
+    .hot-card a{
+      color:#fff;
+      text-decoration:none;
+      font-size:16px;
+      font-weight:600;
+    }
+
+    .hot-card p{
+      margin:10px 0 0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.5;
+    }
+
+    .cats{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));
+      gap:16px;
+    }
+
+    .cat-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:16px 16px 10px;
+      border-bottom:1px solid rgba(148,163,184,.12);
+    }
+
+    .cat-title{
+      margin:0;
+      font-size:16px;
+    }
+
+    .count{
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    .card-list{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));
+      gap:10px;
+      padding:16px;
+    }
+
+    .site{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      padding:14px;
+      background: rgba(15,23,42,.72);
+      border:1px solid rgba(148,163,184,.12);
+      border-radius:16px;
+      text-decoration:none;
+      color:var(--text);
+      transition:.2s ease;
+      min-height:92px;
+    }
+
+    .site:hover{
+      transform: translateY(-2px);
+      border-color: rgba(96,165,250,.45);
+      background: rgba(30,41,59,.9);
+    }
+
+    .site-name{
+      font-weight:600;
+      font-size:14px;
+    }
+
+    .site-url{
+      font-size:12px;
+      color:var(--muted);
+      word-break:break-all;
+    }
+
+    .site small{
+      color:var(--accent2);
+      font-size:12px;
+      margin-top:auto;
+    }
+
+    .hidden{display:none !important;}
+
+    footer{
+      margin-top:28px;
+      color:var(--muted);
+      font-size:13px;
+      text-align:center;
+      padding:18px 0 8px;
+    }
+
+    @media (max-width: 640px){
+      .hero{padding:18px}
+      .brand h1{font-size:22px}
+      .stat{min-width:unset; flex:1}
+      .btn{width:100%}
+      .search-box{min-width:100%}
     }
   </style>
 </head>
 <body>
-  <div class="navbar">资源分类导航</div>
-
   <div class="container">
-    <div class="tip">以下为你提供的链接内容分类整理结果。</div>
+    <div class="hero">
+      <div class="topbar">
+        <div class="brand">
+          <h1>资源导航站</h1>
+          <p>卡片式资源导航 · 搜索查找 · 点击统计 · 热门推荐</p>
+        </div>
+        <div class="stats">
+          <div class="stat">
+            <div class="num" id="siteCount">0</div>
+            <div class="label">收录资源</div>
+          </div>
+          <div class="stat">
+            <div class="num" id="clickCount">0</div>
+            <div class="label">总点击次数</div>
+          </div>
+        </div>
+      </div>
 
-    <div class="category">
-      <h2>AI / 人工智能</h2>
-      <ul class="links">
-        <li><span class="name">Ai网站</span> <a href="https://sharedchat.fun/" target="_blank">https://sharedchat.fun/</a></li>
-        <li><span class="name">Ai网站</span> <a href="https://vip.chatopens.vip/" target="_blank">https://vip.chatopens.vip/</a></li>
-        <li><span class="name">ai</span> <a href="https://add.lra.cn" target="_blank">https://add.lra.cn</a></li>
-        <li><span class="name">AI网站</span> <a href="https://ai-apps.com.cn" target="_blank">https://ai-apps.com.cn</a></li>
-      </ul>
+      <div class="search-wrap">
+        <div class="search-box">
+          <span>🔎</span>
+          <input id="searchInput" type="text" placeholder="搜索资源：如 AI、电影、工具、字幕、游戏..." />
+        </div>
+        <button class="btn secondary" id="resetBtn">重置搜索</button>
+      </div>
     </div>
 
-    <div class="category">
-      <h2>黑客 / 安全 / 技术</h2>
-      <ul class="links">
-        <li><span class="name">黑客渗透在线</span> <a href="https://ycc77.cn/" target="_blank">https://ycc77.cn/</a></li>
-        <li><span class="name">黑客装逼</span> <a href="https://www.crucix.live/" target="_blank">https://www.crucix.live/</a></li>
-      </ul>
+    <div class="section">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">热门推荐</h2>
+          <div class="section-desc">根据点击次数自动排序，优先显示常用资源</div>
+        </div>
+      </div>
+      <div class="hot-grid" id="hotGrid"></div>
     </div>
 
-    <div class="category">
-      <h2>办公 / 工具 / 系统</h2>
-      <ul class="links">
-        <li><span class="name">办公平台</span> <a href="https://duobaoyu.work/platform#" target="_blank">https://duobaoyu.work/platform#</a></li>
-        <li><span class="name">工具大全</span> <a href="https://www.zxmls.lol" target="_blank">www.zxmls.lol</a></li>
-        <li><span class="name">系统工具</span> <a href="https://www.kdocs.cn/l/cjkZcTNs2vcU" target="_blank">https://www.kdocs.cn/l/cjkZcTNs2vcU</a></li>
-        <li><span class="name">电脑工具</span> <a href="https://dnkh.mwks77.cn" target="_blank">dnkh.mwks77.cn</a></li>
-        <li><span class="name">MOD</span> <a href="https://www.kdocs.cn/l/cbOwP5Nc0fGQ" target="_blank">https://www.kdocs.cn/l/cbOwP5Nc0fGQ</a></li>
-        <li><span class="name">破解PDF</span> <a href="https://www.ilovepdf.com/" target="_blank">https://www.ilovepdf.com/</a></li>
-        <li><span class="name">修复维修工具</span> <a href="https://zh.ifixit.com/" target="_blank">https://zh.ifixit.com/</a></li>
-        <li><span class="name">测试cpu显卡</span> <a href="https://pc-builds.com/zh" target="_blank">https://pc-builds.com/zh</a></li>
-      </ul>
+    <div class="section">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">全部分类</h2>
+          <div class="section-desc">搜索后会自动筛选对应资源</div>
+        </div>
+      </div>
+      <div class="cats" id="cats"></div>
     </div>
 
-    <div class="category">
-      <h2>游戏 / 单机 / MOD</h2>
-      <ul class="links">
-        <li><span class="name">付费游戏</span> <a href="https://yzhouk.com/" target="_blank">https://yzhouk.com/</a></li>
-        <li><span class="name">我的世界模组</span> <a href="https://bbsmc.net/modpacks" target="_blank">https://bbsmc.net/modpacks</a></li>
-        <li><span class="name">单机游戏</span> <a href="https://gdgame.org/" target="_blank">https://gdgame.org/</a></li>
-        <li><span class="name">单机游戏</span> <a href="https://www.xianyudanji.to/" target="_blank">https://www.xianyudanji.to/</a></li>
-        <li><span class="name">单机游戏</span> <a href="https://steamzg.com/" target="_blank">https://steamzg.com/</a></li>
-        <li><span class="name">单机游戏</span> <a href="https://www.rvgame.icu/pc" target="_blank">https://www.rvgame.icu/pc</a></li>
-      </ul>
-    </div>
-
-    <div class="category">
-      <h2>视频 / 影视 / 动漫</h2>
-      <ul class="links">
-        <li><span class="name">视频下载</span> <a href="https://www.anytocopy.com/" target="_blank">https://www.anytocopy.com/</a></li>
-        <li><span class="name">推特</span> <a href="https://savetwitter.net/zh-cn3" target="_blank">https://savetwitter.net/zh-cn3</a></li>
-        <li><span class="name">TikTok</span> <a href="https://www.anytocopy.com/" target="_blank">https://www.anytocopy.com/</a></li>
-        <li><span class="name">免费电影</span> <a href="http://youkutv.us" target="_blank">youkutv.us</a></li>
-        <li><span class="name">电视剧</span> <a href="http://kkys01.com" target="_blank">kkys01.com</a></li>
-        <li><span class="name">影视都有</span> <a href="https://gaze.run/" target="_blank">https://gaze.run/</a></li>
-        <li><span class="name">影视都有</span> <a href="https://www.netflixgc.com/" target="_blank">https://www.netflixgc.com/</a></li>
-        <li><span class="name">动漫</span> <a href="https://www.agedm.io/" target="_blank">https://www.agedm.io/</a></li>
-        <li><span class="name">动漫</span> <a href="https://ios.mifun.org/" target="_blank">https://ios.mifun.org/</a></li>
-        <li><span class="name">次元</span> <a href="https://dimtown.com/" target="_blank">https://dimtown.com/</a></li>
-        <li><span class="name">苏诺</span> <a href="https://app.suno.ai/create/" target="_blank">https://app.suno.ai/create/</a></li>
-      </ul>
-    </div>
-
-    <div class="category">
-      <h2>图片 / 设计 / 海报 / 去除</h2>
-      <ul class="links">
-        <li><span class="name">海报模板</span> <a href="https://huaban.com/" target="_blank">https://huaban.com/</a></li>
-        <li><span class="name">海报模板</span> <a href="https://www.chuangkit.com/designtools/designindex" target="_blank">https://www.chuangkit.com/designtools/designindex</a></li>
-        <li><span class="name">Ai消除</span> <a href="https://www.miankoutupian.com/tools" target="_blank">https://www.miankoutupian.com/tools</a></li>
-        <li><span class="name">Ai消除</span> <a href="https://magiceraser.pro/zh/app" target="_blank">https://magiceraser.pro/zh/app</a></li>
-        <li><span class="name">无损放大</span> <a href="https://bigjpg.com" target="_blank">https://bigjpg.com</a></li>
-      </ul>
-    </div>
-
-    <div class="category">
-      <h2>资源 / 网盘 / 文件分享</h2>
-      <ul class="links">
-        <li><span class="name">找资源</span> <a href="https://www.qnnav.com/#term-7259" target="_blank">https://www.qnnav.com/#term-7259</a></li>
-        <li><span class="name">网盘不限速</span> <a href="https://pd.fly288.top/user/parse" target="_blank">https://pd.fly288.top/user/parse</a></li>
-        <li><span class="name">文件分享</span> <a href="https://wormhole.app/" target="_blank">https://wormhole.app/</a></li>
-        <li><span class="name">适用工具</span> <a href="https://ppmc.club/navhub" target="_blank">https://ppmc.club/navhub</a></li>
-        <li><span class="name">适用工具</span> <a href="https://huamao.vip/" target="_blank">https://huamao.vip/</a></li>
-        <li><span class="name">适用工具</span> <a href="https://www.plnav.com/" target="_blank">https://www.plnav.com/</a></li>
-        <li><span class="name">适用工具</span> <a href="https://www.dmjfup.com/" target="_blank">https://www.dmjfup.com/</a></li>
-        <li><span class="name">适用工具</span> <a href="https://jiafangbb.com/" target="_blank">https://jiafangbb.com/</a></li>
-      </ul>
-    </div>
-
-    <div class="category">
-      <h2>其他</h2>
-      <ul class="links">
-        <li><span class="name">黑科技</span> <a href="https://iiihnsjn717.feishu.cn/wiki/L8n1wzMTJiuzS1k2W8dcfv7Dnlf" target="_blank">https://iiihnsjn717.feishu.cn/wiki/L8n1wzMTJiuzS1k2W8dcfv7Dnlf</a></li>
-      </ul>
-    </div>
+    <footer>
+      这是一个本地可用的导航站首页模板，可自行替换资源、图标、主题色与分类。
+    </footer>
   </div>
+
+  <script>
+    const data = [
+      {
+        category: "AI 网站",
+        items: [
+          { name: "SharedChat", url: "https://sharedchat.fun/", desc: "AI 对话" },
+          { name: "ChatOpenS VIP", url: "https://vip.chatopens.vip/", desc: "AI 工具" },
+          { name: "AI Apps", url: "https://ai-apps.com.cn", desc: "AI 应用集合" },
+          { name: "AI 网站", url: "https://add.lra.cn", desc: "AI 工具入口" }
+        ]
+      },
+      {
+        category: "办公 / 平台",
+        items: [
+          { name: "办公平台", url: "https://duobaoyu.work/platform#", desc: "在线平台" },
+          { name: "系统工具", url: "https://www.kdocs.cn/l/cjkZcTNs2vcU", desc: "文档工具" }
+        ]
+      },
+      {
+        category: "视频 / 影视 / 下载",
+        items: [
+          { name: "视频下载", url: "https://www.anytocopy.com/", desc: "视频下载" },
+          { name: "推特下载", url: "https://savetwitter.net/zh-cn3", desc: "X/Twitter 下载" },
+          { name: "免费电影", url: "https://youkutv.us", desc: "影视资源站" },
+          { name: "电视剧", url: "https://kkys01.com", desc: "追剧站" },
+          { name: "影视都有", url: "https://gaze.run/", desc: "影视站" },
+          { name: "NetflixGC", url: "https://www.netflixgc.com/", desc: "影视资源" }
+        ]
+      },
+      {
+        category: "动漫 / 次元",
+        items: [
+          { name: "动漫", url: "https://www.agedm.io/", desc: "动漫站" },
+          { name: "MiFun", url: "https://ios.mifun.org/", desc: "番剧" },
+          { name: "次元", url: "https://dimtown.com/", desc: "二次元资源" }
+        ]
+      },
+      {
+        category: "设计 / 海报 / 图片",
+        items: [
+          { name: "海报模板", url: "https://huaban.com/", desc: "灵感/海报" },
+          { name: "创客贴", url: "https://www.chuangkit.com/designtools/designindex", desc: "设计工具" },
+          { name: "无损放大", url: "https://bigjpg.com", desc: "图片放大" },
+          { name: "AI 消除", url: "https://www.miankoutupian.com/tools", desc: "图片处理" },
+          { name: "Magic Eraser", url: "https://magiceraser.pro/zh/app", desc: "AI 去除" }
+        ]
+      },
+      {
+        category: "资源 / 工具",
+        items: [
+          { name: "工具大全", url: "https://www.zxmls.lol", desc: "工具导航" },
+          { name: "破解 PDF", url: "https://www.ilovepdf.com/", desc: "PDF 工具" },
+          { name: "黑科技", url: "https://iiihnsjn717.feishu.cn/wiki/L8n1wzMTJiuzS1k2W8dcfv7Dnlf", desc: "技巧合集" },
+          { name: "找资源", url: "https://www.qnnav.com/#term-7259", desc: "资源搜索" },
+          { name: "网盘不限速", url: "https://pd.fly288.top/user/parse", desc: "网盘解析" },
+          { name: "电脑工具", url: "https://dnkh.mwks77.cn", desc: "电脑工具" },
+          { name: "文件分享", url: "https://wormhole.app/", desc: "传文件" },
+          { name: "适用工具", url: "https://ppmc.club/navhub", desc: "导航工具" },
+          { name: "适用工具2", url: "https://huamao.vip/", desc: "工具集合" },
+          { name: "适用工具3", url: "https://www.plnav.com/", desc: "导航站" },
+          { name: "适用工具4", url: "https://www.dmjfup.com/", desc: "资源站" },
+          { name: "适用工具5", url: "https://jiafangbb.com/", desc: "工具导航" }
+        ]
+      },
+      {
+        category: "游戏 / 模组",
+        items: [
+          { name: "付费游戏", url: "https://yzhouk.com/", desc: "游戏资源" },
+          { name: "我的世界模组", url: "https://bbsmc.net/modpacks", desc: "MOD/整合包" },
+          { name: "单机游戏", url: "https://gdgame.org/", desc: "单机资源" },
+          { name: "单机游戏2", url: "https://www.xianyudanji.to/", desc: "单机资源" },
+          { name: "SteamZG", url: "https://steamzg.com/", desc: "游戏站" },
+          { name: "RV Game", url: "https://www.rvgame.icu/pc", desc: "PC 游戏" }
+        ]
+      },
+      {
+        category: "字幕 / 其他",
+        items: [
+          { name: "字幕", url: "https://zm.i8k.tv/", desc: "字幕站" },
+          { name: "修复维修工具", url: "https://zh.ifixit.com/", desc: "维修教程" },
+          { name: "测试 CPU 显卡", url: "https://pc-builds.com/zh", desc: "硬件测试" }
+        ]
+      },
+      {
+        category: "技术类（可自行调整）",
+        items: [
+          { name: "黑客渗透", url: "https://ycc77.cn/", desc: "技术站" },
+          { name: "在线", url: "https://i.zkaq.cn/", desc: "技术站" },
+          { name: "黑客装逼", url: "https://www.crucix.live/", desc: "技术站" }
+        ]
+      }
+    ];
+
+    const clickData = JSON.parse(localStorage.getItem("nav_clicks") || "{}");
+
+    const allSites = data.flatMap(cat => cat.items.map(item => ({
+      ...item,
+      category: cat.category
+    })));
+
+    function getClicks(url){
+      return clickData[url] || 0;
+    }
+
+    function setClicks(url){
+      clickData[url] = (clickData[url] || 0) + 1;
+      localStorage.setItem("nav_clicks", JSON.stringify(clickData));
+      renderStats();
+      renderHot();
+    }
+
+    function normalize(str){
+      return (str || "").toLowerCase().replace(/\s+/g, "");
+    }
+
+    function renderStats(){
+      document.getElementById("siteCount").textContent = allSites.length;
+      const totalClicks = Object.values(clickData).reduce((a,b)=>a+b,0);
+      document.getElementById("clickCount").textContent = totalClicks;
+    }
+
+    function renderHot(){
+      const hot = [...allSites]
+        .sort((a,b) => getClicks(b.url) - getClicks(a.url))
+        .slice(0, 6);
+
+      const hotGrid = document.getElementById("hotGrid");
+      hotGrid.innerHTML = hot.map(item => `
+        <div class="hot-card">
+          <div class="hot-badge">🔥 热门 · ${getClicks(item.url)} 次点击</div>
+          <a href="${item.url}" target="_blank" rel="noopener" onclick="recordClick('${item.url.replace(/'/g,"\\'")}')">${item.name}</a>
+          <p>${item.desc || item.category}</p>
+        </div>
+      `).join("");
+    }
+
+    function renderCats(filter = ""){
+      const catsEl = document.getElementById("cats");
+      const keyword = normalize(filter);
+
+      const filteredCats = data.map(cat => {
+        const items = cat.items.filter(item => {
+          const text = normalize(item.name + " " + item.url + " " + item.desc + " " + cat.category);
+          return text.includes(keyword);
+        });
+        return { ...cat, items };
+      }).filter(cat => cat.items.length > 0);
+
+      catsEl.innerHTML = filteredCats.map(cat => `
+        <div class="cat-card">
+          <div class="cat-head">
+            <h3 class="cat-title">${cat.category}</h3>
+            <div class="count">${cat.items.length} 个资源</div>
+          </div>
+          <div class="card-list">
+            ${cat.items.map(item => `
+              <a class="site" href="${item.url}" target="_blank" rel="noopener" onclick="recordClick('${item.url.replace(/'/g,"\\'")}')">
+                <div class="site-name">${item.name}</div>
+                <div class="site-url">${item.url}</div>
+                <small>点击访问 · ${getClicks(item.url)} 次</small>
+              </a>
+            `).join("")}
+          </div>
+        </div>
+      `).join("");
+
+      if (!filteredCats.length){
+        catsEl.innerHTML = `<div class="cat-card" style="padding:24px;text-align:center;color:#94a3b8;">未找到相关资源</div>`;
+      }
+    }
+
+    function recordClick(url){
+      setClicks(url);
+    }
+
+    document.getElementById("searchInput").addEventListener("input", e => {
+      renderCats(e.target.value);
+    });
+
+    document.getElementById("resetBtn").addEventListener("click", () => {
+      document.getElementById("searchInput").value = "";
+      renderCats("");
+    });
+
+    renderStats();
+    renderHot();
+    renderCats("");
+  </script>
 </body>
 </html>
