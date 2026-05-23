@@ -19,7 +19,6 @@
       --accent3:#22c55e;
       --shadow:0 12px 30px rgba(15,23,42,.08);
       --shadow-hover:0 18px 42px rgba(15,23,42,.14);
-      --radius:22px;
       --blur:blur(18px);
     }
 
@@ -307,6 +306,63 @@
       color:var(--muted);
     }
 
+    /* 精选推荐 */
+    .featured{
+      margin-top:18px;
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:14px;
+    }
+
+    .featured-card{
+      border:1px solid var(--line);
+      border-radius:22px;
+      background:var(--card);
+      box-shadow:var(--shadow);
+      padding:18px;
+      transition:.2s ease;
+      min-height:150px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .featured-card:hover{
+      transform:translateY(-3px);
+      box-shadow:var(--shadow-hover);
+      border-color:color-mix(in srgb, var(--accent) 25%, var(--line));
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:6px 10px;
+      border-radius:999px;
+      background:color-mix(in srgb, var(--accent) 12%, transparent);
+      color:var(--accent);
+      font-size:12px;
+      font-weight:700;
+      width:fit-content;
+    }
+    .featured-card h3{
+      margin:0;
+      font-size:16px;
+      line-height:1.35;
+    }
+    .featured-card p{
+      margin:0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.55;
+    }
+    .featured-card .meta{
+      margin-top:auto;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      color:var(--muted);
+      font-size:12px;
+    }
+
     /* 主体布局 */
     .layout{
       margin-top:22px;
@@ -542,6 +598,13 @@
       box-shadow:0 12px 24px rgba(37,99,235,.22);
     }
 
+    .resource-link.disabled,
+    .search-result.disabled{
+      opacity:.55;
+      cursor:not-allowed;
+      pointer-events:none;
+    }
+
     /* 右侧栏 */
     .sidebar{
       position:sticky;
@@ -563,15 +626,12 @@
     .avatar{
       width:54px;
       height:54px;
-      border-radius:18px;
-      background:linear-gradient(135deg,var(--accent),var(--accent3));
-      color:#fff;
-      display:grid;
-      place-items:center;
-      font-size:22px;
-      font-weight:800;
+      border-radius:50%;
+      object-fit:cover;
+      object-position:center;
       box-shadow:var(--shadow);
       flex:0 0 auto;
+      display:block;
     }
     .profile h4{margin:0;font-size:16px}
     .profile p{margin:4px 0 0;color:var(--muted);font-size:13px}
@@ -814,18 +874,15 @@
       font-weight:600;
     }
 
-    /* 响应式 */
     @media (max-width: 1180px){
       .layout{
-        grid-template-columns: 220px minmax(0,1fr);
+        grid-template-columns:220px minmax(0,1fr);
       }
       .sidebar{
         position:static;
       }
-      .sidebar-right{
-        grid-column:1 / -1;
-      }
     }
+
     @media (max-width: 880px){
       .hero-inner,
       .layout{
@@ -838,6 +895,7 @@
         grid-template-columns:repeat(2,1fr);
       }
     }
+
     @media (max-width: 760px){
       .wrap,.nav-inner{
         width:min(100% - 18px, 1400px);
@@ -872,12 +930,8 @@
         min-width:180px;
         white-space:nowrap;
       }
-      .layout{
-        gap:14px;
-      }
-      .modal{
-        padding-top:3vh;
-      }
+      .layout{gap:14px}
+      .modal{padding-top:3vh}
     }
 
     @media (prefers-reduced-motion: reduce){
@@ -890,11 +944,10 @@
   </style>
 </head>
 <body>
-  <!-- 顶部导航 -->
   <header class="nav">
     <div class="nav-inner">
       <div class="brand">
-        <div class="brand-mark">N</div>
+        <div class="brand-mark"><img src="../Desktop/57027e346f7c3b24c5e7eacf4bfa0590_compress.jpg" width="45" height="45"></div>
         <div class="brand-text">
           <h1>资源导航站</h1>
           <p>更强版 · 左侧分类栏 · 搜索弹层 · 快捷键搜索 · 热门推荐</p>
@@ -916,7 +969,6 @@
   </header>
 
   <main class="wrap" id="home">
-    <!-- Hero -->
     <section class="hero reveal">
       <div class="hero-inner">
         <div class="hero-left">
@@ -969,9 +1021,9 @@
       </div>
     </section>
 
-    <!-- 主体布局 -->
+    <section class="featured reveal" id="hotFeatured"></section>
+
     <section class="layout" id="resources">
-      <!-- 左侧固定分类栏 -->
       <aside class="sidebar-left panel reveal">
         <div class="panel-head">
           <div>
@@ -983,7 +1035,6 @@
         <div class="cat-nav" id="catNav"></div>
       </aside>
 
-      <!-- 主内容 -->
       <div class="panel reveal">
         <div class="panel-head">
           <div>
@@ -995,12 +1046,15 @@
         <div class="content" id="resourceRoot"></div>
       </div>
 
-      <!-- 右侧栏 -->
       <aside class="sidebar" id="sidebar">
         <section class="panel reveal">
           <div class="side-top">
             <div class="profile">
-              <div class="avatar">N</div>
+              <img
+                class="avatar"
+                src="https://oss-cdn.lra.cn/file/upload/2026/05/23/2058156095314071552.jpg"
+                alt="头像"
+              />
               <div>
                 <h4>个人简介</h4>
                 <p>极简爱好者 / 资源整理 / 前端页面优化</p>
@@ -1060,7 +1114,6 @@
 
   <button class="to-top" id="toTop" type="button" aria-label="返回顶部">↑</button>
 
-  <!-- 搜索弹层 -->
   <div class="modal" id="searchModal" aria-hidden="true">
     <div class="modal-box" role="dialog" aria-modal="true" aria-label="顶部搜索弹层">
       <div class="modal-head">
@@ -1077,9 +1130,6 @@
   </div>
 
   <script>
-    // =========================
-    // 数据
-    // =========================
     const rawData = [
       {
         category: "AI 网站",
@@ -1179,18 +1229,12 @@
       category: cat.category
     })));
 
-    // =========================
-    // 存储
-    // =========================
     const STORE_THEME = "nav_theme_strong_v2";
     const STORE_CLICK = "nav_clicks_strong_v2";
     const STORE_RECENT = "nav_recent_strong_v2";
 
     const clickMap = JSON.parse(localStorage.getItem(STORE_CLICK) || "{}");
 
-    // =========================
-    // DOM
-    // =========================
     const htmlEl = document.documentElement;
     const resourceRoot = document.getElementById("resourceRoot");
     const hotList = document.getElementById("hotList");
@@ -1211,6 +1255,7 @@
     const resultHint = document.getElementById("resultHint");
     const leftCountChip = document.getElementById("leftCountChip");
     const toTop = document.getElementById("toTop");
+    const hotFeatured = document.getElementById("hotFeatured");
 
     const searchModal = document.getElementById("searchModal");
     const modalSearchInput = document.getElementById("modalSearchInput");
@@ -1218,40 +1263,41 @@
 
     const state = {
       query: "",
-      activeCategory: "全部",
-      modalQuery: ""
+      activeCategory: "全部"
     };
 
-    // =========================
-    // 工具函数
-    // =========================
     function normalizeText(str){
       return (str || "").toLowerCase().replace(/\s+/g, "").trim();
     }
-    function normalizeUrl(url){
-      if (!url) return "#";
-      if (/^https?:\/\//i.test(url)) return url;
-      return "https://" + url.replace(/^\/\//, "");
+
+    function normalizeUrl(raw){
+      const value = String(raw || "").trim();
+      if (!value) return "";
+      try {
+        const hasProtocol = /^https?:\/\//i.test(value);
+        const url = hasProtocol
+          ? new URL(value)
+          : new URL("https://" + value.replace(/^\/\//, ""));
+        if (!["http:", "https:"].includes(url.protocol)) return "";
+        return url.toString();
+      } catch {
+        return "";
+      }
     }
+
     function getHost(url){
       try {
-        return new URL(normalizeUrl(url)).hostname.replace(/^www\./, "");
+        const u = new URL(normalizeUrl(url));
+        return u.hostname.replace(/^www\./, "");
       } catch {
         return url || "";
       }
     }
+
     function getClick(id){
       return clickMap[id] || 0;
     }
-    function setClick(id){
-      clickMap[id] = (clickMap[id] || 0) + 1;
-      localStorage.setItem(STORE_CLICK, JSON.stringify(clickMap));
-      updateStats();
-      renderHot();
-      renderFeatured();
-      renderResources();
-      renderSearchResults();
-    }
+
     function copyText(text){
       if (!text) return;
       if (navigator.clipboard && window.isSecureContext) {
@@ -1267,6 +1313,7 @@
         ta.remove();
       }
     }
+
     function saveRecent(item){
       const old = JSON.parse(localStorage.getItem(STORE_RECENT) || "[]");
       const next = [item, ...old.filter(x => x.id !== item.id)].slice(0, 6);
@@ -1274,99 +1321,41 @@
       renderRecent();
     }
 
-    // =========================
-    // 主题
-    // =========================
+    function setClick(id){
+      clickMap[id] = (clickMap[id] || 0) + 1;
+      localStorage.setItem(STORE_CLICK, JSON.stringify(clickMap));
+      updateStats();
+      renderHot();
+      renderFeatured();
+      renderResources();
+      if (searchModal.classList.contains("show")) renderSearchResults();
+    }
+
     function applyTheme(theme){
       htmlEl.setAttribute("data-theme", theme);
       localStorage.setItem(STORE_THEME, theme);
       themeBtn.textContent = theme === "dark" ? "🌙 深色" : "☀️ 浅色";
     }
-    applyTheme(localStorage.getItem(STORE_THEME) || "dark");
-    themeBtn.addEventListener("click", () => {
-      const current = htmlEl.getAttribute("data-theme") || "dark";
-      applyTheme(current === "dark" ? "light" : "dark");
-    });
 
-    // =========================
-    // 搜索联动
-    // =========================
-    function syncSearch(value){
-      state.query = value;
-      searchInputs.forEach(input => {
-        if (input.value !== value) input.value = value;
+    function slugify(str){
+      return String(str || "")
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, "-")
+        .replace(/[\/]/g, "-")
+        .replace(/[（）()]/g, "")
+        .replace(/[^a-z0-9\u4e00-\u9fa5\-]/g, "");
+    }
+
+    function filteredItems(){
+      const kw = normalizeText(state.query);
+      return allItems.filter(item => {
+        const catMatch = state.activeCategory === "全部" || item.category === state.activeCategory;
+        const text = normalizeText([item.name, item.url, item.desc, item.category, getHost(item.url)].join(" "));
+        return catMatch && text.includes(kw);
       });
-      modalSearchInput.value = value;
-      renderResources();
-      renderFeatured();
-      renderHot();
-      renderSearchResults();
-      updateLeftActive();
     }
 
-    searchInputs.forEach(input => {
-      input.addEventListener("input", (e) => syncSearch(e.target.value));
-    });
-
-    clearBtn.addEventListener("click", () => {
-      state.activeCategory = "全部";
-      syncSearch("");
-      searchInputs[0].focus();
-      renderCategoryNav();
-      renderTags();
-    });
-
-    resetBtn.addEventListener("click", () => {
-      state.activeCategory = "全部";
-      renderCategoryNav();
-      renderTags();
-      renderResources();
-      renderFeatured();
-      renderHot();
-      updateLeftActive();
-    });
-
-    // =========================
-    // 搜索弹层
-    // =========================
-    function openSearchModal(){
-      searchModal.classList.add("show");
-      searchModal.setAttribute("aria-hidden", "false");
-      modalSearchInput.value = state.query;
-      renderSearchResults();
-      setTimeout(() => modalSearchInput.focus(), 0);
-    }
-    function closeSearchModal(){
-      searchModal.classList.remove("show");
-      searchModal.setAttribute("aria-hidden", "true");
-    }
-    openSearchBtn.addEventListener("click", openSearchModal);
-
-    searchModal.addEventListener("click", (e) => {
-      if (e.target === searchModal) closeSearchModal();
-    });
-    modalSearchInput.addEventListener("input", (e) => {
-      state.query = e.target.value;
-      syncSearch(e.target.value);
-    });
-
-    document.addEventListener("keydown", (e) => {
-      const isMac = navigator.platform.toUpperCase().includes("MAC");
-      const hotkey = isMac ? e.metaKey && e.key.toLowerCase() === "k" : e.ctrlKey && e.key.toLowerCase() === "k";
-
-      if (hotkey) {
-        e.preventDefault();
-        openSearchModal();
-      }
-
-      if (e.key === "Escape" && searchModal.classList.contains("show")) {
-        closeSearchModal();
-      }
-    });
-
-    // =========================
-    // 分类导航 / 标签
-    // =========================
     function renderCategoryNav(){
       const counts = data.map(cat => ({
         category: cat.category,
@@ -1418,19 +1407,9 @@
       });
     }
 
-    // =========================
-    // 精选 / 热门 / 最近 / 搜索结果
-    // =========================
-    function filteredItems(){
-      const kw = normalizeText(state.query);
-      return allItems.filter(item => {
-        const catMatch = state.activeCategory === "全部" || item.category === state.activeCategory;
-        const text = normalizeText([item.name, item.url, item.desc, item.category, getHost(item.url)].join(" "));
-        return catMatch && text.includes(kw);
-      });
-    }
-
     function renderFeatured(){
+      if (!hotFeatured) return;
+
       const items = [...filteredItems()]
         .sort((a, b) => {
           const diff = getClick(b.id) - getClick(a.id);
@@ -1439,22 +1418,23 @@
         })
         .slice(0, 4);
 
-      const featured = document.getElementById("hotFeatured");
-      if (!featured) return;
-
       const showItems = items.length ? items : allItems.slice(0, 4);
 
-      featured.innerHTML = showItems.map((item, idx) => `
-        <a class="featured-card" href="${normalizeUrl(item.url)}" target="_blank" rel="noopener noreferrer" data-id="${item.id}">
-          <span class="badge">推荐 ${String(idx + 1).padStart(2, "0")}</span>
-          <h3>${item.name}</h3>
-          <p>${item.desc || "暂无简介"}</p>
-          <div class="meta">
-            <span>${item.category}</span>
-            <span>点击 ${getClick(item.id)} 次</span>
-          </div>
-        </a>
-      `).join("");
+      hotFeatured.innerHTML = showItems.map((item, idx) => {
+        const href = normalizeUrl(item.url);
+        const isDisabled = !href;
+        return `
+          <a class="featured-card ${isDisabled ? 'disabled' : ''}" href="${isDisabled ? 'javascript:void(0)' : href}" target="_blank" rel="noopener noreferrer" data-id="${item.id}" aria-disabled="${isDisabled ? 'true' : 'false'}">
+            <span class="badge">推荐 ${String(idx + 1).padStart(2, "0")}</span>
+            <h3>${item.name}</h3>
+            <p>${item.desc || "暂无简介"}</p>
+            <div class="meta">
+              <span>${item.category}</span>
+              <span>点击 ${getClick(item.id)} 次</span>
+            </div>
+          </a>
+        `;
+      }).join("");
     }
 
     function renderHot(){
@@ -1466,12 +1446,16 @@
         })
         .slice(0, 6);
 
-      hotList.innerHTML = items.map(item => `
-        <a class="hot-item" href="${normalizeUrl(item.url)}" target="_blank" rel="noopener noreferrer" data-id="${item.id}">
-          <strong>${item.name}</strong>
-          <span>${item.category} · ${getClick(item.id)} 次点击</span>
-        </a>
-      `).join("") || `<div class="empty" style="padding:12px 0;">暂无热门项</div>`;
+      hotList.innerHTML = items.map(item => {
+        const href = normalizeUrl(item.url);
+        const isDisabled = !href;
+        return `
+          <a class="hot-item ${isDisabled ? 'disabled' : ''}" href="${isDisabled ? 'javascript:void(0)' : href}" target="_blank" rel="noopener noreferrer" data-id="${item.id}">
+            <strong>${item.name}</strong>
+            <span>${item.category} · ${getClick(item.id)} 次点击</span>
+          </a>
+        `;
+      }).join("") || `<div class="empty" style="padding:12px 0;">暂无热门项</div>`;
     }
 
     function renderRecent(){
@@ -1481,12 +1465,16 @@
         return;
       }
 
-      recentList.innerHTML = recent.map(item => `
-        <a class="recent-item" href="${normalizeUrl(item.url)}" target="_blank" rel="noopener noreferrer" data-id="${item.id}">
-          <strong>${item.name}</strong>
-          <span>${item.category}</span>
-        </a>
-      `).join("");
+      recentList.innerHTML = recent.map(item => {
+        const href = normalizeUrl(item.url);
+        const isDisabled = !href;
+        return `
+          <a class="recent-item ${isDisabled ? 'disabled' : ''}" href="${isDisabled ? 'javascript:void(0)' : href}" target="_blank" rel="noopener noreferrer" data-id="${item.id}">
+            <strong>${item.name}</strong>
+            <span>${item.category}</span>
+          </a>
+        `;
+      }).join("");
     }
 
     function renderSearchResults(){
@@ -1507,36 +1495,23 @@
       }
 
       if (!items.length) {
-        searchResultList.innerHTML = `
-          <div class="empty">
-            没有找到相关资源。
-          </div>
-        `;
+        searchResultList.innerHTML = `<div class="empty">没有找到相关资源。</div>`;
         return;
       }
 
-      searchResultList.innerHTML = items.map(item => `
-        <a class="search-result" href="${normalizeUrl(item.url)}" target="_blank" rel="noopener noreferrer" data-id="${item.id}">
-          <div>
-            <strong>${item.name}</strong>
-            <span>${item.category} · ${item.desc || ""}</span>
-          </div>
-          <div class="go">打开</div>
-        </a>
-      `).join("");
-    }
-
-    // =========================
-    // 资源主列表
-    // =========================
-    function slugify(str){
-      return String(str || "")
-        .trim()
-        .toLowerCase()
-        .replace(/\s+/g, "-")
-        .replace(/[\/]/g, "-")
-        .replace(/[（）()]/g, "")
-        .replace(/[^a-z0-9\u4e00-\u9fa5\-]/g, "");
+      searchResultList.innerHTML = items.map(item => {
+        const href = normalizeUrl(item.url);
+        const isDisabled = !href;
+        return `
+          <a class="search-result ${isDisabled ? 'disabled' : ''}" href="${isDisabled ? 'javascript:void(0)' : href}" target="_blank" rel="noopener noreferrer" data-id="${item.id}">
+            <div>
+              <strong>${item.name}</strong>
+              <span>${item.category} · ${item.desc || ""}</span>
+            </div>
+            <div class="go">打开</div>
+          </a>
+        `;
+      }).join("");
     }
 
     function renderResources(){
@@ -1577,6 +1552,7 @@
           <div class="card-grid">
             ${cat.items.map(item => {
               const href = normalizeUrl(item.url);
+              const isDisabled = !href;
               const host = getHost(item.url);
               const click = getClick(item.id);
               return `
@@ -1598,10 +1574,11 @@
                     </div>
                   </div>
 
-                  <a class="resource-link ${href === '#' ? 'disabled' : ''}"
-                     href="${href}"
+                  <a class="resource-link ${isDisabled ? 'disabled' : ''}"
+                     href="${isDisabled ? 'javascript:void(0)' : href}"
                      target="_blank"
                      rel="noopener noreferrer"
+                     aria-disabled="${isDisabled ? 'true' : 'false'}"
                      data-id="${item.id}">
                     访问站点 →
                   </a>
@@ -1616,18 +1593,40 @@
       updateLeftActive();
     }
 
-    // =========================
-    // 统计
-    // =========================
     function updateStats(){
       siteCount.textContent = allItems.length;
       categoryCount.textContent = data.length;
       clickCount.textContent = Object.values(clickMap).reduce((sum, n) => sum + n, 0);
     }
 
-    // =========================
-    // 左侧分类高亮（滚动跟随）
-    // =========================
+    function syncSearch(value){
+      state.query = value;
+      searchInputs.forEach(input => {
+        if (input.value !== value) input.value = value;
+      });
+      modalSearchInput.value = value;
+      renderResources();
+      renderFeatured();
+      renderHot();
+      renderSearchResults();
+      updateLeftActive();
+    }
+
+    function openSearchModal(){
+      searchModal.classList.add("show");
+      searchModal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+      modalSearchInput.value = state.query;
+      renderSearchResults();
+      setTimeout(() => modalSearchInput.focus(), 0);
+    }
+
+    function closeSearchModal(){
+      searchModal.classList.remove("show");
+      searchModal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+    }
+
     function updateLeftActive(){
       const sections = [...document.querySelectorAll(".category")];
       if (!sections.length) return;
@@ -1652,10 +1651,29 @@
       });
     }
 
-    // =========================
-    // 事件委托：复制、访问、记录
-    // =========================
+    let observer;
+    function observeReveals(){
+      if (observer) observer.disconnect();
+
+      observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+
+      document.querySelectorAll(".reveal:not(.visible)").forEach(el => observer.observe(el));
+    }
+
     document.addEventListener("click", (e) => {
+      const disabledLink = e.target.closest(".resource-link.disabled, .search-result.disabled, .hot-item.disabled, .recent-item.disabled, .featured-card.disabled");
+      if (disabledLink) {
+        e.preventDefault();
+        return;
+      }
+
       const copyBtn = e.target.closest("[data-copy]");
       if (copyBtn) {
         const url = copyBtn.getAttribute("data-copy");
@@ -1678,40 +1696,66 @@
       }
     });
 
-    // =========================
-    // 动画
-    // =========================
-    let observer;
-    function observeReveals(){
-      if (observer) observer.disconnect();
+    applyTheme(localStorage.getItem(STORE_THEME) || "dark");
 
-      observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.12 });
+    themeBtn.addEventListener("click", () => {
+      const current = htmlEl.getAttribute("data-theme") || "dark";
+      applyTheme(current === "dark" ? "light" : "dark");
+    });
 
-      document.querySelectorAll(".reveal:not(.visible)").forEach(el => observer.observe(el));
-    }
+    searchInputs.forEach(input => {
+      input.addEventListener("input", (e) => syncSearch(e.target.value));
+    });
 
-    // =========================
-    // 返回顶部
-    // =========================
+    clearBtn.addEventListener("click", () => {
+      state.activeCategory = "全部";
+      syncSearch("");
+      searchInputs[0].focus();
+      renderCategoryNav();
+      renderTags();
+    });
+
+    resetBtn.addEventListener("click", () => {
+      state.activeCategory = "全部";
+      renderCategoryNav();
+      renderTags();
+      renderResources();
+      renderFeatured();
+      renderHot();
+      updateLeftActive();
+    });
+
+    openSearchBtn.addEventListener("click", openSearchModal);
+
+    searchModal.addEventListener("click", (e) => {
+      if (e.target === searchModal) closeSearchModal();
+    });
+
+    modalSearchInput.addEventListener("input", (e) => {
+      syncSearch(e.target.value);
+    });
+
+    document.addEventListener("keydown", (e) => {
+      const isMac = navigator.platform.toUpperCase().includes("MAC");
+      const hotkey = isMac ? e.metaKey && e.key.toLowerCase() === "k" : e.ctrlKey && e.key.toLowerCase() === "k";
+      if (hotkey) {
+        e.preventDefault();
+        openSearchModal();
+      }
+      if (e.key === "Escape" && searchModal.classList.contains("show")) {
+        closeSearchModal();
+      }
+    });
+
     window.addEventListener("scroll", () => {
       toTop.classList.toggle("show", window.scrollY > 450);
       updateLeftActive();
-    });
+    }, { passive: true });
 
     toTop.addEventListener("click", () => {
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
 
-    // =========================
-    // 初始化
-    // =========================
     renderCategoryNav();
     renderTags();
     renderFeatured();
@@ -1721,15 +1765,6 @@
     renderSearchResults();
     updateStats();
     observeReveals();
-
-    // 监听弹层输入与滚动同步
-    document.getElementById("modalSearchInput").addEventListener("input", (e) => {
-      state.query = e.target.value;
-      syncSearch(e.target.value);
-    });
-
-    // 滚动时更新高亮
-    document.addEventListener("scroll", updateLeftActive, { passive: true });
   </script>
 </body>
 </html>
