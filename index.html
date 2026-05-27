@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>资源导航站 · 更强版</title>
-  <meta name="description" content="资源导航站，更强版：左侧固定分类栏、顶部搜索弹层、快捷键搜索、热门推荐、最近访问、深浅色模式。" />
+  <title>资源导航站 · 可编辑版</title>
+  <meta name="description" content="资源导航站，可前端在线编辑：新增、修改、删除、分类管理、本地保存。" />
   <style>
     :root{
       --bg:#f6f7fb;
@@ -17,6 +17,7 @@
       --accent:#2563eb;
       --accent2:#0ea5e9;
       --accent3:#22c55e;
+      --danger:#ef4444;
       --shadow:0 12px 30px rgba(15,23,42,.08);
       --shadow-hover:0 18px 42px rgba(15,23,42,.14);
       --blur:blur(18px);
@@ -33,6 +34,7 @@
       --accent:#60a5fa;
       --accent2:#38bdf8;
       --accent3:#34d399;
+      --danger:#f87171;
       --shadow:0 12px 30px rgba(0,0,0,.24);
       --shadow-hover:0 18px 42px rgba(0,0,0,.34);
     }
@@ -53,7 +55,7 @@
     }
 
     a{color:inherit;text-decoration:none}
-    button,input{font:inherit}
+    button,input,textarea,select{font:inherit}
     .wrap{
       width:min(1400px, calc(100% - 24px));
       margin:0 auto;
@@ -167,8 +169,10 @@
       background:linear-gradient(135deg,var(--accent),var(--accent2));
       color:#fff;
     }
-    .btn-primary:hover{
-      box-shadow:0 14px 30px rgba(37,99,235,.22);
+    .btn-danger{
+      border:none;
+      background:linear-gradient(135deg,var(--danger),color-mix(in srgb, var(--danger) 80%, #000));
+      color:#fff;
     }
 
     /* Hero */
@@ -313,7 +317,6 @@
       grid-template-columns:repeat(4,1fr);
       gap:14px;
     }
-
     .featured-card{
       border:1px solid var(--line);
       border-radius:22px;
@@ -564,6 +567,7 @@
       display:flex;
       gap:8px;
       margin-top:2px;
+      flex-wrap:wrap;
     }
     .mini-btn{
       border:1px solid var(--line);
@@ -578,6 +582,10 @@
     .mini-btn:hover{
       border-color:color-mix(in srgb, var(--accent) 28%, var(--line));
       background:color-mix(in srgb, var(--accent) 8%, transparent);
+    }
+    .mini-btn.danger:hover{
+      background:color-mix(in srgb, var(--danger) 10%, transparent);
+      border-color:color-mix(in srgb, var(--danger) 45%, var(--line));
     }
     .resource-link{
       display:inline-flex;
@@ -632,6 +640,7 @@
       box-shadow:var(--shadow);
       flex:0 0 auto;
       display:block;
+      background:#fff;
     }
     .profile h4{margin:0;font-size:16px}
     .profile p{margin:4px 0 0;color:var(--muted);font-size:13px}
@@ -874,6 +883,106 @@
       font-weight:600;
     }
 
+    /* 编辑弹窗 */
+    .editor-panel{
+      margin-top:18px;
+      padding:18px;
+      border:1px solid var(--line);
+      border-radius:22px;
+      background:var(--card);
+      box-shadow:var(--shadow);
+    }
+    .editor-toolbar{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:14px;
+    }
+    .editor-toolbar-left,
+    .editor-toolbar-right{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .editor-hint{
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    .modal-form{
+      position:fixed;
+      inset:0;
+      z-index:400;
+      display:none;
+      background:rgba(2,6,23,.55);
+      backdrop-filter:blur(10px);
+      align-items:center;
+      justify-content:center;
+      padding:16px;
+    }
+    .modal-form.show{display:flex}
+    .form-box{
+      width:min(760px, 100%);
+      border-radius:24px;
+      border:1px solid var(--line);
+      background:var(--bg2);
+      color:var(--text);
+      box-shadow:0 24px 80px rgba(0,0,0,.35);
+      overflow:hidden;
+    }
+    .form-head{
+      padding:18px 18px 14px;
+      border-bottom:1px solid var(--line);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+    }
+    .form-head h3{
+      margin:0;
+      font-size:18px;
+    }
+    .form-body{
+      padding:18px;
+      display:grid;
+      gap:12px;
+    }
+    .form-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+    .field{
+      display:grid;
+      gap:8px;
+    }
+    .field label{
+      font-size:13px;
+      color:var(--muted);
+    }
+    .field input,
+    .field textarea,
+    .field select{
+      width:100%;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:12px 14px;
+      background:color-mix(in srgb, var(--bg) 78%, transparent);
+      color:var(--text);
+      outline:none;
+    }
+    .field textarea{min-height:92px;resize:vertical}
+    .form-actions{
+      display:flex;
+      justify-content:flex-end;
+      gap:10px;
+      flex-wrap:wrap;
+      padding:0 18px 18px;
+    }
+
     @media (max-width: 1180px){
       .layout{
         grid-template-columns:220px minmax(0,1fr);
@@ -893,6 +1002,9 @@
       }
       .featured{
         grid-template-columns:repeat(2,1fr);
+      }
+      .form-grid{
+        grid-template-columns:1fr;
       }
     }
 
@@ -950,7 +1062,7 @@
         <div class="brand-mark">N</div>
         <div class="brand-text">
           <h1>资源导航站</h1>
-          <p>更强版 · 左侧分类栏 · 搜索弹层 · 快捷键搜索 · 热门推荐</p>
+          <p>可前端在线编辑 · 本地保存 · 新增/修改/删除分类与资源</p>
         </div>
       </div>
 
@@ -963,6 +1075,7 @@
         </nav>
 
         <button class="btn" id="openSearchBtn" type="button">🔎 搜索 <span class="kbd">Ctrl K</span></button>
+        <button class="btn btn-primary" id="addResourceBtn" type="button">➕ 新增资源</button>
         <button class="btn" id="themeBtn" type="button" aria-label="切换主题">🌙 深色</button>
       </div>
     </div>
@@ -972,16 +1085,16 @@
     <section class="hero reveal">
       <div class="hero-inner">
         <div class="hero-left">
-          <span class="eyebrow">精选 · 高级感 · 快速导航</span>
-          <h2>把常用网站，整理成一个更好用的入口。</h2>
+          <span class="eyebrow">精选 · 可编辑 · 前端本地保存</span>
+          <h2>把常用网站，整理成一个能直接编辑的入口。</h2>
           <p>
-            这是一版更强的导航站首页：左侧固定分类栏、顶部搜索弹层、快捷键搜索、
-            热门推荐、最近访问、点击统计与响应式布局都已经加好。
+            这一版已经改成纯前端可编辑：你可以直接在浏览器里新增、修改、删除资源；
+            分类也能在线维护，数据会自动保存到本地。
           </p>
 
           <div class="hero-meta">
             <span class="pill">✨ 清爽极简</span>
-            <span class="pill">⚡ 快速搜索</span>
+            <span class="pill">⚡ 在线编辑</span>
             <span class="pill">📱 手机电脑自适应</span>
             <span class="pill">🌓 深浅色切换</span>
           </div>
@@ -1039,7 +1152,7 @@
         <div class="panel-head">
           <div>
             <h2 class="panel-title">资源列表</h2>
-            <div class="panel-sub">支持分类切换、搜索筛选、点击统计、快速访问</div>
+            <div class="panel-sub">支持分类切换、搜索筛选、点击统计、在线编辑</div>
           </div>
           <div class="chip" id="resultHint">已显示 0 条</div>
         </div>
@@ -1089,16 +1202,17 @@
           <div class="panel-head">
             <div>
               <h2 class="panel-title">使用说明</h2>
-              <div class="panel-sub">无需依赖框架，直接部署即可</div>
+              <div class="panel-sub">无需后端，直接前端在线编辑</div>
             </div>
           </div>
           <div class="side-block">
             <div class="panel-sub" style="font-size:13px; line-height:1.9;">
               1. 点击资源卡片可直接访问。<br />
-              2. 搜索会联动主区域、左侧栏和弹层。<br />
-              3. 点击统计会保存到本地浏览器。<br />
-              4. 支持浅色 / 深色模式切换。<br />
-              5. <strong>Ctrl/Cmd + K</strong> 打开顶部搜索弹层。
+              2. 点击“新增资源”可在线添加。<br />
+              3. 每个资源支持“编辑 / 删除 / 复制链接”。<br />
+              4. 分类可直接新增维护。<br />
+              5. 数据自动保存到本地浏览器。<br />
+              6. <strong>Ctrl/Cmd + K</strong> 打开顶部搜索弹层。
             </div>
           </div>
         </section>
@@ -1107,13 +1221,14 @@
 
     <footer class="footer">
       <div class="inner">
-        <div>© 资源导航站 · 更强版 · 左侧固定栏 · 搜索弹层 · 快捷键搜索</div>
+        <div>© 资源导航站 · 可编辑版 · 前端在线编辑 · 本地保存</div>
       </div>
     </footer>
   </main>
 
   <button class="to-top" id="toTop" type="button" aria-label="返回顶部">↑</button>
 
+  <!-- 搜索弹层 -->
   <div class="modal" id="searchModal" aria-hidden="true">
     <div class="modal-box" role="dialog" aria-modal="true" aria-label="顶部搜索弹层">
       <div class="modal-head">
@@ -1129,8 +1244,47 @@
     </div>
   </div>
 
+  <!-- 编辑弹窗 -->
+  <div class="modal-form" id="editorModal" aria-hidden="true">
+    <div class="form-box" role="dialog" aria-modal="true" aria-label="编辑资源">
+      <div class="form-head">
+        <h3 id="editorTitle">新增资源</h3>
+        <button class="btn" type="button" id="closeEditorBtn">✕ 关闭</button>
+      </div>
+      <div class="form-body">
+        <div class="form-grid">
+          <div class="field">
+            <label>名称</label>
+            <input id="editName" type="text" placeholder="例如：ChatGPT" />
+          </div>
+          <div class="field">
+            <label>链接</label>
+            <input id="editUrl" type="text" placeholder="例如：https://example.com" />
+          </div>
+          <div class="field">
+            <label>分类</label>
+            <select id="editCategory"></select>
+          </div>
+          <div class="field">
+            <label>或新建分类</label>
+            <input id="newCategory" type="text" placeholder="例如：学习 / 工具 / 影视" />
+          </div>
+        </div>
+        <div class="field">
+          <label>简介</label>
+          <textarea id="editDesc" placeholder="填写资源简介"></textarea>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn" type="button" id="cancelEditBtn">取消</button>
+        <button class="btn btn-danger" type="button" id="deleteEditBtn" style="display:none;">删除</button>
+        <button class="btn btn-primary" type="button" id="saveEditBtn">保存</button>
+      </div>
+    </div>
+  </div>
+
   <script>
-    const rawData = [
+    const DEFAULT_DATA = [
       {
         category: "AI 网站",
         items: [
@@ -1215,25 +1369,30 @@
       }
     ];
 
-    const data = rawData.map((cat, cIndex) => ({
-      ...cat,
-      items: cat.items.map((item, iIndex) => ({
-        ...item,
-        id: `c${cIndex}_i${iIndex}`,
-        order: cIndex * 100 + iIndex
-      }))
-    }));
-
-    const allItems = data.flatMap(cat => cat.items.map(item => ({
-      ...item,
-      category: cat.category
-    })));
-
+    const STORAGE_KEY = "nav_editable_data_v1";
     const STORE_THEME = "nav_theme_strong_v2";
     const STORE_CLICK = "nav_clicks_strong_v2";
     const STORE_RECENT = "nav_recent_strong_v2";
 
-    const clickMap = JSON.parse(localStorage.getItem(STORE_CLICK) || "{}");
+    function loadData(){
+      try{
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+        if (saved && Array.isArray(saved) && saved.length) return saved;
+      }catch(e){}
+      return DEFAULT_DATA;
+    }
+
+    function saveData(){
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+
+    let data = loadData();
+    let clickMap = JSON.parse(localStorage.getItem(STORE_CLICK) || "{}");
+
+    const allItems = () => data.flatMap(cat => cat.items.map(item => ({
+      ...item,
+      category: cat.category
+    })));
 
     const htmlEl = document.documentElement;
     const resourceRoot = document.getElementById("resourceRoot");
@@ -1249,6 +1408,7 @@
     const clearBtn = document.getElementById("clearBtn");
     const resetBtn = document.getElementById("resetBtn");
     const openSearchBtn = document.getElementById("openSearchBtn");
+    const addResourceBtn = document.getElementById("addResourceBtn");
     const siteCount = document.getElementById("siteCount");
     const clickCount = document.getElementById("clickCount");
     const categoryCount = document.getElementById("categoryCount");
@@ -1261,10 +1421,25 @@
     const modalSearchInput = document.getElementById("modalSearchInput");
     const searchResultList = document.getElementById("searchResultList");
 
+    const editorModal = document.getElementById("editorModal");
+    const editorTitle = document.getElementById("editorTitle");
+    const editName = document.getElementById("editName");
+    const editUrl = document.getElementById("editUrl");
+    const editCategory = document.getElementById("editCategory");
+    const newCategory = document.getElementById("newCategory");
+    const editDesc = document.getElementById("editDesc");
+    const saveEditBtn = document.getElementById("saveEditBtn");
+    const cancelEditBtn = document.getElementById("cancelEditBtn");
+    const closeEditorBtn = document.getElementById("closeEditorBtn");
+    const deleteEditBtn = document.getElementById("deleteEditBtn");
+
     const state = {
       query: "",
       activeCategory: "全部"
     };
+
+    let editing = null; // {type:'resource'|'new', categoryIndex, itemIndex}
+    let observer;
 
     function normalizeText(str){
       return (str || "").toLowerCase().replace(/\s+/g, "").trim();
@@ -1349,7 +1524,7 @@
 
     function filteredItems(){
       const kw = normalizeText(state.query);
-      return allItems.filter(item => {
+      return allItems().filter(item => {
         const catMatch = state.activeCategory === "全部" || item.category === state.activeCategory;
         const text = normalizeText([item.name, item.url, item.desc, item.category, getHost(item.url)].join(" "));
         return catMatch && text.includes(kw);
@@ -1370,7 +1545,12 @@
           <span>${c.category}</span>
           <span class="cat-count">${c.count} 个</span>
         </button>
-      `).join("");
+      `).join("") + `
+        <button class="cat-btn" type="button" id="addCategoryBtn">
+          <span>➕ 新增分类</span>
+          <span class="cat-count">编辑</span>
+        </button>
+      `;
 
       catNav.querySelectorAll("[data-cat]").forEach(btn => {
         btn.addEventListener("click", () => {
@@ -1385,6 +1565,21 @@
           const target = document.getElementById(id);
           if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
         });
+      });
+
+      const addCategoryBtn = document.getElementById("addCategoryBtn");
+      addCategoryBtn.addEventListener("click", () => {
+        const name = prompt("请输入新分类名称：");
+        if (!name) return;
+        const clean = name.trim();
+        if (!clean) return;
+        if (data.some(d => d.category === clean)) {
+          alert("该分类已存在");
+          return;
+        }
+        data.push({ category: clean, items: [] });
+        saveData();
+        renderAll();
       });
     }
 
@@ -1418,7 +1613,7 @@
         })
         .slice(0, 4);
 
-      const showItems = items.length ? items : allItems.slice(0, 4);
+      const showItems = items.length ? items : allItems().slice(0, 4);
 
       hotFeatured.innerHTML = showItems.map((item, idx) => {
         const href = normalizeUrl(item.url);
@@ -1479,7 +1674,7 @@
 
     function renderSearchResults(){
       const kw = normalizeText(modalSearchInput.value || state.query);
-      const items = allItems.filter(item => {
+      const items = allItems().filter(item => {
         const text = normalizeText([item.name, item.url, item.desc, item.category, getHost(item.url)].join(" "));
         return text.includes(kw);
       }).slice(0, 18);
@@ -1528,7 +1723,7 @@
         })
         .filter(cat => cat.items.length > 0);
 
-      const totalItems = allItems.length;
+      const totalItems = allItems().length;
       const visibleItems = filteredCats.reduce((sum, cat) => sum + cat.items.length, 0);
       resultHint.textContent = (kw || state.activeCategory !== "全部")
         ? `已显示 ${visibleItems} 条`
@@ -1555,6 +1750,7 @@
               const isDisabled = !href;
               const host = getHost(item.url);
               const click = getClick(item.id);
+
               return `
                 <article class="resource reveal" data-resource="${item.id}">
                   <div class="resource-top">
@@ -1570,6 +1766,8 @@
                       <span class="chip">点击：${click}</span>
                     </div>
                     <div class="resource-actions">
+                      <button class="mini-btn" type="button" data-edit="${item.id}">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="${item.id}">删除</button>
                       <button class="mini-btn" type="button" data-copy="${href}">复制</button>
                     </div>
                   </div>
@@ -1594,7 +1792,7 @@
     }
 
     function updateStats(){
-      siteCount.textContent = allItems.length;
+      siteCount.textContent = allItems().length;
       categoryCount.textContent = data.length;
       clickCount.textContent = Object.values(clickMap).reduce((sum, n) => sum + n, 0);
     }
@@ -1651,7 +1849,6 @@
       });
     }
 
-    let observer;
     function observeReveals(){
       if (observer) observer.disconnect();
 
@@ -1667,6 +1864,128 @@
       document.querySelectorAll(".reveal:not(.visible)").forEach(el => observer.observe(el));
     }
 
+    function renderEditorCategoryOptions(){
+      editCategory.innerHTML = `
+        <option value="">请选择分类</option>
+        ${data.map(cat => `<option value="${cat.category}">${cat.category}</option>`).join("")}
+      `;
+    }
+
+    function openEditor(type = "new", categoryIndex = 0, itemIndex = -1){
+      editing = { type, categoryIndex, itemIndex };
+
+      renderEditorCategoryOptions();
+
+      if (type === "new") {
+        editorTitle.textContent = "新增资源";
+        deleteEditBtn.style.display = "none";
+        editName.value = "";
+        editUrl.value = "";
+        editDesc.value = "";
+        editCategory.value = data[0]?.category || "";
+        newCategory.value = "";
+      } else {
+        const item = data[categoryIndex].items[itemIndex];
+        editorTitle.textContent = "编辑资源";
+        deleteEditBtn.style.display = "inline-flex";
+        editName.value = item.name || "";
+        editUrl.value = item.url || "";
+        editDesc.value = item.desc || "";
+        editCategory.value = data[categoryIndex].category;
+        newCategory.value = "";
+      }
+
+      editorModal.classList.add("show");
+      editorModal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeEditor(){
+      editorModal.classList.remove("show");
+      editorModal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+      editing = null;
+    }
+
+    function saveEditor(){
+      const name = editName.value.trim();
+      const url = editUrl.value.trim();
+      const desc = editDesc.value.trim();
+      const customCat = newCategory.value.trim();
+      const categoryName = customCat || editCategory.value;
+
+      if (!name) return alert("请输入资源名称");
+      if (!categoryName) return alert("请选择或填写分类");
+      if (!url) return alert("请输入链接");
+
+      const targetCategoryIndex = (() => {
+        const idx = data.findIndex(x => x.category === categoryName);
+        if (idx >= 0) return idx;
+        data.push({ category: categoryName, items: [] });
+        return data.length - 1;
+      })();
+
+      if (editing && editing.type === "resource") {
+        const oldCat = data[editing.categoryIndex];
+        const oldItem = oldCat.items[editing.itemIndex];
+        const updated = {
+          ...oldItem,
+          name,
+          url,
+          desc,
+          category: categoryName,
+          id: oldItem.id,
+          order: oldItem.order
+        };
+
+        // 如果分类变了，先删旧再加新
+        oldCat.items.splice(editing.itemIndex, 1);
+        data[targetCategoryIndex].items.push(updated);
+      } else {
+        const id = `c${Date.now()}_${Math.random().toString(36).slice(2,8)}`;
+        const order = Date.now();
+        data[targetCategoryIndex].items.push({
+          name,
+          url,
+          desc,
+          id,
+          order
+        });
+      }
+
+      // 清理空分类
+      data = data.filter(cat => cat.items.length > 0);
+      saveData();
+      closeEditor();
+      renderAll();
+    }
+
+    function deleteEditorItem(){
+      if (!editing || editing.type !== "resource") return;
+      const item = data[editing.categoryIndex].items[editing.itemIndex];
+      if (!confirm(`确定删除「${item.name}」吗？`)) return;
+
+      data[editing.categoryIndex].items.splice(editing.itemIndex, 1);
+      data = data.filter(cat => cat.items.length > 0);
+      saveData();
+      closeEditor();
+      renderAll();
+    }
+
+    function renderAll(){
+      renderCategoryNav();
+      renderTags();
+      renderFeatured();
+      renderResources();
+      renderHot();
+      renderRecent();
+      renderSearchResults();
+      updateStats();
+      observeReveals();
+      renderEditorCategoryOptions();
+    }
+
+    /* 点击事件 */
     document.addEventListener("click", (e) => {
       const disabledLink = e.target.closest(".resource-link.disabled, .search-result.disabled, .hot-item.disabled, .recent-item.disabled, .featured-card.disabled");
       if (disabledLink) {
@@ -1684,10 +2003,39 @@
         return;
       }
 
+      const editBtn = e.target.closest("[data-edit]");
+      if (editBtn) {
+        const id = editBtn.getAttribute("data-edit");
+        for (let c = 0; c < data.length; c++) {
+          const i = data[c].items.findIndex(x => x.id === id);
+          if (i >= 0) {
+            openEditor("resource", c, i);
+            return;
+          }
+        }
+      }
+
+      const deleteBtn = e.target.closest("[data-delete]");
+      if (deleteBtn) {
+        const id = deleteBtn.getAttribute("data-delete");
+        for (let c = 0; c < data.length; c++) {
+          const i = data[c].items.findIndex(x => x.id === id);
+          if (i >= 0) {
+            const item = data[c].items[i];
+            if (!confirm(`确定删除「${item.name}」吗？`)) return;
+            data[c].items.splice(i, 1);
+            data = data.filter(cat => cat.items.length > 0);
+            saveData();
+            renderAll();
+            return;
+          }
+        }
+      }
+
       const link = e.target.closest("[data-id]");
       if (link && (link.classList.contains("resource-link") || link.classList.contains("hot-item") || link.classList.contains("recent-item") || link.classList.contains("featured-card") || link.classList.contains("search-result"))) {
         const id = link.getAttribute("data-id");
-        const item = allItems.find(x => x.id === id);
+        const item = allItems().find(x => x.id === id);
         if (item) {
           setClick(id);
           saveRecent(item);
@@ -1696,32 +2044,29 @@
       }
     });
 
+    /* 主题 */
     applyTheme(localStorage.getItem(STORE_THEME) || "dark");
-
     themeBtn.addEventListener("click", () => {
       const current = htmlEl.getAttribute("data-theme") || "dark";
       applyTheme(current === "dark" ? "light" : "dark");
     });
 
+    /* 搜索 */
     searchInputs.forEach(input => {
       input.addEventListener("input", (e) => syncSearch(e.target.value));
     });
+    modalSearchInput.addEventListener("input", (e) => syncSearch(e.target.value));
 
     clearBtn.addEventListener("click", () => {
       state.activeCategory = "全部";
       syncSearch("");
       searchInputs[0].focus();
-      renderCategoryNav();
-      renderTags();
+      renderAll();
     });
 
     resetBtn.addEventListener("click", () => {
       state.activeCategory = "全部";
-      renderCategoryNav();
-      renderTags();
-      renderResources();
-      renderFeatured();
-      renderHot();
+      renderAll();
       updateLeftActive();
     });
 
@@ -1731,8 +2076,14 @@
       if (e.target === searchModal) closeSearchModal();
     });
 
-    modalSearchInput.addEventListener("input", (e) => {
-      syncSearch(e.target.value);
+    /* 编辑弹窗 */
+    addResourceBtn.addEventListener("click", () => openEditor("new"));
+    closeEditorBtn.addEventListener("click", closeEditor);
+    cancelEditBtn.addEventListener("click", closeEditor);
+    saveEditBtn.addEventListener("click", saveEditor);
+    deleteEditBtn.addEventListener("click", deleteEditorItem);
+    editorModal.addEventListener("click", (e) => {
+      if (e.target === editorModal) closeEditor();
     });
 
     document.addEventListener("keydown", (e) => {
@@ -1742,8 +2093,9 @@
         e.preventDefault();
         openSearchModal();
       }
-      if (e.key === "Escape" && searchModal.classList.contains("show")) {
-        closeSearchModal();
+      if (e.key === "Escape") {
+        if (searchModal.classList.contains("show")) closeSearchModal();
+        if (editorModal.classList.contains("show")) closeEditor();
       }
     });
 
@@ -1756,15 +2108,7 @@
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
 
-    renderCategoryNav();
-    renderTags();
-    renderFeatured();
-    renderResources();
-    renderHot();
-    renderRecent();
-    renderSearchResults();
-    updateStats();
-    observeReveals();
+    renderAll();
   </script>
 </body>
 </html>
