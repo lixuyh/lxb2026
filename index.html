@@ -2,7 +2,7 @@
 <html lang="zh-CN" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>资源导航站 · 可编辑版</title>
   <meta name="description" content="资源导航站，可前端在线编辑：新增、修改、删除、分类管理、本地保存。" />
   <style>
@@ -52,13 +52,10 @@
       min-height:100vh;
       overflow-x:hidden;
       line-height:1.6;
-      padding-bottom: env(safe-area-inset-bottom);
     }
 
     a{color:inherit;text-decoration:none}
     button,input,textarea,select{font:inherit}
-    img{max-width:100%;display:block}
-
     .wrap{
       width:min(1400px, calc(100% - 24px));
       margin:0 auto;
@@ -161,7 +158,6 @@
       cursor:pointer;
       transition:.2s ease;
       box-shadow:none;
-      user-select:none;
     }
     .btn:hover{
       transform:translateY(-1px);
@@ -337,10 +333,6 @@
       transform:translateY(-3px);
       box-shadow:var(--shadow-hover);
       border-color:color-mix(in srgb, var(--accent) 25%, var(--line));
-    }
-    .featured-card.disabled{
-      opacity:.55;
-      pointer-events:none;
     }
     .badge{
       display:inline-flex;
@@ -613,11 +605,9 @@
       transform:translateY(-1px);
       box-shadow:0 12px 24px rgba(37,99,235,.22);
     }
+
     .resource-link.disabled,
-    .search-result.disabled,
-    .hot-item.disabled,
-    .recent-item.disabled,
-    .featured-card.disabled{
+    .search-result.disabled{
       opacity:.55;
       cursor:not-allowed;
       pointer-events:none;
@@ -741,7 +731,7 @@
     .to-top{
       position:fixed;
       right:18px;
-      bottom:calc(18px + env(safe-area-inset-bottom));
+      bottom:18px;
       z-index:90;
       width:44px;
       height:44px;
@@ -894,6 +884,34 @@
     }
 
     /* 编辑弹窗 */
+    .editor-panel{
+      margin-top:18px;
+      padding:18px;
+      border:1px solid var(--line);
+      border-radius:22px;
+      background:var(--card);
+      box-shadow:var(--shadow);
+    }
+    .editor-toolbar{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:14px;
+    }
+    .editor-toolbar-left,
+    .editor-toolbar-right{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .editor-hint{
+      color:var(--muted);
+      font-size:12px;
+    }
+
     .modal-form{
       position:fixed;
       inset:0;
@@ -914,8 +932,6 @@
       color:var(--text);
       box-shadow:0 24px 80px rgba(0,0,0,.35);
       overflow:hidden;
-      max-height:92vh;
-      overflow:auto;
     }
     .form-head{
       padding:18px 18px 14px;
@@ -958,10 +974,7 @@
       color:var(--text);
       outline:none;
     }
-    .field textarea{
-      min-height:92px;
-      resize:vertical;
-    }
+    .field textarea{min-height:92px;resize:vertical}
     .form-actions{
       display:flex;
       justify-content:flex-end;
@@ -970,39 +983,6 @@
       padding:0 18px 18px;
     }
 
-    /* 手机底部固定操作栏 */
-    .mobile-dock{
-      position:fixed;
-      left:12px;
-      right:12px;
-      bottom:calc(12px + env(safe-area-inset-bottom));
-      z-index:210;
-      display:none;
-      gap:10px;
-      padding:10px;
-      border:1px solid var(--line);
-      border-radius:18px;
-      background:color-mix(in srgb, var(--card) 88%, transparent);
-      backdrop-filter:var(--blur);
-      box-shadow:var(--shadow);
-    }
-    .dock-btn{
-      flex:1;
-      border:1px solid var(--line);
-      background:color-mix(in srgb, var(--bg) 74%, transparent);
-      color:var(--text);
-      border-radius:14px;
-      padding:12px 10px;
-      font-size:14px;
-      cursor:pointer;
-    }
-    .dock-btn.dock-primary{
-      border:none;
-      color:#fff;
-      background:linear-gradient(135deg,var(--accent),var(--accent2));
-    }
-
-    /* ============ 适配 ============ */
     @media (max-width: 1180px){
       .layout{
         grid-template-columns:220px minmax(0,1fr);
@@ -1032,357 +1012,38 @@
       .wrap,.nav-inner{
         width:min(100% - 18px, 1400px);
       }
-
       .nav-links{display:none}
-      .brand-text p{display:none}
-      .nav-inner{
-        min-height:60px;
-        gap:10px;
+      .brand-text p{max-width:220px}
+      .hero{border-radius:22px}
+      .hero-inner{padding:14px}
+      .hero-left,.hero-right{padding:16px;border-radius:18px}
+      .stats{grid-template-columns:1fr 1fr}
+      .card-grid{grid-template-columns:1fr}
+      .panel-head,.category-head{
+        padding-left:16px;
+        padding-right:16px;
       }
-      .brand-mark{
-        width:36px;
-        height:36px;
-        border-radius:12px;
-        font-size:14px;
-      }
-      .brand-text h1{
-        font-size:16px;
-      }
-
-      .nav-actions{
-        gap:6px;
-      }
-      .nav-actions .btn{
-        padding:8px 10px;
-        font-size:12px;
-      }
-      .nav-actions .btn .kbd{
-        display:none;
-      }
-
-      .hero{
-        margin-top:12px;
-        border-radius:18px;
-      }
-      .hero-inner{
-        padding:12px;
-        gap:12px;
-      }
-      .hero-left,.hero-right{
-        padding:14px;
-        border-radius:16px;
-      }
-      .hero h2{
-        font-size:clamp(22px, 7vw, 30px);
-        line-height:1.15;
-        margin:10px 0 8px;
-      }
-      .hero p{
-        font-size:13px;
-      }
-      .hero-meta{
-        margin-top:12px;
-        gap:8px;
-      }
-      .pill{
-        padding:7px 10px;
-        font-size:12px;
-      }
-      .search-box{
-        margin-top:14px;
-        gap:8px;
-      }
-      .search{
-        flex:1 1 100%;
-        padding:11px 12px;
-        border-radius:14px;
-      }
-      .hero-actions{
-        width:100%;
-      }
-      .hero-actions .btn{
-        flex:1;
-        justify-content:center;
-        padding:10px 12px;
-        font-size:13px;
-      }
-
-      .stats{
-        grid-template-columns:repeat(2,1fr);
-        gap:10px;
-      }
-      .stat{
-        padding:12px;
-        border-radius:14px;
-      }
-      .stat .num{
-        font-size:22px;
-      }
-
+      .content{padding:14px}
       .featured{
         grid-template-columns:1fr;
-        gap:10px;
-        margin-top:12px;
       }
-      .featured-card{
-        min-height:auto;
-        padding:14px;
-        border-radius:18px;
-      }
-
-      /* 手机端：资源列表优先显示 */
-      .layout{
-        margin-top:14px;
-        display:flex;
-        flex-direction:column;
-        gap:12px;
-      }
-      .main-panel{order:1}
-      .sidebar-left{order:2}
-      .right-sidebar{order:3}
-
       .sidebar-left{
-        position:static;
+        top:74px;
       }
-      .sidebar{
-        position:static;
-      }
-
-      .panel{
-        border-radius:18px;
-      }
-      .panel-head,
-      .category-head{
-        padding:14px 14px 12px;
-      }
-      .panel-title{
-        font-size:16px;
-      }
-      .panel-sub{
-        font-size:12px;
-      }
-      .content{
-        padding:12px;
-      }
-
       .cat-nav{
         flex-direction:row;
-        gap:8px;
-        padding:10px;
+        max-height:none;
         overflow-x:auto;
         overflow-y:hidden;
-        white-space:nowrap;
-        -webkit-overflow-scrolling:touch;
-        scrollbar-width:none;
-      }
-      .cat-nav::-webkit-scrollbar{
-        display:none;
+        padding:12px;
       }
       .cat-btn{
         width:auto;
-        flex:0 0 auto;
-        min-width:120px;
-        padding:10px 12px;
-        border-radius:14px;
-        font-size:13px;
+        min-width:180px;
+        white-space:nowrap;
       }
-
-      .card-grid{
-        padding:12px;
-        grid-template-columns:1fr;
-        gap:10px;
-      }
-      .resource{
-        min-height:auto;
-        padding:13px;
-        border-radius:16px;
-      }
-      .resource-title{
-        font-size:15px;
-      }
-      .resource-desc{
-        font-size:12px;
-        min-height:auto;
-      }
-      .resource-meta{
-        gap:10px;
-        padding-top:8px;
-      }
-      .meta-left{
-        width:100%;
-      }
-      .chip{
-        padding:6px 8px;
-        font-size:11px;
-      }
-      .resource-actions{
-        width:100%;
-        justify-content:flex-start;
-      }
-      .mini-btn{
-        padding:7px 9px;
-        font-size:11px;
-      }
-      .resource-link{
-        padding:11px 12px;
-        border-radius:12px;
-        font-size:13px;
-        min-height:42px;
-      }
-
-      .sidebar .panel{
-        border-radius:18px;
-      }
-      .side-top,
-      .side-block{
-        padding:14px;
-      }
-      .profile{
-        align-items:flex-start;
-      }
-      .avatar{
-        width:44px;
-        height:44px;
-      }
-      .profile h4{
-        font-size:15px;
-      }
-      .profile p{
-        font-size:12px;
-      }
-
-      .tag-list,
-      .hot-list,
-      .recent-list{
-        gap:8px;
-      }
-      .tag{
-        padding:8px 10px;
-        font-size:12px;
-      }
-      .hot-item,
-      .recent-item{
-        padding:10px 12px;
-        border-radius:14px;
-      }
-      .hot-item strong,
-      .recent-item strong{
-        font-size:13px;
-      }
-      .hot-item span,
-      .recent-item span{
-        font-size:11px;
-      }
-
-      .footer{
-        margin-top:14px;
-        padding:16px 0 8px;
-        font-size:12px;
-      }
-
-      .to-top{
-        right:12px;
-        width:40px;
-        height:40px;
-        border-radius:12px;
-      }
-
-      .modal{
-        padding:10px;
-        align-items:flex-start;
-      }
-      .modal-box{
-        width:100%;
-        border-radius:18px;
-        max-height:88vh;
-      }
-      .modal-head{
-        padding:12px;
-        flex-direction:column;
-        align-items:stretch;
-      }
-      .modal-search{
-        padding:11px 12px;
-        border-radius:14px;
-      }
-      .modal-hint{
-        text-align:right;
-      }
-      .modal-body{
-        max-height:72vh;
-        padding:12px;
-      }
-      .search-result{
-        padding:12px 14px;
-        border-radius:14px;
-        align-items:flex-start;
-        flex-direction:column;
-      }
-      .search-result .go{
-        align-self:flex-end;
-      }
-
-      .modal-form{
-        padding:10px;
-        align-items:flex-end;
-      }
-      .form-box{
-        width:100%;
-        border-radius:18px;
-        max-height:92vh;
-      }
-      .form-head{
-        padding:14px;
-      }
-      .form-body{
-        padding:14px;
-      }
-      .form-actions{
-        padding:0 14px 14px;
-      }
-      .field input,
-      .field textarea,
-      .field select{
-        padding:11px 12px;
-        border-radius:12px;
-        font-size:14px;
-      }
-      .form-actions .btn{
-        flex:1;
-        justify-content:center;
-      }
-
-      /* 手机底部操作栏显示 */
-      .mobile-dock{
-        display:flex;
-      }
-
-      /* 给底部栏留空间 */
-      body{
-        padding-bottom: calc(86px + env(safe-area-inset-bottom));
-      }
-
-      /* 手机隐藏顶部重复按钮 */
-      .nav-actions #openSearchBtn,
-      .nav-actions #addResourceBtn{
-        display:none;
-      }
-    }
-
-    @media (hover: none) {
-      .btn:hover,
-      .cat-btn:hover,
-      .featured-card:hover,
-      .resource:hover,
-      .hot-item:hover,
-      .recent-item:hover,
-      .tag:hover,
-      .mini-btn:hover,
-      .resource-link:hover,
-      .dock-btn:hover{
-        transform:none;
-        box-shadow:none;
-      }
+      .layout{gap:14px}
+      .modal{padding-top:3vh}
     }
 
     @media (prefers-reduced-motion: reduce){
@@ -1487,7 +1148,7 @@
         <div class="cat-nav" id="catNav"></div>
       </aside>
 
-      <div class="panel main-panel reveal">
+      <div class="panel reveal">
         <div class="panel-head">
           <div>
             <h2 class="panel-title">资源列表</h2>
@@ -1498,13 +1159,13 @@
         <div class="content" id="resourceRoot"></div>
       </div>
 
-      <aside class="sidebar right-sidebar" id="sidebar">
+      <aside class="sidebar" id="sidebar">
         <section class="panel reveal">
           <div class="side-top">
             <div class="profile">
               <img
                 class="avatar"
-                src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='128' height='128' viewBox='0 0 128 128'><defs><linearGradient id='g' x1='0' x2='1' y1='0' y2='1'><stop offset='0%' stop-color='%2360a5fa'/><stop offset='100%' stop-color='%2338bdf8'/></linearGradient></defs><rect width='128' height='128' rx='64' fill='url(%23g)'/><text x='64' y='74' text-anchor='middle' font-size='52' font-family='Arial' fill='white'>N</text></svg>"
+                src="https://oss-cdn.lra.cn/file/upload/2026/05/23/2058156095314071552.jpg"
                 alt="头像"
               />
               <div>
@@ -1567,13 +1228,6 @@
 
   <button class="to-top" id="toTop" type="button" aria-label="返回顶部">↑</button>
 
-  <!-- 手机底部操作栏 -->
-  <div class="mobile-dock" id="mobileDock">
-    <button class="dock-btn" type="button" id="dockSearchBtn">🔎 搜索</button>
-    <button class="dock-btn dock-primary" type="button" id="dockAddBtn">➕ 新增</button>
-    <button class="dock-btn" type="button" id="dockThemeBtn">🌙 主题</button>
-  </div>
-
   <!-- 搜索弹层 -->
   <div class="modal" id="searchModal" aria-hidden="true">
     <div class="modal-box" role="dialog" aria-modal="true" aria-label="顶部搜索弹层">
@@ -1605,7 +1259,7 @@
           </div>
           <div class="field">
             <label>链接</label>
-            <input id="editUrl" type="text" placeholder="例如：example.com" />
+            <input id="editUrl" type="text" placeholder="例如：https://example.com" />
           </div>
           <div class="field">
             <label>分类</label>
@@ -1779,17 +1433,12 @@
     const closeEditorBtn = document.getElementById("closeEditorBtn");
     const deleteEditBtn = document.getElementById("deleteEditBtn");
 
-    const mobileDock = document.getElementById("mobileDock");
-    const dockSearchBtn = document.getElementById("dockSearchBtn");
-    const dockAddBtn = document.getElementById("dockAddBtn");
-    const dockThemeBtn = document.getElementById("dockThemeBtn");
-
     const state = {
       query: "",
       activeCategory: "全部"
     };
 
-    let editing = null;
+    let editing = null; // {type:'resource'|'new', categoryIndex, itemIndex}
     let observer;
 
     function normalizeText(str){
@@ -1861,7 +1510,6 @@
       htmlEl.setAttribute("data-theme", theme);
       localStorage.setItem(STORE_THEME, theme);
       themeBtn.textContent = theme === "dark" ? "🌙 深色" : "☀️ 浅色";
-      dockThemeBtn.textContent = theme === "dark" ? "🌙 主题" : "☀️ 主题";
     }
 
     function slugify(str){
@@ -1920,7 +1568,7 @@
       });
 
       const addCategoryBtn = document.getElementById("addCategoryBtn");
-      addCategoryBtn?.addEventListener("click", () => {
+      addCategoryBtn.addEventListener("click", () => {
         const name = prompt("请输入新分类名称：");
         if (!name) return;
         const clean = name.trim();
@@ -2225,6 +1873,7 @@
 
     function openEditor(type = "new", categoryIndex = 0, itemIndex = -1){
       editing = { type, categoryIndex, itemIndex };
+
       renderEditorCategoryOptions();
 
       if (type === "new") {
@@ -2289,6 +1938,7 @@
           order: oldItem.order
         };
 
+        // 如果分类变了，先删旧再加新
         oldCat.items.splice(editing.itemIndex, 1);
         data[targetCategoryIndex].items.push(updated);
       } else {
@@ -2303,6 +1953,7 @@
         });
       }
 
+      // 清理空分类
       data = data.filter(cat => cat.items.length > 0);
       saveData();
       closeEditor();
@@ -2318,13 +1969,6 @@
       data = data.filter(cat => cat.items.length > 0);
       saveData();
       closeEditor();
-      renderAll();
-    }
-
-    function resetToDefault(){
-      if (!confirm("确定恢复默认分类数据吗？当前本地修改会被覆盖。")) return;
-      data = JSON.parse(JSON.stringify(DEFAULT_DATA));
-      localStorage.removeItem(STORAGE_KEY);
       renderAll();
     }
 
@@ -2402,13 +2046,10 @@
 
     /* 主题 */
     applyTheme(localStorage.getItem(STORE_THEME) || "dark");
-    function toggleTheme(){
+    themeBtn.addEventListener("click", () => {
       const current = htmlEl.getAttribute("data-theme") || "dark";
       applyTheme(current === "dark" ? "light" : "dark");
-    }
-
-    themeBtn.addEventListener("click", toggleTheme);
-    dockThemeBtn.addEventListener("click", toggleTheme);
+    });
 
     /* 搜索 */
     searchInputs.forEach(input => {
@@ -2430,7 +2071,6 @@
     });
 
     openSearchBtn.addEventListener("click", openSearchModal);
-    dockSearchBtn.addEventListener("click", openSearchModal);
 
     searchModal.addEventListener("click", (e) => {
       if (e.target === searchModal) closeSearchModal();
@@ -2438,8 +2078,6 @@
 
     /* 编辑弹窗 */
     addResourceBtn.addEventListener("click", () => openEditor("new"));
-    dockAddBtn.addEventListener("click", () => openEditor("new"));
-
     closeEditorBtn.addEventListener("click", closeEditor);
     cancelEditBtn.addEventListener("click", closeEditor);
     saveEditBtn.addEventListener("click", saveEditor);
@@ -2448,7 +2086,6 @@
       if (e.target === editorModal) closeEditor();
     });
 
-    /* 键盘快捷键 */
     document.addEventListener("keydown", (e) => {
       const isMac = navigator.platform.toUpperCase().includes("MAC");
       const hotkey = isMac ? e.metaKey && e.key.toLowerCase() === "k" : e.ctrlKey && e.key.toLowerCase() === "k";
@@ -2462,7 +2099,6 @@
       }
     });
 
-    /* 滚动 */
     window.addEventListener("scroll", () => {
       toTop.classList.toggle("show", window.scrollY > 450);
       updateLeftActive();
@@ -2472,7 +2108,6 @@
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
 
-    /* 初始化 */
     renderAll();
   </script>
 </body>
