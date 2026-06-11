@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>资源导航站 · 可编辑版</title>
-  <meta name="description" content="资源导航站，可前端在线编辑：新增、修改、删除、分类管理、本地保存。" />
+  <title>资源导航站 · 优化版</title>
+  <meta name="description" content="资源导航站优化版：支持资源编辑、分类管理、拖拽排序、本地保存、搜索、导入导出与响应式展示。" />
+  <meta name="theme-color" content="#0b1324" />
   <style>
     :root{
       --bg:#f6f7fb;
@@ -18,6 +19,7 @@
       --accent2:#0ea5e9;
       --accent3:#22c55e;
       --danger:#ef4444;
+      --warning:#f59e0b;
       --shadow:0 12px 30px rgba(15,23,42,.08);
       --shadow-hover:0 18px 42px rgba(15,23,42,.14);
       --blur:blur(18px);
@@ -35,6 +37,7 @@
       --accent2:#38bdf8;
       --accent3:#34d399;
       --danger:#f87171;
+      --warning:#fbbf24;
       --shadow:0 12px 30px rgba(0,0,0,.24);
       --shadow-hover:0 18px 42px rgba(0,0,0,.34);
     }
@@ -153,8 +156,6 @@
       padding:10px 14px;
       display:inline-flex;
       align-items:center;
-
-
       gap:8px;
       cursor:pointer;
       transition:.2s ease;
@@ -312,7 +313,6 @@
 
     .featured{
       margin-top:18px;
-
       display:grid;
       grid-template-columns:repeat(4,1fr);
       gap:14px;
@@ -468,6 +468,13 @@
       padding:16px 16px 14px;
       border-bottom:1px solid var(--line);
       background:linear-gradient(180deg, color-mix(in srgb, var(--bg) 58%, transparent), transparent);
+      flex-wrap:wrap;
+    }
+    .category-title-wrap{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
     }
     .category-head h3{
       margin:0;
@@ -478,11 +485,18 @@
       font-size:12px;
       white-space:nowrap;
     }
+    .category-tools{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
     .card-grid{
       padding:14px;
       display:grid;
       grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
       gap:12px;
+      min-height:32px;
     }
     .resource{
       border:1px solid var(--line);
@@ -566,6 +580,7 @@
       gap:8px;
       margin-top:2px;
       flex-wrap:wrap;
+      align-items:center;
     }
     .mini-btn{
       border:1px solid var(--line);
@@ -585,6 +600,18 @@
       background:color-mix(in srgb, var(--danger) 10%, transparent);
       border-color:color-mix(in srgb, var(--danger) 45%, var(--line));
     }
+    .drag-handle{
+      border:1px solid var(--line);
+      background:color-mix(in srgb, var(--bg) 78%, transparent);
+      color:var(--muted);
+      border-radius:999px;
+      padding:8px 10px;
+      cursor:grab;
+      user-select:none;
+      font-size:12px;
+      line-height:1;
+    }
+    .drag-handle:active{cursor:grabbing}
     .resource-link{
       display:inline-flex;
       align-items:center;
@@ -614,6 +641,21 @@
       pointer-events:none;
     }
 
+    .category.dragging,
+    .resource.dragging{
+      opacity:.45;
+      transform:scale(.99);
+    }
+    .category.drag-over,
+    .resource.drag-over{
+      outline:2px dashed color-mix(in srgb, var(--accent) 70%, transparent);
+      outline-offset:4px;
+    }
+    .card-grid.drag-active,
+    .content.drag-active{
+      background:color-mix(in srgb, var(--accent) 5%, transparent);
+    }
+
     .sidebar{
       position:sticky;
       top:88px;
@@ -625,11 +667,6 @@
     .side-block{
       padding:18px;
       border-top:1px solid var(--line);
-    }
-    .profile{
-      display:flex;
-      gap:14px;
-      align-items:center;
     }
     .profile-wrap{
       display:flex;
@@ -669,12 +706,10 @@
       font-weight:800;
       font-size:22px;
     }
-    .profile h4{margin:0;font-size:16px}
-    .profile p{margin:4px 0 0;color:var(--muted);font-size:13px}
+    .profile-main h4{margin:0;font-size:16px}
+    .profile-main p{margin:4px 0 0;color:var(--muted);font-size:13px}
     .profile-text{min-width:0}
-    .profile-text p{
-      word-break:break-word;
-    }
+    .profile-text p{word-break:break-word}
 
     .side-search{
       display:flex;
@@ -984,35 +1019,26 @@
       padding:0 18px 18px;
     }
 
+    .top-tools{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
     @media (max-width: 1180px){
-      .layout{
-        grid-template-columns:220px minmax(0,1fr);
-      }
-      .sidebar{
-        position:static;
-      }
+      .layout{grid-template-columns:220px minmax(0,1fr)}
+      .sidebar{position:static}
     }
 
     @media (max-width: 880px){
-      .hero-inner,
-      .layout{
-        grid-template-columns:1fr;
-      }
-      .sidebar-left{
-        position:static;
-      }
-      .featured{
-        grid-template-columns:repeat(2,1fr);
-      }
-      .form-grid{
-        grid-template-columns:1fr;
-      }
+      .hero-inner,.layout{grid-template-columns:1fr}
+      .sidebar-left{position:static}
+      .featured{grid-template-columns:repeat(2,1fr)}
+      .form-grid{grid-template-columns:1fr}
     }
 
     @media (max-width: 760px){
-      .wrap,.nav-inner{
-        width:min(100% - 18px, 1400px);
-      }
+      .wrap,.nav-inner{width:min(100% - 18px, 1400px)}
       .nav-links{display:none}
       .brand-text p{max-width:220px}
       .hero{border-radius:22px}
@@ -1020,17 +1046,10 @@
       .hero-left,.hero-right{padding:16px;border-radius:18px}
       .stats{grid-template-columns:1fr 1fr}
       .card-grid{grid-template-columns:1fr}
-      .panel-head,.category-head{
-        padding-left:16px;
-        padding-right:16px;
-      }
+      .panel-head,.category-head{padding-left:16px;padding-right:16px}
       .content{padding:14px}
-      .featured{
-        grid-template-columns:1fr;
-      }
-      .sidebar-left{
-        top:74px;
-      }
+      .featured{grid-template-columns:1fr}
+      .sidebar-left{top:74px}
       .cat-nav{
         flex-direction:row;
         max-height:none;
@@ -1053,21 +1072,81 @@
 
     @media (prefers-reduced-motion: reduce){
       html{scroll-behavior:auto}
-      *,*::before,*::after{
+      *,*::before::after{
         animation:none !important;
         transition:none !important;
       }
     }
+
+    /* ===== 优化增强：可读性、交互反馈、移动端体验 ===== */
+    :focus-visible{
+      outline:3px solid color-mix(in srgb, var(--accent) 70%, transparent);
+      outline-offset:3px;
+    }
+    ::selection{
+      background:color-mix(in srgb, var(--accent) 30%, transparent);
+      color:var(--text);
+    }
+    .brand-mark{
+      position:relative;
+      overflow:hidden;
+    }
+    .brand-mark::after{
+      content:"";
+      position:absolute;
+      inset:-40%;
+      background:linear-gradient(120deg, transparent 35%, rgba(255,255,255,.42), transparent 65%);
+      transform:translateX(-80%) rotate(12deg);
+      transition:transform .75s ease;
+    }
+    .brand:hover .brand-mark::after{transform:translateX(80%) rotate(12deg)}
+    .resource,.featured-card,.category,.panel{
+      will-change:transform;
+    }
+    .resource-title,.featured-card h3{
+      word-break:break-word;
+    }
+    .resource-desc{
+      display:-webkit-box;
+      -webkit-line-clamp:3;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+    }
+    .resource-link:active,.btn:active,.mini-btn:active,.tag:active{
+      transform:translateY(0) scale(.98);
+    }
+    .chip{max-width:100%; word-break:break-word;}
+    .modal-box,.form-box{
+      max-height:88vh;
+    }
+    .form-body{
+      max-height:62vh;
+      overflow:auto;
+    }
+    @media (max-width: 520px){
+      .nav-inner{align-items:flex-start; padding:10px 0;}
+      .nav-actions{width:100%; justify-content:flex-start;}
+      .btn{padding:9px 11px; font-size:13px;}
+      .hero h2{font-size:28px;}
+      .stats{grid-template-columns:1fr;}
+      .resource-meta{align-items:flex-start;}
+      .resource-actions{width:100%;}
+      .mini-btn,.drag-handle{flex:1 1 auto; text-align:center;}
+      .modal-head{flex-direction:column; align-items:stretch;}
+      .modal-hint{white-space:normal;}
+    }
+
   </style>
-</head>
+<link rel="stylesheet" href="/Static/css/Global.css"/><link rel="stylesheet" href="/Web/css/Global.css"/><link rel="stylesheet" href="/Web/css/SoruxGPT.css"/></head>
 <body>
+  <noscript><div style="padding:14px;text-align:center;background:#f59e0b;color:#111827;">当前页面需要启用 JavaScript 才能使用搜索、编辑和本地保存功能。</div></noscript>
   <header class="nav">
     <div class="nav-inner">
       <div class="brand">
         <div class="brand-mark">N</div>
         <div class="brand-text">
           <h1>资源导航站</h1>
-          <p>可前端在线编辑 · 本地保存 · 新增/修改/删除分类与资源</p>
+          <p>可前端在线编辑 · 本地保存 · 新增/修改/删除 · 拖拽排序</p>
         </div>
       </div>
 
@@ -1078,9 +1157,9 @@
           <a href="#sidebar">侧边栏</a>
           <a href="#about">关于</a>
         </nav>
-
         <button class="btn" id="openSearchBtn" type="button">🔎 搜索 <span class="kbd">Ctrl K</span></button>
         <button class="btn btn-primary" id="addResourceBtn" type="button">➕ 新增资源</button>
+        <button class="btn" id="addCategoryBtnTop" type="button">📁 新增分类</button>
         <button class="btn" id="themeBtn" type="button" aria-label="切换主题">🌙 深色</button>
       </div>
     </div>
@@ -1093,14 +1172,14 @@
           <span class="eyebrow">精选 · 可编辑 · 前端本地保存</span>
           <h2>把常用网站，整理成一个能直接编辑的入口。</h2>
           <p>
-            这一版已经改成纯前端可编辑：你可以直接在浏览器里新增、修改、删除资源；
-            分类也能在线维护，数据会自动保存到本地。
+            支持新增、修改、删除资源；支持新增、重命名、删除分类；
+            支持拖拽排序分类和资源；数据会自动保存到本地浏览器。
           </p>
 
           <div class="hero-meta">
             <span class="pill">✨ 清爽极简</span>
             <span class="pill">⚡ 在线编辑</span>
-            <span class="pill">📱 手机电脑自适应</span>
+            <span class="pill">↕ 拖拽排序</span>
             <span class="pill">🌓 深浅色切换</span>
           </div>
 
@@ -1113,6 +1192,13 @@
               <button class="btn btn-primary" id="clearBtn" type="button">清空搜索</button>
               <button class="btn" id="resetBtn" type="button">重置分类</button>
             </div>
+          </div>
+
+          <div class="top-tools" style="margin-top:14px;">
+            <button class="btn" id="exportBtn" type="button">⬇️ 导出数据</button>
+            <button class="btn" id="importBtn" type="button">⬆️ 导入数据</button>
+            <button class="btn btn-danger" id="restoreDefaultBtn" type="button">恢复默认</button>
+            <input id="importInput" type="file" accept="application/json" style="display:none;" />
           </div>
         </div>
 
@@ -1131,8 +1217,8 @@
               <div class="label">分类板块</div>
             </div>
             <div class="stat">
-              <div class="num">100%</div>
-              <div class="label">响应式适配</div>
+              <div class="num" id="saveStatus">已保存</div>
+              <div class="label">本地状态</div>
             </div>
           </div>
         </div>
@@ -1157,7 +1243,7 @@
         <div class="panel-head">
           <div>
             <h2 class="panel-title">资源列表</h2>
-            <div class="panel-sub">支持分类切换、搜索筛选、点击统计、在线编辑</div>
+            <div class="panel-sub">支持分类切换、搜索筛选、点击统计、在线编辑、拖拽排序</div>
           </div>
           <div class="chip" id="resultHint">已显示 0 条</div>
         </div>
@@ -1169,13 +1255,7 @@
           <div class="side-top">
             <div class="profile-wrap">
               <div class="profile-main">
-                <img
-                  class="avatar"
-                  id="profileAvatar"
-                  src=""
-                  alt="头像"
-                  referrerpolicy="no-referrer"
-                />
+                <img class="avatar" id="profileAvatar" src="" alt="头像" referrerpolicy="no-referrer" />
                 <div class="avatar-fallback" id="profileAvatarFallback" style="display:none;">N</div>
                 <div class="profile-text">
                   <h4 id="profileName">个人简介</h4>
@@ -1221,9 +1301,11 @@
               1. 点击资源卡片可直接访问。<br />
               2. 点击“新增资源”可在线添加。<br />
               3. 每个资源支持“编辑 / 删除 / 复制链接”。<br />
-              4. 分类可直接新增维护。<br />
-              5. 数据自动保存到本地浏览器。<br />
-              6. <strong>Ctrl/Cmd + K</strong> 打开顶部搜索弹层。
+              4. 分类支持“新增 / 重命名 / 删除”。<br />
+              5. 分类和资源都支持拖拽排序。<br />
+              6. 数据自动保存到本地浏览器。<br />
+              7. 支持导出 JSON 备份与导入恢复。<br />
+              8. <strong>Ctrl/Cmd + K</strong> 打开顶部搜索弹层。
             </div>
           </div>
         </section>
@@ -1232,7 +1314,7 @@
 
     <footer class="footer">
       <div class="inner">
-        <div>© 资源导航站 · 可编辑版 · 前端在线编辑 · 本地保存</div>
+        <div>© 资源导航站 · 可编辑版 · 前端在线编辑 · 本地保存 · 拖拽排序</div>
       </div>
     </footer>
   </main>
@@ -1325,74 +1407,73 @@
       {
         category: "想搜点什么?",
         items: [
-          { name: "海搜", url: "haisou.cc/", desc: "你可以轻松搜索任何想要的资源" }
+          { name: "海搜", url: "https://haisou.cc/", desc: "你可以轻松搜索任何想要的资源" }
         ]
       },
       {
         category: "AI 网站",
         items: [
-          { name: "Add LRA", url: "add.lra.cn", desc: "AI 网站入口 / 站点集合" },
-          { name: "ChatOpenS VIP", url: "vip.chatopens.vip/", desc: "AI 对话与工具入口" }
+          { name: "Add LRA", url: "https://add.lra.cn", desc: "AI 网站入口 / 站点集合" },
+          { name: "ChatOpenS VIP", url: "https://vip.chatopens.vip/", desc: "AI 对话与工具入口" }
         ]
       },
       {
         category: "网络安全 / 检测",
         items: [
-          { name: "黑客渗透", url: "ycc77.cn/", desc: "技术类资源站点" },
-          { name: "IP 检测", url: "ippure.com/", desc: "IP 查询与网络检测" },
-          { name: "翻墙工具", url: "nav.eooce.com/", desc: "网络工具导航" },
-          { name: "美国身份", url: "haoweichi.com/", desc: "相关信息入口" },
-          { name: "在线黑客", url: "i.zkaq.cn/", desc: "技术交流与工具站" },
-          { name: "黑客装逼", url: "www.crucix.live/", desc: "技术风格站点" }
+          { name: "黑客渗透", url: "https://ycc77.cn/", desc: "技术类资源站点" },
+          { name: "IP 检测", url: "https://ippure.com/", desc: "IP 查询与网络检测" },
+          { name: "翻墙工具", url: "https://nav.eooce.com/", desc: "网络工具导航" },
+          { name: "美国身份", url: "https://haoweichi.com/", desc: "相关信息入口" },
+          { name: "在线黑客", url: "https://i.zkaq.cn/", desc: "技术交流与工具站" },
+          { name: "黑客装逼", url: "https://www.crucix.live/", desc: "技术风格站点" }
         ]
       },
       {
         category: "办公平台 / 系统工具",
         items: [
-          { name: "办公平台", url: "duobaoyu.work/platform#", desc: "在线办公平台" },
+          { name: "办公平台", url: "https://duobaoyu.work/platform#", desc: "在线办公平台" },
           { name: "PDF", url: "https://pdfcandy.com/cn/", desc: "一体化在线 PDF 工具包" },
-          { name: "系统工具", url: "www.kdocs.cn/l/cjkZcTNs2vcU", desc: "文档与系统工具" },
-          { name: "MOD 资料", url: "www.kdocs.cn/l/cbOwP5Nc0fGQ", desc: "MOD 资源说明" },
+          { name: "系统工具", url: "https://www.kdocs.cn/l/cjkZcTNs2vcU", desc: "文档与系统工具" },
+          { name: "MOD 资料", url: "https://www.kdocs.cn/l/cbOwP5Nc0fGQ", desc: "MOD 资源说明" }
         ]
       },
       {
         category: "视频 / 影视 / 下载",
         items: [
           { name: "视频下载", url: "https://www.datatool.vip/", desc: "视频抓取 / 下载工具" },
-          { name: "视频下载2", url: "www.anytocopy.com/", desc: "视频抓取 / 下载工具" },
-          { name: "推特下载", url: "savetwitter.net/zh-cn3", desc: "X / Twitter 下载" },
-          { name: "免费电影", url: "youkutv.us", desc: "影视资源站点" },
-          { name: "电视剧", url: "kkys01.com", desc: "追剧资源站" },
-          { name: "影视都有", url: "kkys01.com/", desc: "综合影视站点" },
-		  { name: "影视都有2", url: "gaze.run/", desc: "综合影视站点" },
-          { name: "奈飞工厂", url: "www.netflixgc.com/", desc: "奈飞相关资源" }
+          { name: "视频下载2", url: "https://www.anytocopy.com/", desc: "视频抓取 / 下载工具" },
+          { name: "推特下载", url: "https://savetwitter.net/zh-cn3", desc: "X / Twitter 下载" },
+          { name: "免费电影", url: "https://youkutv.us", desc: "影视资源站点" },
+          { name: "电视剧", url: "https://kkys01.com", desc: "追剧资源站" },
+          { name: "影视都有", url: "https://kkys01.com/", desc: "综合影视站点" },
+          { name: "影视都有2", url: "https://gaze.run/", desc: "综合影视站点" },
+          { name: "奈飞工厂", url: "https://www.netflixgc.com/", desc: "奈飞相关资源" }
         ]
       },
       {
         category: "动漫 / 次元",
         items: [
-          { name: "动漫", url: "ios.mifun.org/", desc: "动画资源站" },
-		  { name: "动漫2", url: "www.agedm.io/", desc: "动画资源站" },
-          { name: "MiFun", url: "ios.mifun.org/", desc: "番剧与动漫入口" },
-          { name: "次元", url: "dimtown.com/", desc: "次元内容聚合" }
+          { name: "动漫", url: "https://ios.mifun.org/", desc: "动画资源站" },
+          { name: "动漫2", url: "https://www.agedm.io/", desc: "动画资源站" },
+          { name: "MiFun", url: "https://ios.mifun.org/", desc: "番剧与动漫入口" },
+          { name: "次元", url: "https://dimtown.com/", desc: "次元内容聚合" }
         ]
       },
-	  {
+      {
         category: "文件分享",
         items: [
-		
-          { name: "Wormhole", url: "wormhole.app/", desc: "快速传文件" },
-		  { name: "文件快递柜", url: "filebox.nnuu.nyc.mn/#/", desc: "文件传输" },
+          { name: "Wormhole", url: "https://wormhole.app/", desc: "快速传文件" },
+          { name: "文件快递柜", url: "https://filebox.nnuu.nyc.mn/#/", desc: "文件传输" }
         ]
       },
       {
         category: "设计 / 图片 / 海报",
         items: [
-          { name: "海报模板", url: "huaban.com/", desc: "海报灵感 / 图片素材" },
-          { name: "创客贴", url: "www.chuangkit.com/designtools/designindex", desc: "在线设计工具" },
-          { name: "无损放大", url: "bigjpg.com", desc: "图片无损放大" },
-          { name: "Ai 消除", url: "www.miankoutupian.com/tools", desc: "图片处理工具" },
-          { name: "Magic Eraser", url: "magiceraser.pro/zh/app", desc: "AI 去除图片元素" }
+          { name: "海报模板", url: "https://huaban.com/", desc: "海报灵感 / 图片素材" },
+          { name: "创客贴", url: "https://www.chuangkit.com/designtools/designindex", desc: "在线设计工具" },
+          { name: "无损放大", url: "https://bigjpg.com", desc: "图片无损放大" },
+          { name: "Ai 消除", url: "https://www.miankoutupian.com/tools", desc: "图片处理工具" },
+          { name: "Magic Eraser", url: "https://magiceraser.pro/zh/app", desc: "AI 去除图片元素" }
         ]
       },
       {
@@ -1411,18 +1492,18 @@
       {
         category: "工具 / 导航 / 其他",
         items: [
-          { name: "工具", url: "www.kdocs.cn/l/cu0qRXqpfy0U", desc: "先打开这个" },
-          { name: "工具大全", url: "www.zxmls.lol", desc: "工具集合站" },
-          { name: "南窗资源社", url: "www.nan2025.com/", desc: "资源社导航" },
-          { name: "黑科技", url: "iiihnsjn717.feishu.cn/wiki/L8n1wzMTJiuzS1k2W8dcfv7Dnlf", desc: "技巧与工具合集" },
-          { name: "代码飓风", url: "www.dmjfup.com/", desc: "代码与工具站" },
-          { name: "花猫导航", url: "huamao.vip/", desc: "导航集合站" },
-          { name: "迷鹿导航", url: "www.plnav.com/", desc: "资源导航站" },
-          { name: "甲方导航", url: "jiafangbb.com/", desc: "站点导航资源" },
+          { name: "工具", url: "https://www.kdocs.cn/l/cu0qRXqpfy0U", desc: "先打开这个" },
+          { name: "工具大全", url: "https://www.zxmls.lol", desc: "工具集合站" },
+          { name: "南窗资源社", url: "https://www.nan2025.com/", desc: "资源社导航" },
+          { name: "黑科技", url: "https://iiihnsjn717.feishu.cn/wiki/L8n1wzMTJiuzS1k2W8dcfv7Dnlf", desc: "技巧与工具合集" },
+          { name: "代码飓风", url: "https://www.dmjfup.com/", desc: "代码与工具站" },
+          { name: "花猫导航", url: "https://huamao.vip/", desc: "导航集合站" },
+          { name: "迷鹿导航", url: "https://www.plnav.com/", desc: "资源导航站" },
+          { name: "甲方导航", url: "https://jiafangbb.com/", desc: "站点导航资源" },
           { name: "软件大侠", url: "https://www.ruandaxia.com/", desc: "软件资源与工具导航站" },
-          { name: "字幕", url: "zm.i8k.tv/", desc: "字幕资源站" },
-          { name: "修复维修工具", url: "zh.ifixit.com/", desc: "维修教程与工具" },
-          { name: "测试 CPU / 显卡", url: "pc-builds.com/zh", desc: "硬件性能测试" }
+          { name: "字幕", url: "https://zm.i8k.tv/", desc: "字幕资源站" },
+          { name: "修复维修工具", url: "https://zh.ifixit.com/", desc: "维修教程与工具" },
+          { name: "测试 CPU / 显卡", url: "https://pc-builds.com/zh", desc: "硬件性能测试" }
         ]
       }
     ];
@@ -1430,63 +1511,174 @@
     const DEFAULT_PROFILE = {
       name: "个人简介",
       bio: "极简爱好者 / 资源整理 / 前端页面优化",
-      avatar: "https://oss-cdn.lra.cn/file/upload/2026/05/23/2058156095314071552.jpg"
+      avatar: ""
     };
 
-    const STORAGE_KEY = "nav_editable_data_v1";
+    const APP_STORE_KEY = "nav_app_state_v2";
     const STORE_THEME = "nav_theme_strong_v2";
-    const STORE_CLICK = "nav_clicks_strong_v2";
-    const STORE_RECENT = "nav_recent_strong_v2";
-    const STORE_PROFILE = "nav_profile_editable_v1";
 
-    function withIds(source){
-      return source.map((cat, cIdx) => ({
-        ...cat,
+    function createId(prefix = "id") {
+      if (window.crypto && crypto.randomUUID) return prefix + "_" + crypto.randomUUID();
+      return prefix + "_" + Date.now() + "_" + Math.random().toString(36).slice(2, 10);
+    }
+
+    function deepClone(obj) {
+      return JSON.parse(JSON.stringify(obj));
+    }
+
+    function normalizeUrl(raw) {
+      const value = String(raw || "").trim();
+      if (!value) return "";
+      try {
+        const hasProtocol = /^https?:\/\//i.test(value);
+        const url = hasProtocol ? new URL(value) : new URL("https://" + value.replace(/^\/\//, ""));
+        if (!["http:", "https:"].includes(url.protocol)) return "";
+        return url.toString();
+      } catch {
+        return "";
+      }
+    }
+
+    function normalizeText(str) {
+      return String(str || "").toLowerCase().replace(/\s+/g, "").trim();
+    }
+
+    function getHost(url) {
+      try {
+        const u = new URL(normalizeUrl(url));
+        return u.hostname.replace(/^www\./, "");
+      } catch {
+        return url || "";
+      }
+    }
+
+    function slugify(str) {
+      return String(str || "")
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, "-")
+        .replace(/[\/]/g, "-")
+        .replace(/[（）()]/g, "")
+        .replace(/[^a-z0-9\u4e00-\u9fa5\-]/g, "");
+    }
+
+    function withIds(source) {
+      return (source || []).map((cat, cIdx) => ({
+        id: cat.id || createId("cat"),
+        category: (cat.category || "").trim() || ("未命名分类" + (cIdx + 1)),
         items: (cat.items || []).map((item, iIdx) => ({
-          ...item,
-          id: item.id || `init_${cIdx}_${iIdx}_${Math.random().toString(36).slice(2,8)}`,
-          order: item.order || (cIdx * 1000 + iIdx)
+          id: item.id || createId("res"),
+          name: (item.name || "").trim(),
+          url: normalizeUrl(item.url || ""),
+          desc: (item.desc || "").trim(),
+          order: Number.isFinite(item.order) ? item.order : (cIdx * 1000 + iIdx)
         }))
       }));
     }
 
-    function loadData(){
-      try{
-        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
-        if (saved && Array.isArray(saved) && saved.length) return withIds(saved);
-      }catch(e){}
-      return withIds(DEFAULT_DATA);
+    function getDefaultState() {
+      return {
+        version: 2,
+        data: withIds(DEFAULT_DATA),
+        profile: { ...DEFAULT_PROFILE },
+        clickMap: {},
+        recent: []
+      };
     }
 
-    function saveData(){
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-    }
+    function migrateLegacyState() {
+      try {
+        const saved = JSON.parse(localStorage.getItem("nav_editable_data_v1") || "null");
+        const profile = JSON.parse(localStorage.getItem("nav_profile_editable_v1") || "null");
+        const clickMap = JSON.parse(localStorage.getItem("nav_clicks_strong_v2") || "{}");
+        const recent = JSON.parse(localStorage.getItem("nav_recent_strong_v2") || "[]");
 
-    function loadProfile(){
-      try{
-        const saved = JSON.parse(localStorage.getItem(STORE_PROFILE) || "null");
-        if (saved && typeof saved === "object") {
+        if (saved && Array.isArray(saved) && saved.length) {
           return {
-            name: saved.name || DEFAULT_PROFILE.name,
-            bio: saved.bio || DEFAULT_PROFILE.bio,
-            avatar: saved.avatar || DEFAULT_PROFILE.avatar
+            version: 2,
+            data: withIds(saved),
+            profile: {
+              name: profile?.name || DEFAULT_PROFILE.name,
+              bio: profile?.bio || DEFAULT_PROFILE.bio,
+              avatar: profile?.avatar || DEFAULT_PROFILE.avatar
+            },
+            clickMap: clickMap && typeof clickMap === "object" ? clickMap : {},
+            recent: Array.isArray(recent) ? recent : []
           };
         }
-      }catch(e){}
-      return { ...DEFAULT_PROFILE };
+      } catch {}
+      return null;
     }
 
-    function saveProfile(){
-      localStorage.setItem(STORE_PROFILE, JSON.stringify(profile));
+    function sanitizeState(state) {
+      const safe = state && typeof state === "object" ? state : getDefaultState();
+      const data = withIds(Array.isArray(safe.data) ? safe.data : DEFAULT_DATA);
+      const validIds = new Set(data.flatMap(cat => cat.items.map(item => item.id)));
+
+      const clickMap = {};
+      const rawClicks = safe.clickMap && typeof safe.clickMap === "object" ? safe.clickMap : {};
+      Object.keys(rawClicks).forEach(id => {
+        if (validIds.has(id)) clickMap[id] = Number(rawClicks[id]) || 0;
+      });
+
+      const recentRaw = Array.isArray(safe.recent) ? safe.recent : [];
+      const recent = recentRaw.filter(item => item && validIds.has(item.id)).slice(0, 6);
+
+      return {
+        version: 2,
+        data,
+        profile: {
+          name: safe.profile?.name || DEFAULT_PROFILE.name,
+          bio: safe.profile?.bio || DEFAULT_PROFILE.bio,
+          avatar: safe.profile?.avatar || DEFAULT_PROFILE.avatar
+        },
+        clickMap,
+        recent
+      };
     }
 
-    let data = loadData();
-    let profile = loadProfile();
-    let clickMap = JSON.parse(localStorage.getItem(STORE_CLICK) || "{}");
+    function loadAppState() {
+      try {
+        const raw = JSON.parse(localStorage.getItem(APP_STORE_KEY) || "null");
+        if (raw && typeof raw === "object") return sanitizeState(raw);
+      } catch {}
+      const legacy = migrateLegacyState();
+      if (legacy) return sanitizeState(legacy);
+      return getDefaultState();
+    }
+
+    function saveStatus(text) {
+      const el = document.getElementById("saveStatus");
+      if (el) el.textContent = text;
+    }
+
+    function saveAppState() {
+      try {
+        const stateToSave = sanitizeState({
+          version: 2,
+          data,
+          profile,
+          clickMap,
+          recent
+        });
+        localStorage.setItem(APP_STORE_KEY, JSON.stringify(stateToSave));
+        saveStatus("已保存");
+      } catch {
+        saveStatus("保存失败");
+        alert("本地保存失败，可能是浏览器存储空间不足。");
+      }
+    }
+
+    let appState = loadAppState();
+    let data = appState.data;
+    let profile = appState.profile;
+    let clickMap = appState.clickMap;
+    let recent = appState.recent;
 
     const allItems = () => data.flatMap(cat => cat.items.map(item => ({
       ...item,
-      category: cat.category
+      category: cat.category,
+      categoryId: cat.id
     })));
 
     const htmlEl = document.documentElement;
@@ -1504,6 +1696,12 @@
     const resetBtn = document.getElementById("resetBtn");
     const openSearchBtn = document.getElementById("openSearchBtn");
     const addResourceBtn = document.getElementById("addResourceBtn");
+    const addCategoryBtnTop = document.getElementById("addCategoryBtnTop");
+    const exportBtn = document.getElementById("exportBtn");
+    const importBtn = document.getElementById("importBtn");
+    const importInput = document.getElementById("importInput");
+    const restoreDefaultBtn = document.getElementById("restoreDefaultBtn");
+
     const siteCount = document.getElementById("siteCount");
     const clickCount = document.getElementById("clickCount");
     const categoryCount = document.getElementById("categoryCount");
@@ -1551,37 +1749,17 @@
     let editing = null;
     let observer;
 
-    function normalizeText(str){
-      return (str || "").toLowerCase().replace(/\s+/g, "").trim();
-    }
+    const dragState = {
+      type: "",
+      id: "",
+      fromCategoryId: ""
+    };
 
-    function normalizeUrl(raw){
-      const value = String(raw || "").trim();
-      if (!value) return "";
-      try {
-        const hasProtocol = /^https?:\/\//i.test(value);
-        const url = hasProtocol ? new URL(value) : new URL("https://" + value.replace(/^\/\//, ""));
-        if (!["http:", "https:"].includes(url.protocol)) return "";
-        return url.toString();
-      } catch {
-        return "";
-      }
-    }
-
-    function getHost(url){
-      try {
-        const u = new URL(normalizeUrl(url));
-        return u.hostname.replace(/^www\./, "");
-      } catch {
-        return url || "";
-      }
-    }
-
-    function getClick(id){
+    function getClick(id) {
       return clickMap[id] || 0;
     }
 
-    function copyText(text){
+    function copyText(text) {
       if (!text) return;
       if (navigator.clipboard && window.isSecureContext) {
         navigator.clipboard.writeText(text);
@@ -1597,11 +1775,11 @@
       }
     }
 
-    function getAvatarLetter(name){
+    function getAvatarLetter(name) {
       return (name || "N").trim().charAt(0).toUpperCase() || "N";
     }
 
-    function renderProfile(){
+    function renderProfile() {
       profileName.textContent = profile.name || DEFAULT_PROFILE.name;
       profileBio.textContent = profile.bio || DEFAULT_PROFILE.bio;
       profileAvatarFallback.textContent = getAvatarLetter(profile.name);
@@ -1616,18 +1794,18 @@
 
       profileAvatarFallback.style.display = "none";
       profileAvatar.style.display = "block";
-      profileAvatar.onerror = function(){
+      profileAvatar.onerror = function() {
         this.style.display = "none";
         profileAvatarFallback.style.display = "grid";
       };
-      profileAvatar.onload = function(){
+      profileAvatar.onload = function() {
         this.style.display = "block";
         profileAvatarFallback.style.display = "none";
       };
       profileAvatar.src = avatarUrl;
     }
 
-    function openProfileEditor(){
+    function openProfileEditor() {
       profileNameInput.value = profile.name || "";
       profileBioInput.value = profile.bio || "";
       profileAvatarInput.value = profile.avatar || "";
@@ -1636,43 +1814,42 @@
       document.body.style.overflow = "hidden";
     }
 
-    function closeProfileEditor(){
+    function closeProfileEditor() {
       profileModal.classList.remove("show");
       profileModal.setAttribute("aria-hidden", "true");
       document.body.style.overflow = "";
     }
 
-    function saveProfileEditor(){
+    function saveProfileEditor() {
       profile = {
         name: profileNameInput.value.trim() || DEFAULT_PROFILE.name,
         bio: profileBioInput.value.trim() || DEFAULT_PROFILE.bio,
         avatar: profileAvatarInput.value.trim() || ""
       };
-      saveProfile();
+      saveAppState();
       renderProfile();
       closeProfileEditor();
     }
 
-    function resetProfileEditor(){
+    function resetProfileEditor() {
       if (!confirm("确定恢复默认个人资料吗？")) return;
       profile = { ...DEFAULT_PROFILE };
-      saveProfile();
+      saveAppState();
       renderProfile();
       profileNameInput.value = profile.name;
       profileBioInput.value = profile.bio;
       profileAvatarInput.value = profile.avatar;
     }
 
-    function saveRecent(item){
-      const old = JSON.parse(localStorage.getItem(STORE_RECENT) || "[]");
-      const next = [item, ...old.filter(x => x.id !== item.id)].slice(0, 6);
-      localStorage.setItem(STORE_RECENT, JSON.stringify(next));
+    function saveRecent(item) {
+      recent = [item, ...recent.filter(x => x.id !== item.id)].slice(0, 6);
+      saveAppState();
       renderRecent();
     }
 
-    function setClick(id){
-      clickMap[id] = (clickMap[id] || 0) + 1;
-      localStorage.setItem(STORE_CLICK, JSON.stringify(clickMap));
+    function setClick(id) {
+      clickMap[id] = (clickMap[id] ||0) + 1;
+      saveAppState();
       updateStats();
       renderHot();
       renderFeatured();
@@ -1680,23 +1857,13 @@
       if (searchModal.classList.contains("show")) renderSearchResults();
     }
 
-    function applyTheme(theme){
+    function applyTheme(theme) {
       htmlEl.setAttribute("data-theme", theme);
       localStorage.setItem(STORE_THEME, theme);
       themeBtn.textContent = theme === "dark" ? "🌙 深色" : "☀️ 浅色";
     }
 
-    function slugify(str){
-      return String(str || "")
-        .trim()
-        .toLowerCase()
-        .replace(/\s+/g, "-")
-        .replace(/[\/]/g, "-")
-        .replace(/[（）()]/g, "")
-        .replace(/[^a-z0-9\u4e00-\u9fa5\-]/g, "");
-    }
-
-    function filteredItems(){
+    function filteredItems() {
       const kw = normalizeText(state.query);
       return allItems().filter(item => {
         const catMatch = state.activeCategory === "全部" || item.category === state.activeCategory;
@@ -1705,24 +1872,24 @@
       });
     }
 
-    function renderCategoryNav(){
+    function renderCategoryNav() {
       const counts = data.map(cat => ({
         category: cat.category,
         count: cat.items.length,
         id: slugify(cat.category)
       }));
 
-      leftCountChip.textContent = `${counts.length} 类`;
+      leftCountChip.textContent = counts.length + " 类";
 
       catNav.innerHTML = counts.map(c => `
-        <button class="cat-btn ${state.activeCategory === c.category ? "active" : ""}" type="button" data-cat="${c.category}" data-id="${c.id}">
-          <span>${c.category}</span>
+        <button class="cat-btn ${state.activeCategory === c.category ? "active" : ""}" type="button" data-cat="${escapeAttr(c.category)}" data-id="${escapeAttr(c.id)}">
+          <span>${escapeHtml(c.category)}</span>
           <span class="cat-count">${c.count} 个</span>
         </button>
       `).join("") + `
         <button class="cat-btn" type="button" id="addCategoryBtn">
           <span>➕ 新增分类</span>
-          <span class="cat-count">编辑</span>
+          <span class="cat-count">管理</span>
         </button>
       `;
 
@@ -1742,25 +1909,13 @@
       });
 
       const addCategoryBtn = document.getElementById("addCategoryBtn");
-      addCategoryBtn.addEventListener("click", () => {
-        const name = prompt("请输入新分类名称：");
-        if (!name) return;
-        const clean = name.trim();
-        if (!clean) return;
-        if (data.some(d => d.category === clean)) {
-          alert("该分类已存在");
-          return;
-        }
-        data.push({ category: clean, items: [] });
-        saveData();
-        renderAll();
-      });
+      if (addCategoryBtn) addCategoryBtn.addEventListener("click", createCategory);
     }
 
-    function renderTags(){
+    function renderTags() {
       const tags = ["全部", ...data.map(d => d.category)];
       tagList.innerHTML = tags.map(tag => `
-        <button class="tag ${tag === state.activeCategory ? "active" : ""}" type="button" data-tag="${tag}">${tag}</button>
+        <button class="tag ${tag === state.activeCategory ? "active" : ""}" type="button" data-tag="${escapeAttr(tag)}">${escapeHtml(tag)}</button>
       `).join("");
 
       tagList.querySelectorAll("[data-tag]").forEach(btn => {
@@ -1776,9 +1931,7 @@
       });
     }
 
-    function renderFeatured(){
-      if (!hotFeatured) return;
-
+    function renderFeatured() {
       const items = [...filteredItems()]
         .sort((a, b) => {
           const diff = getClick(b.id) - getClick(a.id);
@@ -1793,12 +1946,12 @@
         const href = normalizeUrl(item.url);
         const isDisabled = !href;
         return `
-          <a class="featured-card ${isDisabled ? "disabled" : ""}" href="${isDisabled ? "javascript:void(0)" : href}" target="_blank" rel="noopener noreferrer" data-id="${item.id}" aria-disabled="${isDisabled ? "true" : "false"}">
+          <a class="featured-card ${isDisabled ? "disabled" : ""}" href="${isDisabled ? "javascript:void(0)" : href}" target="_blank" rel="noopener noreferrer" data-id="${escapeAttr(item.id)}" aria-disabled="${isDisabled ? "true" : "false"}">
             <span class="badge">推荐 ${String(idx + 1).padStart(2, "0")}</span>
-            <h3>${item.name}</h3>
-            <p>${item.desc || "暂无简介"}</p>
+            <h3>${escapeHtml(item.name)}</h3>
+            <p>${escapeHtml(item.desc || "暂无简介")}</p>
             <div class="meta">
-              <span>${item.category}</span>
+              <span>${escapeHtml(item.category)}</span>
               <span>点击 ${getClick(item.id)} 次</span>
             </div>
           </a>
@@ -1806,7 +1959,7 @@
       }).join("");
     }
 
-    function renderHot(){
+    function renderHot() {
       const items = [...filteredItems()]
         .sort((a, b) => {
           const diff = getClick(b.id) - getClick(a.id);
@@ -1819,16 +1972,15 @@
         const href = normalizeUrl(item.url);
         const isDisabled = !href;
         return `
-          <a class="hot-item ${isDisabled ? "disabled" : ""}" href="${isDisabled ? "javascript:void(0)" : href}" target="_blank" rel="noopener noreferrer" data-id="${item.id}">
-            <strong>${item.name}</strong>
-            <span>${item.category} · ${getClick(item.id)} 次点击</span>
+          <a class="hot-item ${isDisabled ? "disabled" : ""}" href="${isDisabled ? "javascript:void(0)" : href}" target="_blank" rel="noopener noreferrer" data-id="${escapeAttr(item.id)}">
+            <strong>${escapeHtml(item.name)}</strong>
+            <span>${escapeHtml(item.category)} · ${getClick(item.id)} 次点击</span>
           </a>
         `;
       }).join("") || `<div class="empty" style="padding:12px 0;">暂无热门项</div>`;
     }
 
-    function renderRecent(){
-      const recent = JSON.parse(localStorage.getItem(STORE_RECENT) || "[]");
+    function renderRecent() {
       if (!recent.length) {
         recentList.innerHTML = `<div class="panel-sub" style="font-size:12px;">暂无最近访问，点击任意资源后会记录到这里。</div>`;
         return;
@@ -1838,15 +1990,15 @@
         const href = normalizeUrl(item.url);
         const isDisabled = !href;
         return `
-          <a class="recent-item ${isDisabled ? "disabled" : ""}" href="${isDisabled ? "javascript:void(0)" : href}" target="_blank" rel="noopener noreferrer" data-id="${item.id}">
-            <strong>${item.name}</strong>
-            <span>${item.category}</span>
+          <a class="recent-item ${isDisabled ? "disabled" : ""}" href="${isDisabled ? "javascript:void(0)" : href}" target="_blank" rel="noopener noreferrer" data-id="${escapeAttr(item.id)}">
+            <strong>${escapeHtml(item.name)}</strong>
+            <span>${escapeHtml(item.category)}</span>
           </a>
         `;
       }).join("");
     }
 
-    function renderSearchResults(){
+    function renderSearchResults() {
       const kw = normalizeText(modalSearchInput.value || state.query);
       const items = allItems().filter(item => {
         const text = normalizeText([item.name, item.url, item.desc, item.category, getHost(item.url)].join(" "));
@@ -1872,10 +2024,10 @@
         const href = normalizeUrl(item.url);
         const isDisabled = !href;
         return `
-          <a class="search-result ${isDisabled ? "disabled" : ""}" href="${isDisabled ? "javascript:void(0)" : href}" target="_blank" rel="noopener noreferrer" data-id="${item.id}">
+          <a class="search-result ${isDisabled ? "disabled" : ""}" href="${isDisabled ? "javascript:void(0)" : href}" target="_blank" rel="noopener noreferrer" data-id="${escapeAttr(item.id)}">
             <div>
-              <strong>${item.name}</strong>
-              <span>${item.category} · ${item.desc || ""}</span>
+              <strong>${escapeHtml(item.name)}</strong>
+              <span>${escapeHtml(item.category)} · ${escapeHtml(item.desc || "")}</span>
             </div>
             <div class="go">打开</div>
           </a>
@@ -1883,27 +2035,29 @@
       }).join("");
     }
 
-    function renderResources(){
+    function renderResources() {
       const kw = normalizeText(state.query);
-      const filteredCats = data
+      const visibleCats = data
         .map(cat => {
           const catId = slugify(cat.category);
+          const catMatch = state.activeCategory === "全部" || cat.category === state.activeCategory;
           const items = cat.items.filter(item => {
-            const catMatch = state.activeCategory === "全部" || cat.category === state.activeCategory;
             const text = normalizeText([item.name, item.url, item.desc, cat.category, getHost(item.url)].join(" "));
             return catMatch && text.includes(kw);
           });
-          return { ...cat, items, id: catId };
+
+          const keepEmpty = catMatch && !kw;
+          return { ...cat, items, domId: catId, keepEmpty };
         })
-        .filter(cat => cat.items.length > 0);
+        .filter(cat => cat.items.length > 0 || cat.keepEmpty);
 
       const totalItems = allItems().length;
-      const visibleItems = filteredCats.reduce((sum, cat) => sum + cat.items.length, 0);
+      const visibleItems = visibleCats.reduce((sum, cat) => sum + cat.items.length, 0);
       resultHint.textContent = (kw || state.activeCategory !== "全部")
         ? `已显示 ${visibleItems} 条`
         : `已显示 ${totalItems} 条`;
 
-      if (!filteredCats.length) {
+      if (!visibleCats.length) {
         resourceRoot.innerHTML = `
           <div class="empty">
             没有找到相关资源，试试输入：<strong>AI</strong>、<strong>游戏</strong>、<strong>影视</strong>、<strong>工具</strong>、<strong>设计</strong>
@@ -1912,66 +2066,82 @@
         return;
       }
 
-      resourceRoot.innerHTML = filteredCats.map(cat => `
-        <section class="category" id="${cat.id}">
+      resourceRoot.innerHTML = visibleCats.map(cat => `
+        <section class="category" id="${escapeAttr(cat.domId)}" data-category-block="${escapeAttr(cat.id)}">
           <div class="category-head">
-            <h3>${cat.category}</h3>
-            <div class="count">${cat.items.length} 个资源</div>
+            <div class="category-title-wrap">
+              <h3>${escapeHtml(cat.category)}</h3>
+              <div class="count">${cat.items.length} 个资源</div>
+            </div>
+            <div class="category-tools">
+              <button class="drag-handle" type="button" draggable="true" data-drag-category="${escapeAttr(cat.id)}" title="拖拽排序分类">↕</button>
+              <button class="mini-btn" type="button" data-add-in-category="${escapeAttr(cat.id)}">新增资源</button>
+              <button class="mini-btn" type="button" data-rename-category="${escapeAttr(cat.id)}">重命名</button>
+              <button class="mini-btn danger" type="button" data-delete-category="${escapeAttr(cat.id)}">删除分类</button>
+            </div>
           </div>
           <div class="card-grid">
-            ${cat.items.map(item => {
+            ${cat.items.length ? cat.items.map(item => {
               const href = normalizeUrl(item.url);
               const isDisabled = !href;
               const host = getHost(item.url);
               const click = getClick(item.id);
-
               return `
-                <article class="resource reveal" data-resource="${item.id}">
+                <article class="resource reveal" data-resource="${escapeAttr(item.id)}" draggable="false">
                   <div class="resource-top">
-                    <h4 class="resource-title">${item.name}</h4>
+                    <h4 class="resource-title">${escapeHtml(item.name)}</h4>
                     <span class="resource-badge">${click ? `🔥 ${click}` : "新站"}</span>
                   </div>
-
-                  <div class="resource-desc">${item.desc || "暂无简介"}</div>
-
+                  <div class="resource-desc">${escapeHtml(item.desc || "暂无简介")}</div>
                   <div class="resource-meta">
                     <div class="meta-left">
-                      <span class="chip">域名：${host}</span>
+                      <span class="chip">域名：${escapeHtml(host)}</span>
                       <span class="chip">点击：${click}</span>
                     </div>
                     <div class="resource-actions">
-                      <button class="mini-btn" type="button" data-edit="${item.id}">编辑</button>
-                      <button class="mini-btn danger" type="button" data-delete="${item.id}">删除</button>
-                      <button class="mini-btn" type="button" data-copy="${href}">复制</button>
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="${escapeAttr(item.id)}" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="${escapeAttr(item.id)}">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="${escapeAttr(item.id)}">删除</button>
+                      <button class="mini-btn" type="button" data-copy="${escapeAttr(href)}">复制</button>
                     </div>
                   </div>
-
                   <a class="resource-link ${isDisabled ? "disabled" : ""}"
-                    href="${isDisabled ? "javascript:void(0)" : href}"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-disabled="${isDisabled ? "true" : "false"}"
-                    data-id="${item.id}">
-                    访问站点 →
+                     href="${isDisabled ? "javascript:void(0)" : href}"
+                     target="_blank"
+                     rel="noopener noreferrer"
+                     aria-disabled="${isDisabled ? "true" : "false"}"
+                     data-id="${escapeAttr(item.id)}">
+                     访问站点 →
                   </a>
                 </article>
               `;
-            }).join("")}
+            }).join("") : `<div class="empty">当前分类还没有资源，点击右上角“新增资源”开始添加。</div>`}
           </div>
         </section>
       `).join("");
 
       observeReveals();
       updateLeftActive();
+      bindDragSort();
     }
 
-    function updateStats(){
+    function updateStats() {
       siteCount.textContent = allItems().length;
       categoryCount.textContent = data.length;
       clickCount.textContent = Object.values(clickMap).reduce((sum, n) => sum + n, 0);
     }
 
-    function syncSearch(value){
+    function debounce(fn, delay = 120) {
+      let timer = null;
+      return function(...args) {
+        clearTimeout(timer);
+        timer = setTimeout(() => fn.apply(this, args), delay);
+      };
+    }
+
+    const debouncedSyncSearch = debounce(syncSearch, 120);
+
+    function syncSearch(value) {
       state.query = value;
       searchInputs.forEach(input => {
         if (input.value !== value) input.value = value;
@@ -1984,7 +2154,7 @@
       updateLeftActive();
     }
 
-    function openSearchModal(){
+    function openSearchModal() {
       searchModal.classList.add("show");
       searchModal.setAttribute("aria-hidden", "false");
       document.body.style.overflow = "hidden";
@@ -1993,13 +2163,13 @@
       setTimeout(() => modalSearchInput.focus(), 0);
     }
 
-    function closeSearchModal(){
+    function closeSearchModal() {
       searchModal.classList.remove("show");
       searchModal.setAttribute("aria-hidden", "true");
       document.body.style.overflow = "";
     }
 
-    function updateLeftActive(){
+    function updateLeftActive() {
       const sections = [...document.querySelectorAll(".category")];
       if (!sections.length) return;
 
@@ -2024,7 +2194,7 @@
       });
     }
 
-    function observeReveals(){
+    function observeReveals() {
       if (observer) observer.disconnect();
 
       observer = new IntersectionObserver((entries) => {
@@ -2039,15 +2209,15 @@
       document.querySelectorAll(".reveal:not(.visible)").forEach(el => observer.observe(el));
     }
 
-    function renderEditorCategoryOptions(){
+    function renderEditorCategoryOptions() {
       editCategory.innerHTML = `
         <option value="">请选择分类</option>
-        ${data.map(cat => `<option value="${cat.category}">${cat.category}</option>`).join("")}
+        ${data.map(cat => `<option value="${escapeAttr(cat.category)}">${escapeHtml(cat.category)}</option>`).join("")}
       `;
     }
 
-    function openEditor(type = "new", categoryIndex = 0, itemIndex = -1){
-      editing = { type, categoryIndex, itemIndex };
+    function openEditor(type = "new", categoryId = "", itemId = "") {
+      editing = { type, categoryId, itemId };
       renderEditorCategoryOptions();
 
       if (type === "new") {
@@ -2056,16 +2226,17 @@
         editName.value = "";
         editUrl.value = "";
         editDesc.value = "";
-        editCategory.value = data[0]?.category || "";
+        editCategory.value = data.find(x => x.id === categoryId)?.category || data[0]?.category || "";
         newCategory.value = "";
       } else {
-        const item = data[categoryIndex].items[itemIndex];
+        const located = findItemById(itemId);
+        if (!located) return;
         editorTitle.textContent = "编辑资源";
         deleteEditBtn.style.display = "inline-flex";
-        editName.value = item.name || "";
-        editUrl.value = item.url || "";
-        editDesc.value = item.desc || "";
-        editCategory.value = data[categoryIndex].category;
+        editName.value = located.item.name || "";
+        editUrl.value = located.item.url || "";
+        editDesc.value = located.item.desc || "";
+        editCategory.value = located.category.category;
         newCategory.value = "";
       }
 
@@ -2074,34 +2245,126 @@
       document.body.style.overflow = "hidden";
     }
 
-    function closeEditor(){
+    function closeEditor() {
       editorModal.classList.remove("show");
       editorModal.setAttribute("aria-hidden", "true");
       document.body.style.overflow = "";
       editing = null;
     }
 
-    function saveEditor(){
+    function findCategoryById(categoryId) {
+      return data.find(cat => cat.id === categoryId) || null;
+    }
+
+    function findItemById(itemId) {
+      for (const category of data) {
+        const item = category.items.find(x => x.id === itemId);
+        if (item) return { category, item };
+      }
+      return null;
+    }
+
+    function ensureCategory(categoryName) {
+      const clean = String(categoryName || "").trim();
+      if (!clean) return null;
+      let found = data.find(cat => cat.category === clean);
+      if (found) return found;
+      found = {
+        id: createId("cat"),
+        category: clean,
+        items: []
+      };
+      data.push(found);
+      return found;
+    }
+
+    function createCategory() {
+      const name = prompt("请输入新分类名称：");
+      if (!name) return;
+      const clean = name.trim();
+      if (!clean) return;
+      if (data.some(d => d.category === clean)) {
+        alert("该分类已存在");
+        return;
+      }
+      data.push({
+        id: createId("cat"),
+        category: clean,
+        items: []
+      });
+      saveAppState();
+      renderAll();
+    }
+
+    function renameCategory(categoryId) {
+      const category = findCategoryById(categoryId);
+      if (!category) return;
+      const name = prompt("请输入新的分类名称：", category.category);
+      if (!name) return;
+      const clean = name.trim();
+      if (!clean) return;
+      if (clean !== category.category && data.some(d => d.category === clean)) {
+        alert("该分类已存在");
+        return;
+      }
+
+      const oldName = category.category;
+      category.category = clean;
+
+      recent = recent.map(item => item.categoryId === categoryId
+        ? { ...item, category: clean }
+        : item
+      );
+
+      if (state.activeCategory === oldName) state.activeCategory = clean;
+
+      saveAppState();
+      renderAll();
+    }
+
+    function deleteCategory(categoryId) {
+      const category = findCategoryById(categoryId);
+      if (!category) return;
+
+      const total = category.items.length;
+      const ok = confirm(`确定删除分类「${category.category}」吗？\n该分类下 ${total} 个资源也会一起删除。`);
+      if (!ok) return;
+
+      const removeIds = new Set(category.items.map(item => item.id));
+      data = data.filter(cat => cat.id !== categoryId);
+
+      Object.keys(clickMap).forEach(id => {
+        if (removeIds.has(id)) delete clickMap[id];
+      });
+
+      recent = recent.filter(item => !removeIds.has(item.id));
+
+      if (state.activeCategory === category.category) state.activeCategory = "全部";
+
+      saveAppState();
+      renderAll();
+    }
+
+    function saveEditor() {
       const name = editName.value.trim();
-      const url = editUrl.value.trim();
+      const url = normalizeUrl(editUrl.value.trim());
       const desc = editDesc.value.trim();
       const customCat = newCategory.value.trim();
       const categoryName = customCat || editCategory.value;
 
       if (!name) return alert("请输入资源名称");
       if (!categoryName) return alert("请选择或填写分类");
-      if (!url) return alert("请输入链接");
+      if (!url) return alert("请输入正确的链接");
 
-      const targetCategoryIndex = (() => {
-        const idx = data.findIndex(x => x.category === categoryName);
-        if (idx >= 0) return idx;
-        data.push({ category: categoryName, items: [] });
-        return data.length - 1;
-      })();
+      const targetCategory = ensureCategory(categoryName);
+      if (!targetCategory) return alert("分类无效");
 
-      if (editing && editing.type === "resource") {
-        const oldCat = data[editing.categoryIndex];
-        const oldItem = oldCat.items[editing.itemIndex];
+      if (editing && editing.type === "resource" && editing.itemId) {
+        const located = findItemById(editing.itemId);
+        if (!located) return;
+
+        const oldCategory = located.category;
+        const oldItem = located.item;
         const updated = {
           ...oldItem,
           name,
@@ -2109,39 +2372,240 @@
           desc
         };
 
-        oldCat.items.splice(editing.itemIndex, 1);
-        data[targetCategoryIndex].items.push(updated);
+        oldCategory.items = oldCategory.items.filter(x => x.id !== oldItem.id);
+        targetCategory.items.push(updated);
+
+        recent = recent.map(item => item.id === oldItem.id
+          ? { ...item, name, url, desc, category: targetCategory.category, categoryId: targetCategory.id }
+          : item
+        );
       } else {
-        const id = `c${Date.now()}_${Math.random().toString(36).slice(2,8)}`;
-        const order = Date.now();
-        data[targetCategoryIndex].items.push({
+        targetCategory.items.push({
+          id: createId("res"),
           name,
           url,
           desc,
-          id,
-          order
+          order: Date.now()
         });
       }
 
-      data = data.filter(cat => cat.items.length > 0);
-      saveData();
+      refreshOrders();
+      saveAppState();
       closeEditor();
       renderAll();
     }
 
-    function deleteEditorItem(){
-      if (!editing || editing.type !== "resource") return;
-      const item = data[editing.categoryIndex].items[editing.itemIndex];
-      if (!confirm(`确定删除「${item.name}」吗？`)) return;
+    function deleteEditorItem() {
+      if (!editing || editing.type !== "resource" || !editing.itemId) return;
+      deleteItemById(editing.itemId, true);
+    }
 
-      data[editing.categoryIndex].items.splice(editing.itemIndex, 1);
-      data = data.filter(cat => cat.items.length > 0);
-      saveData();
-      closeEditor();
+    function deleteItemById(itemId, closeAfter = false) {
+      const located = findItemById(itemId);
+      if (!located) return;
+
+      if (!confirm(`确定删除「${located.item.name}」吗？`)) return;
+
+      located.category.items = located.category.items.filter(x => x.id !== itemId);
+      delete clickMap[itemId];
+      recent = recent.filter(item => item.id !== itemId);
+
+      saveAppState();
+      if (closeAfter) closeEditor();
       renderAll();
     }
 
-    function renderAll(){
+    function moveInArray(arr, fromIndex, toIndex) {
+      if (fromIndex < 0 || toIndex < 0 || fromIndex === toIndex) return arr;
+      const next = [...arr];
+      const moved = next.splice(fromIndex, 1)[0];
+      next.splice(toIndex, 0, moved);
+      return next;
+    }
+
+    function refreshOrders() {
+      data.forEach((category, cIndex) => {
+        category.items.forEach((item, iIndex) => {
+          item.order = cIndex * 1000 + iIndex;
+        });
+      });
+    }
+
+    function clearDragClasses() {
+      document.querySelectorAll(".dragging,.drag-over").forEach(el => {
+        el.classList.remove("dragging", "drag-over");
+      });
+      document.querySelectorAll(".drag-active").forEach(el => {
+        el.classList.remove("drag-active");
+      });
+    }
+
+    function bindDragSort() {
+      bindCategoryDragSort();
+      bindResourceDragSort();
+    }
+
+    function bindCategoryDragSort() {
+      document.querySelectorAll("[data-drag-category]").forEach(handle => {
+        handle.addEventListener("dragstart", e => {
+          const categoryId = handle.getAttribute("data-drag-category");
+          dragState.type = "category";
+          dragState.id = categoryId;
+          dragState.fromCategoryId = "";
+
+          const block = document.querySelector(`[data-category-block="${CSS.escape(categoryId)}"]`);
+          if (block) block.classList.add("dragging");
+
+          resourceRoot.classList.add("drag-active");
+          e.dataTransfer.effectAllowed = "move";
+          e.dataTransfer.setData("text/plain", categoryId);
+        });
+
+        handle.addEventListener("dragend", () => {
+          clearDragClasses();
+          dragState.type = "";
+          dragState.id = "";
+          dragState.fromCategoryId = "";
+        });
+      });
+
+      document.querySelectorAll("[data-category-block]").forEach(block => {
+        block.addEventListener("dragover", e => {
+          if (dragState.type !== "category") return;
+          e.preventDefault();
+          block.classList.add("drag-over");
+        });
+
+        block.addEventListener("dragleave", () => {
+          block.classList.remove("drag-over");
+        });
+
+        block.addEventListener("drop", e => {
+          if (dragState.type !== "category") return;
+          e.preventDefault();
+
+          const targetId = block.getAttribute("data-category-block");
+          if (!targetId || targetId === dragState.id) return;
+
+          const fromIndex = data.findIndex(cat => cat.id === dragState.id);
+          const toIndex = data.findIndex(cat => cat.id === targetId);
+
+          data = moveInArray(data, fromIndex, toIndex);
+          refreshOrders();
+          saveAppState();
+          renderAll();
+        });
+      });
+    }
+
+    function bindResourceDragSort() {
+      document.querySelectorAll("[data-drag-resource]").forEach(handle => {
+        handle.addEventListener("dragstart", e => {
+          const resourceId = handle.getAttribute("data-drag-resource");
+          const located = findItemById(resourceId);
+          if (!located) return;
+
+          dragState.type = "resource";
+          dragState.id = resourceId;
+          dragState.fromCategoryId = located.category.id;
+
+          const card = document.querySelector(`[data-resource="${CSS.escape(resourceId)}"]`);
+          if (card) card.classList.add("dragging");
+
+          document.querySelectorAll(".card-grid").forEach(grid => grid.classList.add("drag-active"));
+
+          e.dataTransfer.effectAllowed = "move";
+          e.dataTransfer.setData("text/plain", resourceId);
+        });
+
+        handle.addEventListener("dragend", () => {
+          clearDragClasses();
+          dragState.type = "";
+          dragState.id = "";
+          dragState.fromCategoryId = "";
+        });
+      });
+
+      document.querySelectorAll("[data-resource]").forEach(card => {
+        card.addEventListener("dragover", e => {
+          if (dragState.type !== "resource") return;
+          e.preventDefault();
+          card.classList.add("drag-over");
+        });
+
+        card.addEventListener("dragleave", () => {
+          card.classList.remove("drag-over");
+        });
+
+        card.addEventListener("drop", e => {
+          if (dragState.type !== "resource") return;
+          e.preventDefault();
+
+          const targetId = card.getAttribute("data-resource");
+          if (!targetId || targetId === dragState.id) return;
+
+          moveResourceToTarget(dragState.id, targetId);
+        });
+      });
+
+      document.querySelectorAll("[data-category-block] .card-grid").forEach(grid => {
+        grid.addEventListener("dragover", e => {
+          if (dragState.type !== "resource") return;
+          e.preventDefault();
+        });
+
+        grid.addEventListener("drop", e => {
+          if (dragState.type !== "resource") return;
+          const targetCard = e.target.closest("[data-resource]");
+          if (targetCard) return;
+
+          const categoryBlock = e.target.closest("[data-category-block]");
+          const targetCategoryId = categoryBlock?.getAttribute("data-category-block");
+          if (!targetCategoryId) return;
+
+          moveResourceToCategoryEnd(dragState.id, targetCategoryId);
+        });
+      });
+    }
+
+    function moveResourceToTarget(sourceId, targetId) {
+      const source = findItemById(sourceId);
+      const target = findItemById(targetId);
+      if (!source || !target) return;
+
+      source.category.items = source.category.items.filter(item => item.id !== sourceId);
+      const insertIndex = target.category.items.findIndex(item => item.id === targetId);
+      target.category.items.splice(insertIndex, 0, source.item);
+
+      recent = recent.map(item => item.id === sourceId
+        ? { ...item, category: target.category.category, categoryId: target.category.id }
+        : item
+      );
+
+      refreshOrders();
+      saveAppState();
+      renderAll();
+    }
+
+    function moveResourceToCategoryEnd(sourceId, targetCategoryId) {
+      const source = findItemById(sourceId);
+      const targetCategory = findCategoryById(targetCategoryId);
+      if (!source || !targetCategory) return;
+
+      source.category.items = source.category.items.filter(item => item.id !== sourceId);
+      targetCategory.items.push(source.item);
+
+      recent = recent.map(item => item.id === sourceId
+        ? { ...item, category: targetCategory.category, categoryId: targetCategory.id }
+        : item
+      );
+
+      refreshOrders();
+      saveAppState();
+      renderAll();
+    }
+
+    function renderAll() {
       renderProfile();
       renderCategoryNav();
       renderTags();
@@ -2153,6 +2617,77 @@
       updateStats();
       observeReveals();
       renderEditorCategoryOptions();
+    }
+
+    function exportData() {
+      const payload = sanitizeState({
+        version: 2,
+        data,
+        profile,
+        clickMap,
+        recent
+      });
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json;charset=utf-8" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "nav-backup-" + new Date().toISOString().slice(0, 10) + ".json";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(a.href);
+    }
+
+    function importData(file) {
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const parsed = JSON.parse(reader.result);
+          const next = sanitizeState(parsed);
+          data = next.data;
+          profile = next.profile;
+          clickMap = next.clickMap;
+          recent = next.recent;
+          state.activeCategory = "全部";
+          state.query = "";
+          saveAppState();
+          searchInputs.forEach(input => input.value = "");
+          modalSearchInput.value = "";
+          renderAll();
+          alert("导入成功");
+        } catch {
+          alert("导入失败，JSON 格式不正确");
+        }
+      };
+      reader.readAsText(file, "utf-8");
+    }
+
+    function restoreDefaultData() {
+      if (!confirm("确定恢复默认数据吗？当前本地新增/修改内容会被覆盖。")) return;
+      const next = getDefaultState();
+      data = deepClone(next.data);
+      profile = deepClone(next.profile);
+      clickMap = {};
+      recent = [];
+      state.activeCategory = "全部";
+      state.query = "";
+      saveAppState();
+      searchInputs.forEach(input => input.value = "");
+      modalSearchInput.value = "";
+      renderAll();
+    }
+
+    function escapeHtml(str) {
+      return String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function escapeAttr(str) {
+      return escapeHtml(str);
     }
 
     document.addEventListener("click", (e) => {
@@ -2175,30 +2710,34 @@
       const editBtn = e.target.closest("[data-edit]");
       if (editBtn) {
         const id = editBtn.getAttribute("data-edit");
-        for (let c = 0; c < data.length; c++) {
-          const i = data[c].items.findIndex(x => x.id === id);
-          if (i >= 0) {
-            openEditor("resource", c, i);
-            return;
-          }
-        }
+        openEditor("resource", "", id);
+        return;
       }
 
       const deleteBtn = e.target.closest("[data-delete]");
       if (deleteBtn) {
         const id = deleteBtn.getAttribute("data-delete");
-        for (let c = 0; c < data.length; c++) {
-          const i = data[c].items.findIndex(x => x.id === id);
-          if (i >= 0) {
-            const item = data[c].items[i];
-            if (!confirm(`确定删除「${item.name}」吗？`)) return;
-            data[c].items.splice(i, 1);
-            data = data.filter(cat => cat.items.length > 0);
-            saveData();
-            renderAll();
-            return;
-          }
-        }
+        deleteItemById(id);
+        return;
+      }
+
+      const addInCategoryBtn = e.target.closest("[data-add-in-category]");
+      if (addInCategoryBtn) {
+        const categoryId = addInCategoryBtn.getAttribute("data-add-in-category");
+        openEditor("new", categoryId, "");
+        return;
+      }
+
+      const renameCategoryBtn = e.target.closest("[data-rename-category]");
+      if (renameCategoryBtn) {
+        renameCategory(renameCategoryBtn.getAttribute("data-rename-category"));
+        return;
+      }
+
+      const deleteCategoryBtn = e.target.closest("[data-delete-category]");
+      if (deleteCategoryBtn) {
+        deleteCategory(deleteCategoryBtn.getAttribute("data-delete-category"));
+        return;
       }
 
       const link = e.target.closest("[data-id]");
@@ -2214,15 +2753,17 @@
     });
 
     applyTheme(localStorage.getItem(STORE_THEME) || "dark");
+
     themeBtn.addEventListener("click", () => {
       const current = htmlEl.getAttribute("data-theme") || "dark";
       applyTheme(current === "dark" ? "light" : "dark");
     });
 
     searchInputs.forEach(input => {
-      input.addEventListener("input", (e) => syncSearch(e.target.value));
+      input.addEventListener("input", e => debouncedSyncSearch(e.target.value));
     });
-    modalSearchInput.addEventListener("input", (e) => syncSearch(e.target.value));
+
+    modalSearchInput.addEventListener("input", e => debouncedSyncSearch(e.target.value));
 
     clearBtn.addEventListener("click", () => {
       state.activeCategory = "全部";
@@ -2238,18 +2779,28 @@
     });
 
     openSearchBtn.addEventListener("click", openSearchModal);
+    addResourceBtn.addEventListener("click", () => openEditor("new"));
+    addCategoryBtnTop.addEventListener("click", createCategory);
 
-    searchModal.addEventListener("click", (e) => {
+    exportBtn.addEventListener("click", exportData);
+    importBtn.addEventListener("click", () => importInput.click());
+    importInput.addEventListener("change", e => {
+      const file = e.target.files?.[0];
+      importData(file);
+      e.target.value = "";
+    });
+    restoreDefaultBtn.addEventListener("click", restoreDefaultData);
+
+    searchModal.addEventListener("click", e => {
       if (e.target === searchModal) closeSearchModal();
     });
 
-    addResourceBtn.addEventListener("click", () => openEditor("new"));
     closeEditorBtn.addEventListener("click", closeEditor);
     cancelEditBtn.addEventListener("click", closeEditor);
     saveEditBtn.addEventListener("click", saveEditor);
     deleteEditBtn.addEventListener("click", deleteEditorItem);
 
-    editorModal.addEventListener("click", (e) => {
+    editorModal.addEventListener("click", e => {
       if (e.target === editorModal) closeEditor();
     });
 
@@ -2259,11 +2810,11 @@
     saveProfileBtn.addEventListener("click", saveProfileEditor);
     resetProfileBtn.addEventListener("click", resetProfileEditor);
 
-    profileModal.addEventListener("click", (e) => {
+    profileModal.addEventListener("click", e => {
       if (e.target === profileModal) closeProfileEditor();
     });
 
-    document.addEventListener("keydown", (e) => {
+    document.addEventListener("keydown", e => {
       const isMac = navigator.platform.toUpperCase().includes("MAC");
       const hotkey = isMac ? e.metaKey && e.key.toLowerCase() === "k" : e.ctrlKey && e.key.toLowerCase() === "k";
       if (hotkey) {
@@ -2288,5 +2839,5 @@
 
     renderAll();
   </script>
-</body>
+<script src="/Static/js/jquery.js"></script><script src="/Static/js/Global.js"></script><script src="/Web/js/Global.js"></script><script src="/Web/js/SoruxGPT.js"></script></body>
 </html>
