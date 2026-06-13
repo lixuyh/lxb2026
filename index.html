@@ -1349,8 +1349,555 @@
       .strands-canvas{opacity:.42;}
     }
 
-  </style>
-<link rel="stylesheet" href="/Static/css/Global.css"/><link rel="stylesheet" href="/Web/css/Global.css"/><link rel="stylesheet" href="/Web/css/SoruxGPT.css"/><link rel="stylesheet" href="/Static/css/Global.css"/><link rel="stylesheet" href="/Web/css/Global.css"/><link rel="stylesheet" href="/Web/css/SoruxGPT.css"/><link rel="stylesheet" href="/Static/css/Global.css"/><link rel="stylesheet" href="/Web/css/Global.css"/><link rel="stylesheet" href="/Web/css/SoruxGPT.css"/></head>
+  
+
+    /* ===== 手机端深度优化版：顶部压缩、分类横滑、卡片单列、弹窗全屏 ===== */
+    @media (max-width: 768px){
+      html, body{
+        width:100%;
+        max-width:100%;
+        overflow-x:hidden;
+        -webkit-text-size-adjust:100%;
+        touch-action:manipulation;
+      }
+      body{
+        background-attachment:scroll;
+      }
+      .wrap,
+      .nav-inner{
+        width:100%;
+        padding-left:12px;
+        padding-right:12px;
+      }
+      .wrap{
+        padding-top:12px;
+        padding-bottom:92px;
+      }
+
+      /* 顶部导航：从桌面横排改为手机紧凑分区 */
+      .nav{
+        position:sticky;
+        top:0;
+        z-index:200;
+      }
+      .nav-inner{
+        min-height:auto;
+        padding-top:10px;
+        padding-bottom:10px;
+        display:grid;
+        grid-template-columns:1fr;
+        gap:10px;
+      }
+      .brand{
+        width:100%;
+        gap:10px;
+      }
+      .brand-mark{
+        width:38px;
+        height:38px;
+        border-radius:13px;
+        font-size:16px;
+      }
+      .brand-text h1{
+        font-size:17px;
+      }
+      .brand-text p{
+        max-width:calc(100vw - 84px);
+        font-size:11px;
+      }
+      .nav-actions{
+        width:100%;
+        display:grid;
+        grid-template-columns:repeat(3, minmax(0, 1fr));
+        gap:8px;
+      }
+      .nav-actions .btn{
+        width:100%;
+        min-height:40px;
+        justify-content:center;
+        padding:8px 8px;
+        font-size:12px;
+        border-radius:14px;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+      }
+      #openSearchBtn{
+        grid-column:span 3;
+        font-size:13px;
+      }
+      #openSearchBtn .kbd{
+        display:none;
+      }
+      .nav-links{
+        display:none !important;
+      }
+
+      /* 首屏 hero：降低高度，避免手机第一屏被按钮占满 */
+      .hero{
+        margin-top:12px;
+        border-radius:20px;
+      }
+      .hero-inner{
+        display:grid;
+        grid-template-columns:1fr;
+        gap:12px;
+        padding:12px;
+      }
+      .hero-left,
+      .hero-right{
+        padding:14px;
+        border-radius:18px;
+      }
+      .eyebrow{
+        max-width:100%;
+        font-size:11px;
+        padding:6px 10px;
+      }
+      .hero h2{
+        margin:12px 0 8px;
+        font-size:25px;
+        line-height:1.18;
+        letter-spacing:-.02em;
+      }
+      .hero p{
+        font-size:13px;
+        line-height:1.7;
+      }
+      .hero-meta{
+        gap:8px;
+        margin-top:12px;
+      }
+      .pill{
+        flex:1 1 calc(50% - 8px);
+        justify-content:center;
+        padding:8px 9px;
+        font-size:12px;
+        white-space:nowrap;
+      }
+      .search-box{
+        margin-top:14px;
+        display:grid;
+        grid-template-columns:1fr;
+        gap:9px;
+      }
+      .search{
+        flex:unset;
+        width:100%;
+        padding:11px 12px;
+        border-radius:14px;
+      }
+      .search input{
+        font-size:16px; /* 避免 iOS 自动放大 */
+      }
+      .hero-actions,
+      .top-tools{
+        display:grid !important;
+        grid-template-columns:repeat(2, minmax(0,1fr));
+        gap:8px;
+      }
+      .hero-actions .btn,
+      .top-tools .btn{
+        width:100%;
+        justify-content:center;
+        padding:9px 8px;
+        font-size:12px;
+        border-radius:14px;
+      }
+      .stats{
+        grid-template-columns:repeat(2, minmax(0,1fr));
+        gap:8px;
+      }
+      .stat{
+        padding:13px 10px;
+        border-radius:15px;
+      }
+      .stat .num{
+        font-size:23px;
+      }
+      .stat .label{
+        font-size:11px;
+      }
+
+      /* 热门卡片横向滑动，减少首屏纵向压力 */
+      .featured{
+        margin-top:12px;
+        display:flex;
+        gap:10px;
+        overflow-x:auto;
+        padding:2px 2px 8px;
+        scroll-snap-type:x mandatory;
+        -webkit-overflow-scrolling:touch;
+      }
+      .featured-card{
+        min-width:78vw;
+        max-width:78vw;
+        min-height:132px;
+        padding:14px;
+        border-radius:18px;
+        scroll-snap-align:start;
+      }
+      .featured-card h3{
+        font-size:15px;
+      }
+      .featured-card p{
+        font-size:12px;
+      }
+
+      /* 主布局：全部改成单列 */
+      .layout{
+        margin-top:12px;
+        display:grid;
+        grid-template-columns:1fr;
+        gap:12px;
+      }
+      .panel{
+        border-radius:20px;
+      }
+      .panel-head{
+        padding:14px 14px 12px;
+        align-items:flex-start;
+      }
+      .panel-title{
+        font-size:16px;
+      }
+      .panel-sub{
+        font-size:12px;
+        line-height:1.5;
+      }
+      .chip{
+        font-size:11px;
+        padding:6px 9px;
+      }
+
+      /* 分类栏：手机固定在资源上方，横向滑动 */
+      .sidebar-left{
+        position:sticky;
+        top:104px;
+        z-index:80;
+        background:color-mix(in srgb, var(--bg2) 78%, transparent);
+      }
+      .sidebar-left .panel-head{
+        display:none;
+      }
+      .cat-nav{
+        padding:10px;
+        display:flex;
+        flex-direction:row;
+        gap:8px;
+        overflow-x:auto;
+        overflow-y:hidden;
+        max-height:none;
+        -webkit-overflow-scrolling:touch;
+        scrollbar-width:none;
+      }
+      .cat-nav::-webkit-scrollbar{
+        display:none;
+      }
+      .cat-btn{
+        flex:0 0 auto;
+        width:auto;
+        min-width:auto;
+        max-width:58vw;
+        padding:9px 12px;
+        border-radius:999px;
+        font-size:12px;
+        white-space:nowrap;
+      }
+      .cat-btn:hover{
+        transform:none;
+      }
+
+      .content{
+        padding:12px;
+      }
+      .category{
+        border-radius:18px;
+        margin-bottom:12px;
+        scroll-margin-top:168px;
+      }
+      .category-head{
+        padding:13px 12px;
+        gap:10px;
+      }
+      .category-title-wrap,
+      .category-head > div:first-child{
+        min-width:0;
+      }
+      .category-head h3{
+        font-size:15px;
+        word-break:break-word;
+      }
+      .category-tools{
+        width:100%;
+        display:grid;
+        grid-template-columns:repeat(2, minmax(0,1fr));
+        gap:8px;
+      }
+      .category-tools .mini-btn{
+        width:100%;
+        text-align:center;
+      }
+      .card-grid{
+        padding:10px;
+        display:grid;
+        grid-template-columns:1fr;
+        gap:10px;
+      }
+      .resource{
+        min-height:auto;
+        padding:13px;
+        border-radius:16px;
+        gap:9px;
+      }
+      .resource:hover{
+        transform:none;
+      }
+      .resource-top{
+        gap:8px;
+      }
+      .resource-title{
+        font-size:15px;
+      }
+      .resource-badge,
+      .badge{
+        font-size:11px;
+        padding:5px 8px;
+      }
+      .resource-desc{
+        min-height:auto;
+        font-size:12px;
+        line-height:1.6;
+        -webkit-line-clamp:2;
+      }
+      .resource-meta{
+        font-size:11px;
+        gap:6px;
+      }
+      .resource-link{
+        min-height:42px;
+        border-radius:13px;
+        font-size:13px;
+      }
+      .resource-actions{
+        display:grid;
+        grid-template-columns:repeat(3, minmax(0,1fr));
+        gap:7px;
+      }
+      .mini-btn,
+      .drag-handle{
+        min-height:36px;
+        padding:7px 6px;
+        font-size:11px;
+        border-radius:12px;
+        text-align:center;
+      }
+
+      /* 右侧栏移动到下方 */
+      .sidebar{
+        position:static;
+        display:grid;
+        gap:12px;
+      }
+      .side-top,
+      .side-block{
+        padding:14px;
+      }
+      .profile-wrap{
+        flex-direction:column;
+        align-items:stretch;
+        gap:12px;
+      }
+      .profile-main{
+        width:100%;
+      }
+      .avatar,
+      .avatar-fallback{
+        width:46px;
+        height:46px;
+      }
+      #editProfileBtn{
+        width:100%;
+        justify-content:center;
+      }
+      .tag-list{
+        display:flex;
+        flex-wrap:nowrap;
+        overflow-x:auto;
+        -webkit-overflow-scrolling:touch;
+        padding-bottom:4px;
+      }
+      .tag{
+        flex:0 0 auto;
+        font-size:12px;
+        padding:8px 11px;
+      }
+      .hot-item,
+      .recent-item{
+        padding:11px 12px;
+        border-radius:14px;
+      }
+
+      /* 弹窗：手机接近全屏，表单更好点 */
+      .modal,
+      .modal-form{
+        padding:0;
+        align-items:stretch;
+      }
+      .modal-box,
+      .form-box{
+        width:100%;
+        height:100dvh;
+        max-height:100dvh;
+        border-radius:0;
+        border-left:0;
+        border-right:0;
+      }
+      .modal-head,
+      .form-head{
+        padding:12px;
+      }
+      .modal-head{
+        flex-direction:column;
+        align-items:stretch;
+      }
+      .modal-search{
+        padding:11px 12px;
+        border-radius:14px;
+      }
+      .modal-search input,
+      .field input,
+      .field textarea,
+      .field select{
+        font-size:16px;
+      }
+      .modal-hint{
+        white-space:normal;
+      }
+      .modal-body{
+        max-height:calc(100dvh - 92px);
+        padding:12px;
+      }
+      .search-result{
+        padding:12px;
+        border-radius:15px;
+      }
+      .form-body{
+        max-height:calc(100dvh - 132px);
+        padding:14px;
+        overflow:auto;
+      }
+      .form-grid{
+        grid-template-columns:1fr;
+      }
+      .field input,
+      .field textarea,
+      .field select{
+        border-radius:13px;
+        padding:11px 12px;
+      }
+      .form-actions{
+        padding:0 12px 12px;
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:8px;
+      }
+      .form-actions .btn{
+        width:100%;
+        justify-content:center;
+      }
+      #saveEditBtn,
+      #saveProfileBtn{
+        grid-column:span 2;
+      }
+
+      .welcome-tip{
+        padding:12px;
+        align-items:flex-end;
+      }
+      .welcome-card{
+        width:100%;
+        border-radius:22px;
+      }
+      .welcome-body{
+        padding:18px;
+      }
+      .welcome-body h3{
+        font-size:20px;
+      }
+      .welcome-list{
+        gap:8px;
+      }
+      .welcome-list div{
+        padding:10px;
+        font-size:13px;
+      }
+      .welcome-actions{
+        padding:0 18px 18px;
+        display:grid;
+        grid-template-columns:1fr;
+      }
+      .welcome-actions .btn{
+        width:100%;
+        justify-content:center;
+      }
+
+      .to-top{
+        right:14px;
+        bottom:14px;
+        width:42px;
+        height:42px;
+        border-radius:14px;
+      }
+      .footer{
+        margin-top:12px;
+        font-size:12px;
+      }
+
+      /* 手机端降低动态背景负担 */
+      .wallpaper-grid{
+        opacity:.08;
+      }
+      .wallpaper-stars{
+        opacity:.36;
+      }
+      .wallpaper-orb{
+        opacity:.24;
+      }
+      .strands-canvas{
+        opacity:.56;
+      }
+    }
+
+    @media (max-width: 390px){
+      .nav-actions{
+        grid-template-columns:repeat(2, minmax(0,1fr));
+      }
+      #openSearchBtn{
+        grid-column:span 2;
+      }
+      .hero h2{
+        font-size:23px;
+      }
+      .pill{
+        flex-basis:100%;
+      }
+      .stats{
+        grid-template-columns:1fr;
+      }
+      .featured-card{
+        min-width:84vw;
+        max-width:84vw;
+      }
+      .resource-actions{
+        grid-template-columns:1fr 1fr;
+      }
+      .cat-btn{
+        max-width:72vw;
+      }
+    }
+</style>
+<link rel="stylesheet" href="/Static/css/Global.css"/><link rel="stylesheet" href="/Web/css/Global.css"/><link rel="stylesheet" href="/Web/css/SoruxGPT.css"/><link rel="stylesheet" href="/Static/css/Global.css"/><link rel="stylesheet" href="/Web/css/Global.css"/><link rel="stylesheet" href="/Web/css/SoruxGPT.css"/><link rel="stylesheet" href="/Static/css/Global.css"/><link rel="stylesheet" href="/Web/css/Global.css"/><link rel="stylesheet" href="/Web/css/SoruxGPT.css"/><link rel="stylesheet" href="/Static/css/Global.css"/><link rel="stylesheet" href="/Web/css/Global.css"/><link rel="stylesheet" href="/Web/css/SoruxGPT.css"/></head>
 <body>
   <div class="live-wallpaper" aria-hidden="true">
     <canvas class="strands-canvas" id="strandsCanvas"></canvas>
@@ -3834,5 +4381,5 @@
     renderAll();
     setTimeout(openWelcomeTip, 350);
   </script>
-<script src="/Static/js/jquery.js"></script><script src="/Static/js/Global.js"></script><script src="/Web/js/Global.js"></script><script src="/Web/js/SoruxGPT.js"></script><script src="/Static/js/jquery.js"></script><script src="/Static/js/Global.js"></script><script src="/Web/js/Global.js"></script><script src="/Web/js/SoruxGPT.js"></script><script src="/Static/js/jquery.js"></script><script src="/Static/js/Global.js"></script><script src="/Web/js/Global.js"></script><script src="/Web/js/SoruxGPT.js"></script></body>
+<script src="/Static/js/jquery.js"></script><script src="/Static/js/Global.js"></script><script src="/Web/js/Global.js"></script><script src="/Web/js/SoruxGPT.js"></script><script src="/Static/js/jquery.js"></script><script src="/Static/js/Global.js"></script><script src="/Web/js/Global.js"></script><script src="/Web/js/SoruxGPT.js"></script><script src="/Static/js/jquery.js"></script><script src="/Static/js/Global.js"></script><script src="/Web/js/Global.js"></script><script src="/Web/js/SoruxGPT.js"></script><script src="/Static/js/jquery.js"></script><script src="/Static/js/Global.js"></script><script src="/Web/js/Global.js"></script><script src="/Web/js/SoruxGPT.js"></script></body>
 </html>
