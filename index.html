@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<!-- saved from url=(0023)https://www.yjwj.cc.cd/ -->
 <html lang="zh-CN" data-theme="dark"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>资源导航站 · 修复优化版</title>
+  <title>资源导航站 · UI重构版</title>
   <meta name="description" content="资源导航站修复优化版：支持资源编辑、分类管理、拖拽排序、本地保存、搜索、导入导出与响应式展示。">
   <meta name="theme-color" content="#0b1324">
+  <meta name="color-scheme" content="dark light">
+  <!-- 单文件版本：已移除浏览器扩展注入、重复依赖与无效内联样式 -->
   <style>
     :root{
       --bg:#f6f7fb;
@@ -1072,7 +1073,7 @@
 
     @media (prefers-reduced-motion: reduce){
       html{scroll-behavior:auto}
-      *,*::before::after{
+      *,*::before,*::after{
         animation:none !important;
         transition:none !important;
       }
@@ -1896,18 +1897,136 @@
         max-width:72vw;
       }
     }
-</style>
-<link rel="stylesheet" href="https://www.yjwj.cc.cd/Static/css/Global.css"><link rel="stylesheet" href="https://www.yjwj.cc.cd/Web/css/Global.css"><link rel="stylesheet" href="./资源导航站 · 修复优化版_files/SoruxGPT.css"><link rel="stylesheet" href="https://www.yjwj.cc.cd/Static/css/Global.css"><link rel="stylesheet" href="https://www.yjwj.cc.cd/Web/css/Global.css"><link rel="stylesheet" href="./资源导航站 · 修复优化版_files/SoruxGPT.css"><link rel="stylesheet" href="https://www.yjwj.cc.cd/Static/css/Global.css"><link rel="stylesheet" href="https://www.yjwj.cc.cd/Web/css/Global.css"><link rel="stylesheet" href="./资源导航站 · 修复优化版_files/SoruxGPT.css"><link rel="stylesheet" href="https://www.yjwj.cc.cd/Static/css/Global.css"><link rel="stylesheet" href="https://www.yjwj.cc.cd/Web/css/Global.css"><link rel="stylesheet" href="./资源导航站 · 修复优化版_files/SoruxGPT.css"></head>
-<body style="">
+
+/* ===== UI 重构增强版 ===== */
+:root{
+  --ui-radius:28px;
+  --ui-glass:rgba(255,255,255,.08);
+}
+
+body{
+  letter-spacing:.01em;
+}
+
+/* 顶部导航升级 */
+.nav{
+  backdrop-filter:blur(24px) saturate(160%);
+  background:color-mix(in srgb,var(--bg2) 72%,transparent);
+}
+
+.brand-mark{
+  width:48px;
+  height:48px;
+  border-radius:18px;
+  box-shadow:0 10px 35px rgba(37,99,235,.35);
+}
+
+/* 按钮更现代 */
+.btn{
+  border-radius:16px;
+  min-height:42px;
+  padding:10px 16px;
+}
+
+.btn-primary{
+  box-shadow:0 10px 28px rgba(37,99,235,.3);
+}
+
+/* 首屏改为产品展示风格 */
+.hero{
+  border-radius:32px;
+  box-shadow:0 24px 80px rgba(0,0,0,.18);
+}
+
+.hero-left,.hero-right,
+.panel,
+.featured-card,
+.category,
+.resource{
+  backdrop-filter:blur(22px);
+}
+
+/* 数据卡片 */
+.stat{
+  transition:.25s ease;
+}
+
+.stat:hover{
+  transform:translateY(-5px);
+}
+
+/* 推荐卡片 */
+.featured-card{
+  position:relative;
+  overflow:hidden;
+}
+
+.featured-card::after{
+  content:"";
+  position:absolute;
+  inset:auto -30% -60% auto;
+  width:180px;
+  height:180px;
+  border-radius:50%;
+  background:radial-gradient(circle,var(--accent),transparent 70%);
+  opacity:.12;
+}
+
+/* 资源卡片重新设计 */
+.resource{
+  border-radius:22px;
+  min-height:190px;
+}
+
+.resource:hover{
+  transform:translateY(-6px);
+}
+
+.resource-link{
+  border-radius:16px;
+}
+
+/* 分类栏胶囊化 */
+.cat-btn{
+  border-radius:20px;
+}
+
+.cat-btn.active{
+  box-shadow:0 12px 30px rgba(37,99,235,.35);
+}
+
+/* 弹窗 */
+.modal-box,
+.form-box{
+  border-radius:32px;
+}
+
+/* 移动端优化 */
+@media(max-width:768px){
+  .hero{
+    border-radius:24px;
+  }
+
+  .resource{
+    border-radius:20px;
+  }
+
+  .featured-card{
+    border-radius:22px;
+  }
+}
+
+</style><link rel="stylesheet" href="/Static/css/Global.css"/><link rel="stylesheet" href="/Web/css/Global.css"/><link rel="stylesheet" href="/Web/css/SoruxGPT.css"/><link rel="stylesheet" href="/Static/css/Global.css"/><link rel="stylesheet" href="/Web/css/Global.css"/><link rel="stylesheet" href="/Web/css/SoruxGPT.css"/></head>
+<body>
   <div class="live-wallpaper" aria-hidden="true">
-    <canvas class="strands-canvas" id="strandsCanvas" width="2545" height="1351"></canvas>
+    <canvas class="strands-canvas" id="strandsCanvas" width="1905" height="991"></canvas>
     <div class="wallpaper-stars"></div>
     <div class="wallpaper-grid"></div>
     <span class="wallpaper-orb"></span>
     <span class="wallpaper-orb"></span>
     <span class="wallpaper-orb"></span>
   </div>
-  <noscript><div style="padding:14px;text-align:center;background:#f59e0b;color:#111827;">当前页面需要启用 JavaScript 才能使用搜索、编辑和本地保存功能。</div></noscript>
+  <noscript><div style="padding:14px; text-align:center; background:#f59e0b; color:#111827">当前页面需要启用 JavaScript 才能使用搜索、编辑和本地保存功能。</div></noscript>
   <header class="nav">
     <div class="nav-inner">
       <div class="brand">
@@ -1920,10 +2039,10 @@
 
       <div class="nav-actions">
         <nav class="nav-links" aria-label="页面导航">
-          <a href="https://www.yjwj.cc.cd/#home">首页</a>
-          <a href="https://www.yjwj.cc.cd/#resources">资源</a>
-          <a href="https://www.yjwj.cc.cd/#sidebar">侧边栏</a>
-          <a href="https://www.yjwj.cc.cd/#about">关于</a>
+          <a href="#home">首页</a>
+          <a href="#resources">资源</a>
+          <a href="#sidebar">侧边栏</a>
+          <a href="#about">关于</a>
         </nav>
         <button class="btn" id="openSearchBtn" type="button">🔎 搜索 <span class="kbd">Ctrl K</span></button>
         <button class="btn btn-primary" id="addResourceBtn" type="button">➕ 新增资源</button>
@@ -1963,22 +2082,22 @@
             </div>
           </div>
 
-          <div class="top-tools" style="margin-top:14px;">
+          <div class="top-tools" style="margin-top:14px">
             <button class="btn" id="exportBtn" type="button">⬇️ 导出数据</button>
             <button class="btn" id="importBtn" type="button">⬆️ 导入数据</button>
             <button class="btn btn-danger" id="restoreDefaultBtn" type="button">恢复默认</button>
-            <input id="importInput" type="file" accept="application/json" style="display:none;">
+            <input id="importInput" type="file" accept="application/json" style="display: none">
           </div>
         </div>
 
         <div class="hero-right">
           <div class="stats">
             <div class="stat">
-              <div class="num" id="siteCount">55</div>
+              <div class="num" id="siteCount">56</div>
               <div class="label">收录资源</div>
             </div>
             <div class="stat">
-              <div class="num" id="clickCount">1</div>
+              <div class="num" id="clickCount">9</div>
               <div class="label">累计点击</div>
             </div>
             <div class="stat">
@@ -1995,33 +2114,43 @@
     </section>
 
     <section class="featured reveal visible" id="hotFeatured">
-          <a class="featured-card " href="https://vip.chatopens.vip/" target="_blank" rel="noopener noreferrer" data-id="res_49d999c0-5cef-47e2-84e0-d6c304d02ec7" aria-disabled="false">
+          <a class="featured-card " href="https://vip.chatopens.vip/" target="_blank" rel="noopener noreferrer" data-id="res_b4052eda-4e65-4bdd-801e-5a1530e8ad64" aria-disabled="false">
             <span class="badge">推荐 01</span>
             <h3>ChatOpenS VIP</h3>
             <p>AI 对话与工具入口</p>
             <div class="meta">
-              <span>AI 网站</span>
+              <span>AI 网站 / 前端开发</span>
               <span>点击 1 次</span>
             </div>
           </a>
         
-          <a class="featured-card " href="https://add.lra.cn/" target="_blank" rel="noopener noreferrer" data-id="res_bec091df-a7c5-4bdd-8cc3-3b585a1b43e8" aria-disabled="false">
+          <a class="featured-card " href="https://duobaoyu.work/platform#" target="_blank" rel="noopener noreferrer" data-id="res_74d58ca4-7137-4c80-bd6a-7eb379e18413" aria-disabled="false">
             <span class="badge">推荐 02</span>
-            <h3>Add LRA</h3>
-            <p>AI 网站入口 / 站点集合</p>
+            <h3>办公平台</h3>
+            <p>在线办公平台</p>
             <div class="meta">
-              <span>AI 网站</span>
-              <span>点击 0 次</span>
+              <span>办公平台 / 系统工具</span>
+              <span>点击 1 次</span>
             </div>
           </a>
         
-          <a class="featured-card " href="https://stitch.withgoogle.com/" target="_blank" rel="noopener noreferrer" data-id="res_50a6ab2c-e534-4511-bd76-1fee64d3bbbd" aria-disabled="false">
+          <a class="featured-card " href="https://www.kdocs.cn/l/cjkZcTNs2vcU" target="_blank" rel="noopener noreferrer" data-id="res_b988b335-17f3-4416-9578-0cb04de88558" aria-disabled="false">
             <span class="badge">推荐 03</span>
-            <h3>stitch</h3>
-            <p>软件前端开发</p>
+            <h3>系统工具</h3>
+            <p>文档与系统工具</p>
             <div class="meta">
-              <span>AI 网站</span>
-              <span>点击 0 次</span>
+              <span>办公平台 / 系统工具</span>
+              <span>点击 1 次</span>
+            </div>
+          </a>
+        
+          <a class="featured-card " href="https://youkutv.us/" target="_blank" rel="noopener noreferrer" data-id="res_68012fb4-e7b1-475d-9781-38c734fd47d7" aria-disabled="false">
+            <span class="badge">推荐 04</span>
+            <h3>免费电影</h3>
+            <p>影视资源站点</p>
+            <div class="meta">
+              <span>视频 / 影视 / 下载</span>
+              <span>点击 1 次</span>
             </div>
           </a>
         </section>
@@ -2036,19 +2165,19 @@
           <div class="chip" id="leftCountChip">10 类</div>
         </div>
         <div class="cat-nav" id="catNav">
-        <button class="cat-btn " type="button" data-cat="全部" data-id="">
+        <button class="cat-btn" type="button" data-cat="全部" data-id="">
           <span>全部</span>
-          <span class="cat-count">55 个</span>
+          <span class="cat-count">56 个</span>
         </button>
       
-        <button class="cat-btn " type="button" data-cat="想搜点什么?" data-id="想搜点什么">
+        <button class="cat-btn active" type="button" data-cat="想搜点什么?" data-id="想搜点什么">
           <span>想搜点什么?</span>
           <span class="cat-count">1 个</span>
         </button>
       
-        <button class="cat-btn active" type="button" data-cat="AI 网站" data-id="ai-网站">
-          <span>AI 网站</span>
-          <span class="cat-count">3 个</span>
+        <button class="cat-btn" type="button" data-cat="AI 网站 / 前端开发" data-id="ai-网站---前端开发">
+          <span>AI 网站 / 前端开发</span>
+          <span class="cat-count">4 个</span>
         </button>
       
         <button class="cat-btn " type="button" data-cat="网络安全 / 检测" data-id="网络安全---检测">
@@ -2104,25 +2233,66 @@
             <h2 class="panel-title">资源列表</h2>
             <div class="panel-sub">支持分类切换、搜索筛选、点击统计、在线编辑、拖拽排序</div>
           </div>
-          <div class="chip" id="resultHint">已显示 3 条</div>
+          <div class="chip" id="resultHint">已显示 56 条</div>
         </div>
         <div class="content" id="resourceRoot">
-        <section class="category" id="ai-网站" data-category-block="cat_55bd0cfc-6969-4c4f-9021-ab9c09612d89">
+        <section class="category" id="想搜点什么" data-category-block="cat_b77b259d-09a6-4505-8637-9e3c214da766">
           <div class="category-head">
             <div class="category-title-wrap">
-              <h3>AI 网站</h3>
-              <div class="count">3 个资源</div>
+              <h3>想搜点什么?</h3>
+              <div class="count">1 个资源</div>
             </div>
             <div class="category-tools">
-              <button class="drag-handle" type="button" draggable="true" data-drag-category="cat_55bd0cfc-6969-4c4f-9021-ab9c09612d89" title="拖拽排序分类">↕</button>
-              <button class="mini-btn" type="button" data-add-in-category="cat_55bd0cfc-6969-4c4f-9021-ab9c09612d89">新增资源</button>
-              <button class="mini-btn" type="button" data-rename-category="cat_55bd0cfc-6969-4c4f-9021-ab9c09612d89">重命名</button>
-              <button class="mini-btn danger" type="button" data-delete-category="cat_55bd0cfc-6969-4c4f-9021-ab9c09612d89">删除分类</button>
+              <button class="drag-handle" type="button" draggable="true" data-drag-category="cat_b77b259d-09a6-4505-8637-9e3c214da766" title="拖拽排序分类">↕</button>
+              <button class="mini-btn" type="button" data-add-in-category="cat_b77b259d-09a6-4505-8637-9e3c214da766">新增资源</button>
+              <button class="mini-btn" type="button" data-rename-category="cat_b77b259d-09a6-4505-8637-9e3c214da766">重命名</button>
+              <button class="mini-btn danger" type="button" data-delete-category="cat_b77b259d-09a6-4505-8637-9e3c214da766">删除分类</button>
             </div>
           </div>
           <div class="card-grid">
             
-                <article class="resource reveal visible" data-resource="res_bec091df-a7c5-4bdd-8cc3-3b585a1b43e8" draggable="false">
+                <article class="resource reveal visible" data-resource="res_1ae4e29b-b32c-4971-a091-fb4ea755adb4" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">海搜</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">你可以轻松搜索任何想要的资源</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：haisou.cc</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_1ae4e29b-b32c-4971-a091-fb4ea755adb4" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_1ae4e29b-b32c-4971-a091-fb4ea755adb4">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_1ae4e29b-b32c-4971-a091-fb4ea755adb4">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://haisou.cc/">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://haisou.cc/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_1ae4e29b-b32c-4971-a091-fb4ea755adb4">
+                     访问站点 →
+                  </a>
+                </article>
+              
+          </div>
+        </section>
+      
+        <section class="category" id="ai-网站---前端开发" data-category-block="cat_c2568826-db91-4c83-a9e4-09a3c983c538">
+          <div class="category-head">
+            <div class="category-title-wrap">
+              <h3>AI 网站 / 前端开发</h3>
+              <div class="count">4 个资源</div>
+            </div>
+            <div class="category-tools">
+              <button class="drag-handle" type="button" draggable="true" data-drag-category="cat_c2568826-db91-4c83-a9e4-09a3c983c538" title="拖拽排序分类">↕</button>
+              <button class="mini-btn" type="button" data-add-in-category="cat_c2568826-db91-4c83-a9e4-09a3c983c538">新增资源</button>
+              <button class="mini-btn" type="button" data-rename-category="cat_c2568826-db91-4c83-a9e4-09a3c983c538">重命名</button>
+              <button class="mini-btn danger" type="button" data-delete-category="cat_c2568826-db91-4c83-a9e4-09a3c983c538">删除分类</button>
+            </div>
+          </div>
+          <div class="card-grid">
+            
+                <article class="resource reveal visible" data-resource="res_6a1a4aa4-3323-472f-83ec-63625541aaa9" draggable="false">
                   <div class="resource-top">
                     <h4 class="resource-title">Add LRA</h4>
                     <span class="resource-badge">新站</span>
@@ -2134,18 +2304,18 @@
                       <span class="chip">点击：0</span>
                     </div>
                     <div class="resource-actions">
-                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_bec091df-a7c5-4bdd-8cc3-3b585a1b43e8" title="拖拽排序资源">↕</button>
-                      <button class="mini-btn" type="button" data-edit="res_bec091df-a7c5-4bdd-8cc3-3b585a1b43e8">编辑</button>
-                      <button class="mini-btn danger" type="button" data-delete="res_bec091df-a7c5-4bdd-8cc3-3b585a1b43e8">删除</button>
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_6a1a4aa4-3323-472f-83ec-63625541aaa9" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_6a1a4aa4-3323-472f-83ec-63625541aaa9">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_6a1a4aa4-3323-472f-83ec-63625541aaa9">删除</button>
                       <button class="mini-btn" type="button" data-copy="https://add.lra.cn/">复制</button>
                     </div>
                   </div>
-                  <a class="resource-link " href="https://add.lra.cn/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_bec091df-a7c5-4bdd-8cc3-3b585a1b43e8">
+                  <a class="resource-link " href="https://add.lra.cn/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_6a1a4aa4-3323-472f-83ec-63625541aaa9">
                      访问站点 →
                   </a>
                 </article>
               
-                <article class="resource reveal visible" data-resource="res_49d999c0-5cef-47e2-84e0-d6c304d02ec7" draggable="false">
+                <article class="resource reveal visible" data-resource="res_b4052eda-4e65-4bdd-801e-5a1530e8ad64" draggable="false">
                   <div class="resource-top">
                     <h4 class="resource-title">ChatOpenS VIP</h4>
                     <span class="resource-badge">🔥 1</span>
@@ -2157,36 +2327,1376 @@
                       <span class="chip">点击：1</span>
                     </div>
                     <div class="resource-actions">
-                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_49d999c0-5cef-47e2-84e0-d6c304d02ec7" title="拖拽排序资源">↕</button>
-                      <button class="mini-btn" type="button" data-edit="res_49d999c0-5cef-47e2-84e0-d6c304d02ec7">编辑</button>
-                      <button class="mini-btn danger" type="button" data-delete="res_49d999c0-5cef-47e2-84e0-d6c304d02ec7">删除</button>
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_b4052eda-4e65-4bdd-801e-5a1530e8ad64" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_b4052eda-4e65-4bdd-801e-5a1530e8ad64">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_b4052eda-4e65-4bdd-801e-5a1530e8ad64">删除</button>
                       <button class="mini-btn" type="button" data-copy="https://vip.chatopens.vip/">复制</button>
                     </div>
                   </div>
-                  <a class="resource-link " href="https://vip.chatopens.vip/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_49d999c0-5cef-47e2-84e0-d6c304d02ec7">
+                  <a class="resource-link " href="https://vip.chatopens.vip/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_b4052eda-4e65-4bdd-801e-5a1530e8ad64">
                      访问站点 →
                   </a>
                 </article>
               
-                <article class="resource reveal visible" data-resource="res_50a6ab2c-e534-4511-bd76-1fee64d3bbbd" draggable="false">
+                <article class="resource reveal visible" data-resource="res_1d1071d3-f588-4837-9951-cfe22b6c32d0" draggable="false">
                   <div class="resource-top">
                     <h4 class="resource-title">stitch</h4>
                     <span class="resource-badge">新站</span>
                   </div>
-                  <div class="resource-desc">软件前端开发</div>
+                  <div class="resource-desc">手机软件前端开发</div>
                   <div class="resource-meta">
                     <div class="meta-left">
                       <span class="chip">域名：stitch.withgoogle.com</span>
                       <span class="chip">点击：0</span>
                     </div>
                     <div class="resource-actions">
-                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_50a6ab2c-e534-4511-bd76-1fee64d3bbbd" title="拖拽排序资源">↕</button>
-                      <button class="mini-btn" type="button" data-edit="res_50a6ab2c-e534-4511-bd76-1fee64d3bbbd">编辑</button>
-                      <button class="mini-btn danger" type="button" data-delete="res_50a6ab2c-e534-4511-bd76-1fee64d3bbbd">删除</button>
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_1d1071d3-f588-4837-9951-cfe22b6c32d0" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_1d1071d3-f588-4837-9951-cfe22b6c32d0">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_1d1071d3-f588-4837-9951-cfe22b6c32d0">删除</button>
                       <button class="mini-btn" type="button" data-copy="https://stitch.withgoogle.com/">复制</button>
                     </div>
                   </div>
-                  <a class="resource-link " href="https://stitch.withgoogle.com/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_50a6ab2c-e534-4511-bd76-1fee64d3bbbd">
+                  <a class="resource-link " href="https://stitch.withgoogle.com/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_1d1071d3-f588-4837-9951-cfe22b6c32d0">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal visible" data-resource="res_0004ab1a-ac50-41b6-9f23-571ac11cfae9" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">React Bits</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">提供大量炫酷的交互组件、背景特效、文字动画和 UI 效果，可以直接复制代码或通过 CLI 安装到项目中</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：reactbits.dev</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_0004ab1a-ac50-41b6-9f23-571ac11cfae9" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_0004ab1a-ac50-41b6-9f23-571ac11cfae9">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_0004ab1a-ac50-41b6-9f23-571ac11cfae9">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://reactbits.dev/get-started/index">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://reactbits.dev/get-started/index" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_0004ab1a-ac50-41b6-9f23-571ac11cfae9">
+                     访问站点 →
+                  </a>
+                </article>
+              
+          </div>
+        </section>
+      
+        <section class="category" id="网络安全---检测" data-category-block="cat_90e7d9f9-0418-444c-8bcf-c35d0a13d0c3">
+          <div class="category-head">
+            <div class="category-title-wrap">
+              <h3>网络安全 / 检测</h3>
+              <div class="count">6 个资源</div>
+            </div>
+            <div class="category-tools">
+              <button class="drag-handle" type="button" draggable="true" data-drag-category="cat_90e7d9f9-0418-444c-8bcf-c35d0a13d0c3" title="拖拽排序分类">↕</button>
+              <button class="mini-btn" type="button" data-add-in-category="cat_90e7d9f9-0418-444c-8bcf-c35d0a13d0c3">新增资源</button>
+              <button class="mini-btn" type="button" data-rename-category="cat_90e7d9f9-0418-444c-8bcf-c35d0a13d0c3">重命名</button>
+              <button class="mini-btn danger" type="button" data-delete-category="cat_90e7d9f9-0418-444c-8bcf-c35d0a13d0c3">删除分类</button>
+            </div>
+          </div>
+          <div class="card-grid">
+            
+                <article class="resource reveal" data-resource="res_0eb012a3-b51b-4c9a-9010-8939196432a5" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">黑客渗透</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">技术类资源站点</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：ycc77.cn</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_0eb012a3-b51b-4c9a-9010-8939196432a5" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_0eb012a3-b51b-4c9a-9010-8939196432a5">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_0eb012a3-b51b-4c9a-9010-8939196432a5">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://ycc77.cn/">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://ycc77.cn/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_0eb012a3-b51b-4c9a-9010-8939196432a5">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal" data-resource="res_2d328c47-126d-42bf-abb3-016c789e9473" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">IP 检测</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">IP 查询与网络检测</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：ippure.com</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_2d328c47-126d-42bf-abb3-016c789e9473" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_2d328c47-126d-42bf-abb3-016c789e9473">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_2d328c47-126d-42bf-abb3-016c789e9473">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://ippure.com/">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://ippure.com/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_2d328c47-126d-42bf-abb3-016c789e9473">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal" data-resource="res_eb3c91b9-c1f9-45c0-a4e0-6ce33a028ca7" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">翻墙工具</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">网络工具导航</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：nav.eooce.com</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_eb3c91b9-c1f9-45c0-a4e0-6ce33a028ca7" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_eb3c91b9-c1f9-45c0-a4e0-6ce33a028ca7">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_eb3c91b9-c1f9-45c0-a4e0-6ce33a028ca7">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://nav.eooce.com/">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://nav.eooce.com/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_eb3c91b9-c1f9-45c0-a4e0-6ce33a028ca7">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal" data-resource="res_47ed316d-bd90-4bef-9312-559687d0feb2" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">美国身份</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">相关信息入口</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：haoweichi.com</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_47ed316d-bd90-4bef-9312-559687d0feb2" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_47ed316d-bd90-4bef-9312-559687d0feb2">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_47ed316d-bd90-4bef-9312-559687d0feb2">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://haoweichi.com/">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://haoweichi.com/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_47ed316d-bd90-4bef-9312-559687d0feb2">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal" data-resource="res_40e35717-d824-451f-bf4f-568997b093c5" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">在线黑客</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">技术交流与工具站</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：i.zkaq.cn</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_40e35717-d824-451f-bf4f-568997b093c5" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_40e35717-d824-451f-bf4f-568997b093c5">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_40e35717-d824-451f-bf4f-568997b093c5">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://i.zkaq.cn/">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://i.zkaq.cn/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_40e35717-d824-451f-bf4f-568997b093c5">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal" data-resource="res_138363bc-035b-46e8-a147-1f565098efae" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">黑客装逼</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">技术风格站点</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：crucix.live</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_138363bc-035b-46e8-a147-1f565098efae" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_138363bc-035b-46e8-a147-1f565098efae">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_138363bc-035b-46e8-a147-1f565098efae">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://www.crucix.live/">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://www.crucix.live/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_138363bc-035b-46e8-a147-1f565098efae">
+                     访问站点 →
+                  </a>
+                </article>
+              
+          </div>
+        </section>
+      
+        <section class="category" id="办公平台---系统工具" data-category-block="cat_8b8c185e-f330-4cb9-950b-f012bcf9481d">
+          <div class="category-head">
+            <div class="category-title-wrap">
+              <h3>办公平台 / 系统工具</h3>
+              <div class="count">3 个资源</div>
+            </div>
+            <div class="category-tools">
+              <button class="drag-handle" type="button" draggable="true" data-drag-category="cat_8b8c185e-f330-4cb9-950b-f012bcf9481d" title="拖拽排序分类">↕</button>
+              <button class="mini-btn" type="button" data-add-in-category="cat_8b8c185e-f330-4cb9-950b-f012bcf9481d">新增资源</button>
+              <button class="mini-btn" type="button" data-rename-category="cat_8b8c185e-f330-4cb9-950b-f012bcf9481d">重命名</button>
+              <button class="mini-btn danger" type="button" data-delete-category="cat_8b8c185e-f330-4cb9-950b-f012bcf9481d">删除分类</button>
+            </div>
+          </div>
+          <div class="card-grid">
+            
+                <article class="resource reveal" data-resource="res_74d58ca4-7137-4c80-bd6a-7eb379e18413" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">办公平台</h4>
+                    <span class="resource-badge">🔥 1</span>
+                  </div>
+                  <div class="resource-desc">在线办公平台</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：duobaoyu.work</span>
+                      <span class="chip">点击：1</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_74d58ca4-7137-4c80-bd6a-7eb379e18413" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_74d58ca4-7137-4c80-bd6a-7eb379e18413">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_74d58ca4-7137-4c80-bd6a-7eb379e18413">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://duobaoyu.work/platform#">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://duobaoyu.work/platform#" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_74d58ca4-7137-4c80-bd6a-7eb379e18413">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal" data-resource="res_e2333b09-3b49-4a15-b8e5-d6de39e429e5" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">PDF</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">一体化在线 PDF 工具包</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：pdfcandy.com</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_e2333b09-3b49-4a15-b8e5-d6de39e429e5" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_e2333b09-3b49-4a15-b8e5-d6de39e429e5">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_e2333b09-3b49-4a15-b8e5-d6de39e429e5">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://pdfcandy.com/cn/">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://pdfcandy.com/cn/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_e2333b09-3b49-4a15-b8e5-d6de39e429e5">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal" data-resource="res_b988b335-17f3-4416-9578-0cb04de88558" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">系统工具</h4>
+                    <span class="resource-badge">🔥 1</span>
+                  </div>
+                  <div class="resource-desc">文档与系统工具</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：kdocs.cn</span>
+                      <span class="chip">点击：1</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_b988b335-17f3-4416-9578-0cb04de88558" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_b988b335-17f3-4416-9578-0cb04de88558">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_b988b335-17f3-4416-9578-0cb04de88558">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://www.kdocs.cn/l/cjkZcTNs2vcU">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://www.kdocs.cn/l/cjkZcTNs2vcU" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_b988b335-17f3-4416-9578-0cb04de88558">
+                     访问站点 →
+                  </a>
+                </article>
+              
+          </div>
+        </section>
+      
+        <section class="category" id="视频---影视---下载" data-category-block="cat_08ce1f62-43ad-456c-a1a1-06f2ae0e6e78">
+          <div class="category-head">
+            <div class="category-title-wrap">
+              <h3>视频 / 影视 / 下载</h3>
+              <div class="count">7 个资源</div>
+            </div>
+            <div class="category-tools">
+              <button class="drag-handle" type="button" draggable="true" data-drag-category="cat_08ce1f62-43ad-456c-a1a1-06f2ae0e6e78" title="拖拽排序分类">↕</button>
+              <button class="mini-btn" type="button" data-add-in-category="cat_08ce1f62-43ad-456c-a1a1-06f2ae0e6e78">新增资源</button>
+              <button class="mini-btn" type="button" data-rename-category="cat_08ce1f62-43ad-456c-a1a1-06f2ae0e6e78">重命名</button>
+              <button class="mini-btn danger" type="button" data-delete-category="cat_08ce1f62-43ad-456c-a1a1-06f2ae0e6e78">删除分类</button>
+            </div>
+          </div>
+          <div class="card-grid">
+            
+                <article class="resource reveal" data-resource="res_079e7625-8278-45a5-b042-6f4a3a49b0c4" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">视频下载</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">视频抓取 / 下载工具</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：datatool.vip</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_079e7625-8278-45a5-b042-6f4a3a49b0c4" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_079e7625-8278-45a5-b042-6f4a3a49b0c4">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_079e7625-8278-45a5-b042-6f4a3a49b0c4">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://www.datatool.vip/">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://www.datatool.vip/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_079e7625-8278-45a5-b042-6f4a3a49b0c4">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal" data-resource="res_9f704fb1-b640-4cc8-9b85-5238144b69e0" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">视频下载2</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">视频抓取 / 下载工具</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：anytocopy.com</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_9f704fb1-b640-4cc8-9b85-5238144b69e0" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_9f704fb1-b640-4cc8-9b85-5238144b69e0">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_9f704fb1-b640-4cc8-9b85-5238144b69e0">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://www.anytocopy.com/">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://www.anytocopy.com/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_9f704fb1-b640-4cc8-9b85-5238144b69e0">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal" data-resource="res_f5860ab9-8382-41ec-b9a7-1418ca539829" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">推特下载</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">X / Twitter 下载</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：savetwitter.net</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_f5860ab9-8382-41ec-b9a7-1418ca539829" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_f5860ab9-8382-41ec-b9a7-1418ca539829">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_f5860ab9-8382-41ec-b9a7-1418ca539829">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://savetwitter.net/zh-cn3">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://savetwitter.net/zh-cn3" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_f5860ab9-8382-41ec-b9a7-1418ca539829">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal" data-resource="res_68012fb4-e7b1-475d-9781-38c734fd47d7" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">免费电影</h4>
+                    <span class="resource-badge">🔥 1</span>
+                  </div>
+                  <div class="resource-desc">影视资源站点</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：youkutv.us</span>
+                      <span class="chip">点击：1</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_68012fb4-e7b1-475d-9781-38c734fd47d7" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_68012fb4-e7b1-475d-9781-38c734fd47d7">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_68012fb4-e7b1-475d-9781-38c734fd47d7">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://youkutv.us/">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://youkutv.us/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_68012fb4-e7b1-475d-9781-38c734fd47d7">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal" data-resource="res_7d2404e0-74e0-4025-b822-dd6f891d88b4" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">电视剧</h4>
+                    <span class="resource-badge">🔥 1</span>
+                  </div>
+                  <div class="resource-desc">追剧资源站</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：kkys01.com</span>
+                      <span class="chip">点击：1</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_7d2404e0-74e0-4025-b822-dd6f891d88b4" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_7d2404e0-74e0-4025-b822-dd6f891d88b4">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_7d2404e0-74e0-4025-b822-dd6f891d88b4">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://kkys01.com/">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://kkys01.com/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_7d2404e0-74e0-4025-b822-dd6f891d88b4">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal" data-resource="res_956f1fa9-dcc1-417d-9736-aff45ce094c0" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">影视都有</h4>
+                    <span class="resource-badge">🔥 1</span>
+                  </div>
+                  <div class="resource-desc">综合影视站点</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：gaze.run</span>
+                      <span class="chip">点击：1</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_956f1fa9-dcc1-417d-9736-aff45ce094c0" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_956f1fa9-dcc1-417d-9736-aff45ce094c0">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_956f1fa9-dcc1-417d-9736-aff45ce094c0">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://gaze.run/">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://gaze.run/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_956f1fa9-dcc1-417d-9736-aff45ce094c0">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal" data-resource="res_d1ff2e70-a8c7-4024-a563-4ab34e9b1bfc" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">奈飞工厂</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">奈飞相关资源</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：netflixgc.com</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_d1ff2e70-a8c7-4024-a563-4ab34e9b1bfc" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_d1ff2e70-a8c7-4024-a563-4ab34e9b1bfc">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_d1ff2e70-a8c7-4024-a563-4ab34e9b1bfc">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://www.netflixgc.com/">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://www.netflixgc.com/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_d1ff2e70-a8c7-4024-a563-4ab34e9b1bfc">
+                     访问站点 →
+                  </a>
+                </article>
+              
+          </div>
+        </section>
+      
+        <section class="category" id="动漫---次元" data-category-block="cat_b3ec5fc1-a24e-490b-ae45-d68b6bde667a">
+          <div class="category-head">
+            <div class="category-title-wrap">
+              <h3>动漫 / 次元</h3>
+              <div class="count">7 个资源</div>
+            </div>
+            <div class="category-tools">
+              <button class="drag-handle" type="button" draggable="true" data-drag-category="cat_b3ec5fc1-a24e-490b-ae45-d68b6bde667a" title="拖拽排序分类">↕</button>
+              <button class="mini-btn" type="button" data-add-in-category="cat_b3ec5fc1-a24e-490b-ae45-d68b6bde667a">新增资源</button>
+              <button class="mini-btn" type="button" data-rename-category="cat_b3ec5fc1-a24e-490b-ae45-d68b6bde667a">重命名</button>
+              <button class="mini-btn danger" type="button" data-delete-category="cat_b3ec5fc1-a24e-490b-ae45-d68b6bde667a">删除分类</button>
+            </div>
+          </div>
+          <div class="card-grid">
+            
+                <article class="resource reveal" data-resource="res_e4ffd4af-edf1-4756-a1b0-e0e628cc7a45" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">动漫</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">动画资源站</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：ios.mifun.org</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_e4ffd4af-edf1-4756-a1b0-e0e628cc7a45" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_e4ffd4af-edf1-4756-a1b0-e0e628cc7a45">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_e4ffd4af-edf1-4756-a1b0-e0e628cc7a45">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://ios.mifun.org/">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://ios.mifun.org/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_e4ffd4af-edf1-4756-a1b0-e0e628cc7a45">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal" data-resource="res_6dab7f89-7267-4d5a-93ef-aa46efaf329c" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">动漫2</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">动画资源站</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：agedm.io</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_6dab7f89-7267-4d5a-93ef-aa46efaf329c" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_6dab7f89-7267-4d5a-93ef-aa46efaf329c">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_6dab7f89-7267-4d5a-93ef-aa46efaf329c">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://www.agedm.io/">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://www.agedm.io/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_6dab7f89-7267-4d5a-93ef-aa46efaf329c">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal" data-resource="res_650790cb-1cac-49fa-9557-1672306a1f3c" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">MiFun</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">番剧与动漫入口</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：ios.mifun.org</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_650790cb-1cac-49fa-9557-1672306a1f3c" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_650790cb-1cac-49fa-9557-1672306a1f3c">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_650790cb-1cac-49fa-9557-1672306a1f3c">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://ios.mifun.org/">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://ios.mifun.org/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_650790cb-1cac-49fa-9557-1672306a1f3c">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal" data-resource="res_eeaa43d9-35ae-4ee1-a575-c602deed6a85" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">二次元宇宙</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">次元社区</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：acgn.cn</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_eeaa43d9-35ae-4ee1-a575-c602deed6a85" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_eeaa43d9-35ae-4ee1-a575-c602deed6a85">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_eeaa43d9-35ae-4ee1-a575-c602deed6a85">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://acgn.cn/">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://acgn.cn/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_eeaa43d9-35ae-4ee1-a575-c602deed6a85">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal" data-resource="res_18c58fd9-cfd9-44f4-8298-04dddd21b04d" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">二次元搜索</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">把你想要搜索的图片放进去就能知道关于他的内容</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：trace.moe</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_18c58fd9-cfd9-44f4-8298-04dddd21b04d" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_18c58fd9-cfd9-44f4-8298-04dddd21b04d">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_18c58fd9-cfd9-44f4-8298-04dddd21b04d">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://trace.moe/">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://trace.moe/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_18c58fd9-cfd9-44f4-8298-04dddd21b04d">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal" data-resource="res_a5ba53f4-7c62-4153-88d5-d13e76fae924" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">二次元插画</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">好看的图片</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：mikagogo.com</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_a5ba53f4-7c62-4153-88d5-d13e76fae924" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_a5ba53f4-7c62-4153-88d5-d13e76fae924">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_a5ba53f4-7c62-4153-88d5-d13e76fae924">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://mikagogo.com/pc-wallpaper">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://mikagogo.com/pc-wallpaper" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_a5ba53f4-7c62-4153-88d5-d13e76fae924">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal" data-resource="res_ce01ee38-39ed-4fed-b9ce-c4d6c4e198d8" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">二次元</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">次元内容聚合</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：dimtown.com</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_ce01ee38-39ed-4fed-b9ce-c4d6c4e198d8" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_ce01ee38-39ed-4fed-b9ce-c4d6c4e198d8">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_ce01ee38-39ed-4fed-b9ce-c4d6c4e198d8">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://dimtown.com/">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://dimtown.com/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_ce01ee38-39ed-4fed-b9ce-c4d6c4e198d8">
+                     访问站点 →
+                  </a>
+                </article>
+              
+          </div>
+        </section>
+      
+        <section class="category" id="文件分享" data-category-block="cat_570557ff-ecc4-4ea1-92ba-2b4136618377">
+          <div class="category-head">
+            <div class="category-title-wrap">
+              <h3>文件分享</h3>
+              <div class="count">2 个资源</div>
+            </div>
+            <div class="category-tools">
+              <button class="drag-handle" type="button" draggable="true" data-drag-category="cat_570557ff-ecc4-4ea1-92ba-2b4136618377" title="拖拽排序分类">↕</button>
+              <button class="mini-btn" type="button" data-add-in-category="cat_570557ff-ecc4-4ea1-92ba-2b4136618377">新增资源</button>
+              <button class="mini-btn" type="button" data-rename-category="cat_570557ff-ecc4-4ea1-92ba-2b4136618377">重命名</button>
+              <button class="mini-btn danger" type="button" data-delete-category="cat_570557ff-ecc4-4ea1-92ba-2b4136618377">删除分类</button>
+            </div>
+          </div>
+          <div class="card-grid">
+            
+                <article class="resource reveal" data-resource="res_32b0e480-e89c-4113-9baa-c52e3cc2f672" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">Wormhole</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">快速传文件</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：wormhole.app</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_32b0e480-e89c-4113-9baa-c52e3cc2f672" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_32b0e480-e89c-4113-9baa-c52e3cc2f672">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_32b0e480-e89c-4113-9baa-c52e3cc2f672">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://wormhole.app/">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://wormhole.app/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_32b0e480-e89c-4113-9baa-c52e3cc2f672">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal" data-resource="res_efbb302f-c248-4aec-b892-7dd13d238882" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">文件快递柜</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">文件传输</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：filebox.nnuu.nyc.mn</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_efbb302f-c248-4aec-b892-7dd13d238882" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_efbb302f-c248-4aec-b892-7dd13d238882">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_efbb302f-c248-4aec-b892-7dd13d238882">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://filebox.nnuu.nyc.mn/#/">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://filebox.nnuu.nyc.mn/#/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_efbb302f-c248-4aec-b892-7dd13d238882">
+                     访问站点 →
+                  </a>
+                </article>
+              
+          </div>
+        </section>
+      
+        <section class="category" id="设计---图片---海报" data-category-block="cat_dc1e0c29-5514-4372-8cb5-58ac754db375">
+          <div class="category-head">
+            <div class="category-title-wrap">
+              <h3>设计 / 图片 / 海报</h3>
+              <div class="count">5 个资源</div>
+            </div>
+            <div class="category-tools">
+              <button class="drag-handle" type="button" draggable="true" data-drag-category="cat_dc1e0c29-5514-4372-8cb5-58ac754db375" title="拖拽排序分类">↕</button>
+              <button class="mini-btn" type="button" data-add-in-category="cat_dc1e0c29-5514-4372-8cb5-58ac754db375">新增资源</button>
+              <button class="mini-btn" type="button" data-rename-category="cat_dc1e0c29-5514-4372-8cb5-58ac754db375">重命名</button>
+              <button class="mini-btn danger" type="button" data-delete-category="cat_dc1e0c29-5514-4372-8cb5-58ac754db375">删除分类</button>
+            </div>
+          </div>
+          <div class="card-grid">
+            
+                <article class="resource reveal" data-resource="res_35f80f1a-5b1c-4d8d-bb31-df21b19d6331" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">海报模板</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">海报灵感 / 图片素材</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：huaban.com</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_35f80f1a-5b1c-4d8d-bb31-df21b19d6331" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_35f80f1a-5b1c-4d8d-bb31-df21b19d6331">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_35f80f1a-5b1c-4d8d-bb31-df21b19d6331">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://huaban.com/">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://huaban.com/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_35f80f1a-5b1c-4d8d-bb31-df21b19d6331">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal" data-resource="res_c0073ae0-0697-43bc-9d8b-c5646cefa406" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">创客贴</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">在线设计工具</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：chuangkit.com</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_c0073ae0-0697-43bc-9d8b-c5646cefa406" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_c0073ae0-0697-43bc-9d8b-c5646cefa406">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_c0073ae0-0697-43bc-9d8b-c5646cefa406">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://www.chuangkit.com/designtools/designindex">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://www.chuangkit.com/designtools/designindex" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_c0073ae0-0697-43bc-9d8b-c5646cefa406">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal" data-resource="res_4988dc91-d93f-4c2f-9b63-fc3c1592a99d" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">无损放大</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">图片无损放大</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：bigjpg.com</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_4988dc91-d93f-4c2f-9b63-fc3c1592a99d" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_4988dc91-d93f-4c2f-9b63-fc3c1592a99d">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_4988dc91-d93f-4c2f-9b63-fc3c1592a99d">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://bigjpg.com/">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://bigjpg.com/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_4988dc91-d93f-4c2f-9b63-fc3c1592a99d">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal" data-resource="res_bb3d2d7f-630a-4c12-aff6-a0f5a4aa6ba4" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">Ai 消除</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">图片处理工具</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：miankoutupian.com</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_bb3d2d7f-630a-4c12-aff6-a0f5a4aa6ba4" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_bb3d2d7f-630a-4c12-aff6-a0f5a4aa6ba4">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_bb3d2d7f-630a-4c12-aff6-a0f5a4aa6ba4">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://www.miankoutupian.com/tools">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://www.miankoutupian.com/tools" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_bb3d2d7f-630a-4c12-aff6-a0f5a4aa6ba4">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal" data-resource="res_c26ad6d5-f8a8-473f-9542-500e78b287dd" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">Magic Eraser</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">AI 去除图片元素</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：magiceraser.pro</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_c26ad6d5-f8a8-473f-9542-500e78b287dd" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_c26ad6d5-f8a8-473f-9542-500e78b287dd">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_c26ad6d5-f8a8-473f-9542-500e78b287dd">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://magiceraser.pro/zh/app">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://magiceraser.pro/zh/app" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_c26ad6d5-f8a8-473f-9542-500e78b287dd">
+                     访问站点 →
+                  </a>
+                </article>
+              
+          </div>
+        </section>
+      
+        <section class="category" id="游戏---模组" data-category-block="cat_3c973c70-2f76-4233-b77e-dca8c4775fa7">
+          <div class="category-head">
+            <div class="category-title-wrap">
+              <h3>游戏 / 模组</h3>
+              <div class="count">9 个资源</div>
+            </div>
+            <div class="category-tools">
+              <button class="drag-handle" type="button" draggable="true" data-drag-category="cat_3c973c70-2f76-4233-b77e-dca8c4775fa7" title="拖拽排序分类">↕</button>
+              <button class="mini-btn" type="button" data-add-in-category="cat_3c973c70-2f76-4233-b77e-dca8c4775fa7">新增资源</button>
+              <button class="mini-btn" type="button" data-rename-category="cat_3c973c70-2f76-4233-b77e-dca8c4775fa7">重命名</button>
+              <button class="mini-btn danger" type="button" data-delete-category="cat_3c973c70-2f76-4233-b77e-dca8c4775fa7">删除分类</button>
+            </div>
+          </div>
+          <div class="card-grid">
+            
+                <article class="resource reveal" data-resource="res_43299013-1ff0-40b2-9439-64cd3e0ba8af" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">付费游戏</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">游戏资源站</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：yzhouk.com</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_43299013-1ff0-40b2-9439-64cd3e0ba8af" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_43299013-1ff0-40b2-9439-64cd3e0ba8af">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_43299013-1ff0-40b2-9439-64cd3e0ba8af">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://yzhouk.com/">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://yzhouk.com/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_43299013-1ff0-40b2-9439-64cd3e0ba8af">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal" data-resource="res_0802b8f7-cd81-406e-96ef-e57db538aeac" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">我的世界模组</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">MOD / 整合包</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：bbsmc.net</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_0802b8f7-cd81-406e-96ef-e57db538aeac" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_0802b8f7-cd81-406e-96ef-e57db538aeac">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_0802b8f7-cd81-406e-96ef-e57db538aeac">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://bbsmc.net/modpacks">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://bbsmc.net/modpacks" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_0802b8f7-cd81-406e-96ef-e57db538aeac">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal" data-resource="res_909fab30-a1f0-4736-8ad7-2b5562e15203" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">免费游戏</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">单机游戏资源</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：gdgame.org</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_909fab30-a1f0-4736-8ad7-2b5562e15203" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_909fab30-a1f0-4736-8ad7-2b5562e15203">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_909fab30-a1f0-4736-8ad7-2b5562e15203">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://gdgame.org/">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://gdgame.org/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_909fab30-a1f0-4736-8ad7-2b5562e15203">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal" data-resource="res_ed18bb73-bf05-4703-be45-d8a86757102d" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">SteamZG</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">游戏站点</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：steamzg.com</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_ed18bb73-bf05-4703-be45-d8a86757102d" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_ed18bb73-bf05-4703-be45-d8a86757102d">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_ed18bb73-bf05-4703-be45-d8a86757102d">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://steamzg.com/">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://steamzg.com/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_ed18bb73-bf05-4703-be45-d8a86757102d">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal" data-resource="res_6692be22-1d0c-4f68-957c-af3fccca0570" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">RV Game</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">PC 游戏站</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：rvgame.icu</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_6692be22-1d0c-4f68-957c-af3fccca0570" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_6692be22-1d0c-4f68-957c-af3fccca0570">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_6692be22-1d0c-4f68-957c-af3fccca0570">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://www.rvgame.icu/pc">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://www.rvgame.icu/pc" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_6692be22-1d0c-4f68-957c-af3fccca0570">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal" data-resource="res_2c53eab3-8e16-41b3-8a93-e5d4f3d39784" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">FreeDw 资源库</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">资源库与导航</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：freedw.com</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_2c53eab3-8e16-41b3-8a93-e5d4f3d39784" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_2c53eab3-8e16-41b3-8a93-e5d4f3d39784">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_2c53eab3-8e16-41b3-8a93-e5d4f3d39784">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://freedw.com/">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://freedw.com/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_2c53eab3-8e16-41b3-8a93-e5d4f3d39784">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal" data-resource="res_d574abad-3530-4c96-989e-43b65561d2f4" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">Nexus Mods</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">游戏模组资源站（N网）</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：nexusmods.com</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_d574abad-3530-4c96-989e-43b65561d2f4" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_d574abad-3530-4c96-989e-43b65561d2f4">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_d574abad-3530-4c96-989e-43b65561d2f4">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://www.nexusmods.com/">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://www.nexusmods.com/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_d574abad-3530-4c96-989e-43b65561d2f4">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal" data-resource="res_c90a2293-0b4f-4954-843a-c787cf569921" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">熊猫游戏网</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">游戏模组资源站</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：xmgame.org</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_c90a2293-0b4f-4954-843a-c787cf569921" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_c90a2293-0b4f-4954-843a-c787cf569921">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_c90a2293-0b4f-4954-843a-c787cf569921">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://xmgame.org/">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://xmgame.org/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_c90a2293-0b4f-4954-843a-c787cf569921">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal" data-resource="res_3a8108fa-5a84-48cf-a591-ff31568953c4" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">MOD</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">3A游戏MOD</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：kdocs.cn</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_3a8108fa-5a84-48cf-a591-ff31568953c4" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_3a8108fa-5a84-48cf-a591-ff31568953c4">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_3a8108fa-5a84-48cf-a591-ff31568953c4">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://www.kdocs.cn/l/cbOwP5Nc0fGQ">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://www.kdocs.cn/l/cbOwP5Nc0fGQ" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_3a8108fa-5a84-48cf-a591-ff31568953c4">
+                     访问站点 →
+                  </a>
+                </article>
+              
+          </div>
+        </section>
+      
+        <section class="category" id="工具---导航---其他" data-category-block="cat_0f6dc93c-b1a8-4191-9fc8-94dd2dcd8e79">
+          <div class="category-head">
+            <div class="category-title-wrap">
+              <h3>工具 / 导航 / 其他</h3>
+              <div class="count">12 个资源</div>
+            </div>
+            <div class="category-tools">
+              <button class="drag-handle" type="button" draggable="true" data-drag-category="cat_0f6dc93c-b1a8-4191-9fc8-94dd2dcd8e79" title="拖拽排序分类">↕</button>
+              <button class="mini-btn" type="button" data-add-in-category="cat_0f6dc93c-b1a8-4191-9fc8-94dd2dcd8e79">新增资源</button>
+              <button class="mini-btn" type="button" data-rename-category="cat_0f6dc93c-b1a8-4191-9fc8-94dd2dcd8e79">重命名</button>
+              <button class="mini-btn danger" type="button" data-delete-category="cat_0f6dc93c-b1a8-4191-9fc8-94dd2dcd8e79">删除分类</button>
+            </div>
+          </div>
+          <div class="card-grid">
+            
+                <article class="resource reveal" data-resource="res_38c51136-a07d-4732-b4fa-373c523b51a6" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">工具</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">先打开这个</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：kdocs.cn</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_38c51136-a07d-4732-b4fa-373c523b51a6" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_38c51136-a07d-4732-b4fa-373c523b51a6">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_38c51136-a07d-4732-b4fa-373c523b51a6">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://www.kdocs.cn/l/cu0qRXqpfy0U">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://www.kdocs.cn/l/cu0qRXqpfy0U" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_38c51136-a07d-4732-b4fa-373c523b51a6">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal" data-resource="res_59c3e5a9-786f-4549-9c89-6948b7d72d7e" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">工具大全</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">工具集合站</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：zxmls.lol</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_59c3e5a9-786f-4549-9c89-6948b7d72d7e" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_59c3e5a9-786f-4549-9c89-6948b7d72d7e">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_59c3e5a9-786f-4549-9c89-6948b7d72d7e">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://www.zxmls.lol/">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://www.zxmls.lol/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_59c3e5a9-786f-4549-9c89-6948b7d72d7e">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal" data-resource="res_1cc2ef36-817d-4615-9eaf-52aa1a880b5e" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">南窗资源社</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">资源社导航</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：nan2025.com</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_1cc2ef36-817d-4615-9eaf-52aa1a880b5e" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_1cc2ef36-817d-4615-9eaf-52aa1a880b5e">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_1cc2ef36-817d-4615-9eaf-52aa1a880b5e">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://www.nan2025.com/">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://www.nan2025.com/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_1cc2ef36-817d-4615-9eaf-52aa1a880b5e">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal" data-resource="res_93d1ce7c-05de-4c77-b96c-e08c001b23dc" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">黑科技</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">技巧与工具合集</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：iiihnsjn717.feishu.cn</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_93d1ce7c-05de-4c77-b96c-e08c001b23dc" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_93d1ce7c-05de-4c77-b96c-e08c001b23dc">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_93d1ce7c-05de-4c77-b96c-e08c001b23dc">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://iiihnsjn717.feishu.cn/wiki/L8n1wzMTJiuzS1k2W8dcfv7Dnlf">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://iiihnsjn717.feishu.cn/wiki/L8n1wzMTJiuzS1k2W8dcfv7Dnlf" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_93d1ce7c-05de-4c77-b96c-e08c001b23dc">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal" data-resource="res_4779369d-7541-46a7-ac1a-0b9ada5c7173" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">代码飓风</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">代码与工具站</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：dmjfup.com</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_4779369d-7541-46a7-ac1a-0b9ada5c7173" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_4779369d-7541-46a7-ac1a-0b9ada5c7173">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_4779369d-7541-46a7-ac1a-0b9ada5c7173">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://www.dmjfup.com/">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://www.dmjfup.com/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_4779369d-7541-46a7-ac1a-0b9ada5c7173">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal" data-resource="res_826f944e-ff28-4be6-aa13-28474cd82bdf" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">花猫导航</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">导航集合站</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：huamao.vip</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_826f944e-ff28-4be6-aa13-28474cd82bdf" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_826f944e-ff28-4be6-aa13-28474cd82bdf">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_826f944e-ff28-4be6-aa13-28474cd82bdf">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://huamao.vip/">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://huamao.vip/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_826f944e-ff28-4be6-aa13-28474cd82bdf">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal" data-resource="res_1cb34daa-77ec-4e55-a112-f355a8af31b3" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">迷鹿导航</h4>
+                    <span class="resource-badge">🔥 1</span>
+                  </div>
+                  <div class="resource-desc">资源导航站</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：plnav.com</span>
+                      <span class="chip">点击：1</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_1cb34daa-77ec-4e55-a112-f355a8af31b3" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_1cb34daa-77ec-4e55-a112-f355a8af31b3">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_1cb34daa-77ec-4e55-a112-f355a8af31b3">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://www.plnav.com/">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://www.plnav.com/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_1cb34daa-77ec-4e55-a112-f355a8af31b3">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal" data-resource="res_75161842-afe5-4335-9485-10dcd99f3387" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">甲方导航</h4>
+                    <span class="resource-badge">🔥 1</span>
+                  </div>
+                  <div class="resource-desc">站点导航资源</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：jiafangbb.com</span>
+                      <span class="chip">点击：1</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_75161842-afe5-4335-9485-10dcd99f3387" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_75161842-afe5-4335-9485-10dcd99f3387">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_75161842-afe5-4335-9485-10dcd99f3387">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://jiafangbb.com/">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://jiafangbb.com/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_75161842-afe5-4335-9485-10dcd99f3387">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal" data-resource="res_1c2e1d6f-8072-455b-b6c3-c902f7dfe6a5" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">软件大侠</h4>
+                    <span class="resource-badge">🔥 1</span>
+                  </div>
+                  <div class="resource-desc">软件资源与工具导航站</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：ruandaxia.com</span>
+                      <span class="chip">点击：1</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_1c2e1d6f-8072-455b-b6c3-c902f7dfe6a5" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_1c2e1d6f-8072-455b-b6c3-c902f7dfe6a5">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_1c2e1d6f-8072-455b-b6c3-c902f7dfe6a5">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://www.ruandaxia.com/">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://www.ruandaxia.com/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_1c2e1d6f-8072-455b-b6c3-c902f7dfe6a5">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal" data-resource="res_5b58c701-845a-4c53-981d-e79b4ade1968" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">字幕</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">字幕资源站</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：zm.i8k.tv</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_5b58c701-845a-4c53-981d-e79b4ade1968" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_5b58c701-845a-4c53-981d-e79b4ade1968">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_5b58c701-845a-4c53-981d-e79b4ade1968">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://zm.i8k.tv/">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://zm.i8k.tv/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_5b58c701-845a-4c53-981d-e79b4ade1968">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal" data-resource="res_9f07a422-1f3d-4962-8cd2-7da9889854ac" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">修复维修工具</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">维修教程与工具</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：zh.ifixit.com</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_9f07a422-1f3d-4962-8cd2-7da9889854ac" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_9f07a422-1f3d-4962-8cd2-7da9889854ac">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_9f07a422-1f3d-4962-8cd2-7da9889854ac">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://zh.ifixit.com/">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://zh.ifixit.com/" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_9f07a422-1f3d-4962-8cd2-7da9889854ac">
+                     访问站点 →
+                  </a>
+                </article>
+              
+                <article class="resource reveal" data-resource="res_3faacaed-8430-4e13-a329-d2374c5e5003" draggable="false">
+                  <div class="resource-top">
+                    <h4 class="resource-title">测试 CPU / 显卡</h4>
+                    <span class="resource-badge">新站</span>
+                  </div>
+                  <div class="resource-desc">硬件性能测试</div>
+                  <div class="resource-meta">
+                    <div class="meta-left">
+                      <span class="chip">域名：pc-builds.com</span>
+                      <span class="chip">点击：0</span>
+                    </div>
+                    <div class="resource-actions">
+                      <button class="drag-handle" type="button" draggable="true" data-drag-resource="res_3faacaed-8430-4e13-a329-d2374c5e5003" title="拖拽排序资源">↕</button>
+                      <button class="mini-btn" type="button" data-edit="res_3faacaed-8430-4e13-a329-d2374c5e5003">编辑</button>
+                      <button class="mini-btn danger" type="button" data-delete="res_3faacaed-8430-4e13-a329-d2374c5e5003">删除</button>
+                      <button class="mini-btn" type="button" data-copy="https://pc-builds.com/zh">复制</button>
+                    </div>
+                  </div>
+                  <a class="resource-link " href="https://pc-builds.com/zh" target="_blank" rel="noopener noreferrer" aria-disabled="false" data-id="res_3faacaed-8430-4e13-a329-d2374c5e5003">
                      访问站点 →
                   </a>
                 </article>
@@ -2201,8 +3711,8 @@
           <div class="side-top">
             <div class="profile-wrap">
               <div class="profile-main">
-                <img class="avatar" id="profileAvatar" alt="头像" referrerpolicy="no-referrer" style="display: none;">
-                <div class="avatar-fallback" id="profileAvatarFallback" style="display: grid;">个</div>
+                <img class="avatar" id="profileAvatar" alt="头像" referrerpolicy="no-referrer" style="display: none">
+                <div class="avatar-fallback" id="profileAvatarFallback" style="display: grid">个</div>
                 <div class="profile-text">
                   <h4 id="profileName">个人简介</h4>
                   <p id="profileBio">极简爱好者 / 资源整理 / 前端页面优化</p>
@@ -2212,7 +3722,7 @@
             </div>
 
             <div class="side-search">
-              <label class="search" style="width:100%;">
+              <label class="search" style="width:100%">
                 <span>🔎</span>
                 <input id="sideSearchInput" type="text" placeholder="快速搜索资源...">
               </label>
@@ -2220,13 +3730,13 @@
           </div>
 
           <div class="side-block">
-            <div class="panel-sub" style="margin-bottom:10px;">标签分类</div>
+            <div class="panel-sub" style="margin-bottom: 10px">标签分类</div>
             <div class="tag-list" id="tagList">
-        <button class="tag " type="button" data-tag="全部">全部</button>
+        <button class="tag active" type="button" data-tag="全部">全部</button>
       
         <button class="tag " type="button" data-tag="想搜点什么?">想搜点什么?</button>
       
-        <button class="tag active" type="button" data-tag="AI 网站">AI 网站</button>
+        <button class="tag " type="button" data-tag="AI 网站 / 前端开发">AI 网站 / 前端开发</button>
       
         <button class="tag " type="button" data-tag="网络安全 / 检测">网络安全 / 检测</button>
       
@@ -2247,31 +3757,71 @@
           </div>
 
           <div class="side-block">
-            <div class="panel-sub" style="margin-bottom:10px;">热门资源</div>
+            <div class="panel-sub" style="margin-bottom: 10px">热门资源</div>
             <div class="hot-list" id="hotList">
-          <a class="hot-item " href="https://vip.chatopens.vip/" target="_blank" rel="noopener noreferrer" data-id="res_49d999c0-5cef-47e2-84e0-d6c304d02ec7">
+          <a class="hot-item " href="https://vip.chatopens.vip/" target="_blank" rel="noopener noreferrer" data-id="res_b4052eda-4e65-4bdd-801e-5a1530e8ad64">
             <strong>ChatOpenS VIP</strong>
-            <span>AI 网站 · 1 次点击</span>
+            <span>AI 网站 / 前端开发 · 1 次点击</span>
           </a>
         
-          <a class="hot-item " href="https://add.lra.cn/" target="_blank" rel="noopener noreferrer" data-id="res_bec091df-a7c5-4bdd-8cc3-3b585a1b43e8">
-            <strong>Add LRA</strong>
-            <span>AI 网站 · 0 次点击</span>
+          <a class="hot-item " href="https://duobaoyu.work/platform#" target="_blank" rel="noopener noreferrer" data-id="res_74d58ca4-7137-4c80-bd6a-7eb379e18413">
+            <strong>办公平台</strong>
+            <span>办公平台 / 系统工具 · 1 次点击</span>
           </a>
         
-          <a class="hot-item " href="https://stitch.withgoogle.com/" target="_blank" rel="noopener noreferrer" data-id="res_50a6ab2c-e534-4511-bd76-1fee64d3bbbd">
-            <strong>stitch</strong>
-            <span>AI 网站 · 0 次点击</span>
+          <a class="hot-item " href="https://www.kdocs.cn/l/cjkZcTNs2vcU" target="_blank" rel="noopener noreferrer" data-id="res_b988b335-17f3-4416-9578-0cb04de88558">
+            <strong>系统工具</strong>
+            <span>办公平台 / 系统工具 · 1 次点击</span>
+          </a>
+        
+          <a class="hot-item " href="https://youkutv.us/" target="_blank" rel="noopener noreferrer" data-id="res_68012fb4-e7b1-475d-9781-38c734fd47d7">
+            <strong>免费电影</strong>
+            <span>视频 / 影视 / 下载 · 1 次点击</span>
+          </a>
+        
+          <a class="hot-item " href="https://kkys01.com/" target="_blank" rel="noopener noreferrer" data-id="res_7d2404e0-74e0-4025-b822-dd6f891d88b4">
+            <strong>电视剧</strong>
+            <span>视频 / 影视 / 下载 · 1 次点击</span>
+          </a>
+        
+          <a class="hot-item " href="https://gaze.run/" target="_blank" rel="noopener noreferrer" data-id="res_956f1fa9-dcc1-417d-9736-aff45ce094c0">
+            <strong>影视都有</strong>
+            <span>视频 / 影视 / 下载 · 1 次点击</span>
           </a>
         </div>
           </div>
 
           <div class="side-block">
-            <div class="panel-sub" style="margin-bottom:10px;">最近访问</div>
+            <div class="panel-sub" style="margin-bottom: 10px">最近访问</div>
             <div class="recent-list" id="recentList">
-          <a class="recent-item " href="https://vip.chatopens.vip/" target="_blank" rel="noopener noreferrer" data-id="res_49d999c0-5cef-47e2-84e0-d6c304d02ec7">
+          <a class="recent-item " href="https://vip.chatopens.vip/" target="_blank" rel="noopener noreferrer" data-id="res_b4052eda-4e65-4bdd-801e-5a1530e8ad64">
             <strong>ChatOpenS VIP</strong>
-            <span>AI 网站</span>
+            <span>AI 网站 / 前端开发</span>
+          </a>
+        
+          <a class="recent-item " href="https://www.plnav.com/" target="_blank" rel="noopener noreferrer" data-id="res_1cb34daa-77ec-4e55-a112-f355a8af31b3">
+            <strong>迷鹿导航</strong>
+            <span>工具 / 导航 / 其他</span>
+          </a>
+        
+          <a class="recent-item " href="https://jiafangbb.com/" target="_blank" rel="noopener noreferrer" data-id="res_75161842-afe5-4335-9485-10dcd99f3387">
+            <strong>甲方导航</strong>
+            <span>工具 / 导航 / 其他</span>
+          </a>
+        
+          <a class="recent-item " href="https://www.ruandaxia.com/" target="_blank" rel="noopener noreferrer" data-id="res_1c2e1d6f-8072-455b-b6c3-c902f7dfe6a5">
+            <strong>软件大侠</strong>
+            <span>工具 / 导航 / 其他</span>
+          </a>
+        
+          <a class="recent-item " href="https://youkutv.us/" target="_blank" rel="noopener noreferrer" data-id="res_68012fb4-e7b1-475d-9781-38c734fd47d7">
+            <strong>免费电影</strong>
+            <span>视频 / 影视 / 下载</span>
+          </a>
+        
+          <a class="recent-item " href="https://kkys01.com/" target="_blank" rel="noopener noreferrer" data-id="res_7d2404e0-74e0-4025-b822-dd6f891d88b4">
+            <strong>电视剧</strong>
+            <span>视频 / 影视 / 下载</span>
           </a>
         </div>
           </div>
@@ -2285,7 +3835,7 @@
             </div>
           </div>
           <div class="side-block">
-            <div class="panel-sub" style="font-size:13px; line-height:1.9;">
+            <div class="panel-sub" style="font-size: 13px; line-height: 1.9">
               1. 点击资源卡片可直接访问。<br>
               2. 点击“新增资源”可在线添加。<br>
               3. 每个资源支持“编辑 / 删除 / 复制链接”。<br>
@@ -2370,7 +3920,7 @@
             <label>分类</label>
             <select id="editCategory">
         <option value="">请选择分类</option>
-        <option value="想搜点什么?">想搜点什么?</option><option value="AI 网站">AI 网站</option><option value="网络安全 / 检测">网络安全 / 检测</option><option value="办公平台 / 系统工具">办公平台 / 系统工具</option><option value="视频 / 影视 / 下载">视频 / 影视 / 下载</option><option value="动漫 / 次元">动漫 / 次元</option><option value="文件分享">文件分享</option><option value="设计 / 图片 / 海报">设计 / 图片 / 海报</option><option value="游戏 / 模组">游戏 / 模组</option><option value="工具 / 导航 / 其他">工具 / 导航 / 其他</option>
+        <option value="想搜点什么?">想搜点什么?</option><option value="AI 网站 / 前端开发">AI 网站 / 前端开发</option><option value="网络安全 / 检测">网络安全 / 检测</option><option value="办公平台 / 系统工具">办公平台 / 系统工具</option><option value="视频 / 影视 / 下载">视频 / 影视 / 下载</option><option value="动漫 / 次元">动漫 / 次元</option><option value="文件分享">文件分享</option><option value="设计 / 图片 / 海报">设计 / 图片 / 海报</option><option value="游戏 / 模组">游戏 / 模组</option><option value="工具 / 导航 / 其他">工具 / 导航 / 其他</option>
       </select>
           </div>
           <div class="field">
@@ -2385,7 +3935,7 @@
       </div>
       <div class="form-actions">
         <button class="btn" type="button" id="cancelEditBtn">取消</button>
-        <button class="btn btn-danger" type="button" id="deleteEditBtn" style="display:none;">删除</button>
+        <button class="btn btn-danger" type="button" id="deleteEditBtn" style="display: none">删除</button>
         <button class="btn btn-primary" type="button" id="saveEditBtn">保存</button>
       </div>
     </div>
@@ -3235,12 +4785,12 @@
             <span>${escapeHtml(item.category)} · ${getClick(item.id)} 次点击</span>
           </a>
         `;
-      }).join("") || `<div class="empty" style="padding:12px 0;">暂无热门项</div>`;
+      }).join("") || `<div class="empty" style="padding:12px 0">暂无热门项</div>`;
     }
 
     function renderRecent() {
       if (!recent.length) {
-        recentList.innerHTML = `<div class="panel-sub" style="font-size:12px;">暂无最近访问，点击任意资源后会记录到这里。</div>`;
+        recentList.innerHTML = `<div class="panel-sub" style="font-size:12px">暂无最近访问，点击任意资源后会记录到这里。</div>`;
         return;
       }
 
@@ -4609,7 +6159,6 @@
     renderAll();
     setTimeout(openWelcomeTip, 350);
   </script>
-<script src="./资源导航站 · 修复优化版_files/jquery.js.下载"></script><script src="./资源导航站 · 修复优化版_files/Global.js.下载"></script><script src="./资源导航站 · 修复优化版_files/Global(1).js.下载"></script><script src="./资源导航站 · 修复优化版_files/SoruxGPT.js.下载"></script><script src="./资源导航站 · 修复优化版_files/jquery.js.下载"></script><script src="./资源导航站 · 修复优化版_files/Global.js.下载"></script><script src="./资源导航站 · 修复优化版_files/Global(1).js.下载"></script><script src="./资源导航站 · 修复优化版_files/SoruxGPT.js.下载"></script><script src="./资源导航站 · 修复优化版_files/jquery.js.下载"></script><script src="./资源导航站 · 修复优化版_files/Global.js.下载"></script><script src="./资源导航站 · 修复优化版_files/Global(1).js.下载"></script><script src="./资源导航站 · 修复优化版_files/SoruxGPT.js.下载"></script><script src="./资源导航站 · 修复优化版_files/jquery.js.下载"></script><script src="./资源导航站 · 修复优化版_files/Global.js.下载"></script><script src="./资源导航站 · 修复优化版_files/Global(1).js.下载"></script><script src="./资源导航站 · 修复优化版_files/SoruxGPT.js.下载"></script><script defer src="./资源导航站 · 修复优化版_files/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon="{&quot;version&quot;:&quot;2024.11.0&quot;,&quot;token&quot;:&quot;c48e76e4f721437f80870d199e04dc81&quot;,&quot;r&quot;:1,&quot;server_timing&quot;:{&quot;name&quot;:{&quot;cfCacheStatus&quot;:true,&quot;cfEdge&quot;:true,&quot;cfExtPri&quot;:true,&quot;cfL4&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfSpeedBrain&quot;:true},&quot;location_startswith&quot;:null}}" crossorigin="anonymous"></script>
 
-
-</body></html>
+<script src="/Static/js/jquery.js"></script><script src="/Static/js/Global.js"></script><script src="/Web/js/Global.js"></script><script src="/Web/js/SoruxGPT.js"></script><script src="/Static/js/jquery.js"></script><script src="/Static/js/Global.js"></script><script src="/Web/js/Global.js"></script><script src="/Web/js/SoruxGPT.js"></script></body>
+</html>
